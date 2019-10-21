@@ -1,3 +1,10 @@
+# Conduite de projet - Groupe 1 équipe 3
+
+## Membres de l'équipe
+- BOUNEAU Axel
+- DUROC   Nicolas
+- ROULET  Florian
+
 ## Définitions
 
 - Un **Visiteur** est quelqu'un qui accède au site. Il a le statut de **Visiteur** tant qu'il n'est pas identifié. Il peut créer un compte, ou s'identifer sur son compte s'il en a déjà un.
@@ -11,7 +18,7 @@
 - Une **Issue** comprend les champs suivants :
   - Un ID unique
   - Un nom
-  - Une description, de la forme "En tant que ..., je peux ..., afin de ..."
+  - Une description, de la forme "*En tant que* ..., *je peux* ..., *afin de* ..."
   - Une difficulté, sous la forme d'un nombre de la suite de Fibonacci, décrivant la difficulté estimée pour la réalisation de l'issue, relativement aux autres issues. Un nombre élevé représente une difficulté élevée.
   - Une priorité (haute ou basse).
 
@@ -24,11 +31,18 @@
 
 - Un **Test** comprend les champs suivants :
   - Un nom
-  - Une description de la forme "**Étant donné**..., **lorsque**..., **alors**...".
+  - Une description de la forme "*Étant donné*..., *lorsque*..., *alors*...".
 
 - Un **Sprint** comprend les champs suivants :
-  - Un nom
+  - Un numéro de sprint
   - Une durée (en jours ou en semaines)
+
+- Une **Release** comprend les champs suivants :
+  - Un numéro de version
+  - Une date de sortie
+  - Une liste des issues réalisées par la release
+  - Un lien de téléchargement
+  - Un lien vers la **documentation** (de code, administrateur, et utilisateur) relative à la release
 
 ## Backlog
 
@@ -54,23 +68,9 @@
 | US18 | Projet | Exclusion d'un Membre | **En tant qu'** Administrateur, **je peux** exclure un collaborateur, **afin de** lui interdire l'accès au projet. |   | Basse  |
 | US19 | Projet | Suppression | **En tant qu'** Administrateur, **je peux** supprimer le projet, **afin d'** y mettre fin. |   |  Basse |
 | US20 | Test | Création | **En tant que** Collaborateur,  **je peux** créer un test en cliquant sur le bouton *Nouveau Test* depuis la page *Tests*, **afin de** pouvoir compléter ses champs. |  | Basse |
-| US21 | Test | Modification | **En tant que** Collaborateur, **je peux** modifier les champs d'un test en cliquant sur le bouton *Editer* présent à côté d'un test dans la liste des tests, **afin d'**  y apporter des précisions ou changements. |  | Basse |
-| US22 | Test | Suppression | **En tant que** Collaborateur, **je peux** supprimer un test en cliquant sur le bouton *Supprimer* présent à côté d'un test dans la liste des tests, **afin de** l'effacer de la liste de mes tests. |  | Basse |
-| US23 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US24 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US25 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US26 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US27 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US28 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US29 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US30 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US31 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US32 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US33 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US34 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US35 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US36 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US37 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US38 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US39 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
-| US40 |  |  | **En tant que**, **je peux**, **afin de**. |  |  |
+| US21 |  Test |  Liste | **En tant que** Collaborateur, **je peux** accéder à la liste des tests en cliquant sur la page *test*, **afin d'** avoir une vue d'ensemble de tous les test. |   | Basse  |
+| US22 | Test | Modification | **En tant que** Collaborateur, **je peux** modifier les champs d'un test en cliquant sur le bouton *Editer* présent à côté d'un test dans la liste des tests, **afin d'**  y apporter des précisions ou changements. |  | Basse |
+| US23 | Test | Suppression | **En tant que** Collaborateur, **je peux** supprimer un test en cliquant sur le bouton *Supprimer* présent à côté d'un test dans la liste des tests, **afin de** l'effacer de la liste de mes tests. |  | Basse |
+| US24 | Release | Créer | **En tant qu'** Administrateur, **je peux** créer une release en cliquant sur le bouton *Nouvelle Release* sur la page *Releases*, **afin de** pouvoir completer ses champs. |  | Basse |
+| US25 |  Release |  Liste | **En tant qu'** Administrateur, **je peux** accéder à la liste des releases en cliquant sur la page *Releases*, **afin d'** avoir une vue d'ensemble de toutes les releases. |   | Basse  |
+| US26 | Release | Modification | **En tant qu'** Administrateur, **je peux** modifier les champs d'une release en cliquant sur le bouton *Editer* présent à côté d'une release dans la liste des releases, **afin de** corriger une éventuelle erreur. |  | Basse |
