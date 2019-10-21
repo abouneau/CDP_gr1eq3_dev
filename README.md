@@ -28,5 +28,7 @@
 | US14 | Projet | Modification des droits des Membres | **En tant qu'** Administrateur de projet, **je peux** modifier les droits d'un collaborateur, **afin de** le promouvoir Administrateur de projet. |   |   |
 | US15 | Projet | Exclusion d'un Membre | **En tant qu'** Administrateur de projet, **je peux** exclure un collaborateur, **afin de** lui interdire l'accès au projet. |   |   |
 | US16 | Projet | Suppression | **En tant qu'** Administrateur de projet, **je peux** supprimer le projet, **afin d'** y mettre fin. |   |   |
-| US17 | Tâche  | Création | **En tant que** Collaborateur, **je peux**créer une tâche, **afin de** la définir. |   |   |
-| US18 | Tâche  | État | **En tant qu'** Utilisateur, **je peux** modifier l'état [À faire, En cours, Terminée] d'une tâche, **afin de** let trier par état. |   |   |
+| US17 | Tâche  | Création | **En tant que** Collaborateur, **je peux** créer une tâche, **afin de** la définir. |   |   |
+| US18 | Tâche  | État | **En tant que** Collaborateur, **je peux** modifier l'état [À faire, En cours, Terminée] d'une tâche, **afin de** les trier par état. |   |   |
+| US19 | Tâche  | Modification | **En tant que** Collaborateur, **je peux** modifier les champs d'une tâche, **afin de** la mettre à jour |   |   |
+| US20 | Release |  | **En tant que** , **je peux** , **afin de**  |   |   |
