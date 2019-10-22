@@ -46,7 +46,7 @@
 ## Backlog
 
 |ID   | DESCRIPTION  | DIFFICULTÉ  | PRIORITÉ |
-|---|---|---|---|---|---|
+|---|---|---|---|
 | US1 |   **En tant que** Collaborateur, **je peux** accéder à la liste des issues en cliquant sur le bouton *backlog* présent dans le header, **afin d'** avoir une vue d'ensemble de toutes les issues. Pour plus de lisibilité, on ne voit dans la liste que l'id, le nom et la priorité de chaque issue. |  1  | Haute  |
 | US2 | **En tant que** Collaborateur, **je peux** voir le statut d'une issue (à faire, en cours, terminée) depuis la liste des issues grâce à la couleur de cette issue (rouge = à faire, orange = en cours, vert = terminée) **afin de** voir facilement quelles issues sont à faire / en cours / terminées. Par défaut, une issue a le statut "à faire". Elle passe au statut "en cours" quand l'une des tâches lui étant liées a le statut "en cours". Elle passe au statut "terminée" quand toutes les tâches lui étant liées ont le statut "terminée".|  1  | Haute  |
 | US3  |  **En tant que** Collaborateur,  **je peux** créer une issue en cliquant sur le bouton *Nouvelle Issue* depuis la page *Backlog*, **afin de** pouvoir compléter ses champs. | 3  |  Haute |
