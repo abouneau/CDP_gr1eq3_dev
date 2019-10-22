@@ -14,7 +14,7 @@
 ## Task
 
 |ID   | CATEGORIE  | DESCRIPTION  | Fichier|
-|---|---|---|---|---|---|
+|---|---|---|---|
 | TK1  | BD  | Base de données  | db.? |
 | TK2  | Fonction  | Fonctions de communications avec la base de données  | dbConnect.js |
 | TK3  | Vue  | Page pour la création ou modification d'une issue  | AddUpdateIssue.ejs |
