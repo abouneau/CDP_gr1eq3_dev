@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang=fr>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Inscription</title>
+    </head>
+    <body>
+        <h1>S'inscrire</h1>
+        <form method="post" action="/signUp">
+            <div>
+                <input type="text" name="email" placeholder="Adresse Email">
+                <input type="text" name="username" placeholder="Nom d'utilisateur">
+                <input type="text" name="password" placeholder="Mot de passe">
+            </div>
+            <div>
+                <input type="submit" name="signup" value = "S'inscrire">
+                <input type="button" onclick="window.location.replace('/signIn')" value="Annuler" />
+            </div>
+        </form>
+    </body>
+</html>

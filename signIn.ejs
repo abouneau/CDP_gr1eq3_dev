@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang=fr>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Connexion</title>
+    </head>
+    <body>
+        <h1>Se connecter</h1>
+        <form method="post" action="/signIn">
+            <div>
+                <input type="text" name="email" placeholder="Adresse Email">
+                <input type="text" name="password" placeholder="Mot de passe">
+            </div>
+            <div id="error"></div>
+            <div>
+                <input type="submit" name="login" value="Se connecter">
+                <input type="button" onclick="window.location.replace('/signUp')" value="S'inscrire" />
+            </div>
+        </form>
+    </body>
+</html>
