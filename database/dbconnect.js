@@ -6,18 +6,21 @@ function addElementToDB (element, collection, message) {
 }
 
 function findElementInDB (element, collection, message, failMessage) {
-  collection.findOne(element, function (err, result) {
-    if (err) console.log(err)
-    else {
-      if (result) console.log(message)
-      else console.log(failMessage)
+  return collection.findOne(element, '')
+    .then(result => {
+      if(result) {
+        console.log(message ? message : `Successfully found: ${result}`)  
+      } else {
+        console.log(failMessage ? failMessage : 'Not found')
+      }
       return result
-    }
-  })
+    })
+    .catch(err => console.error(`Failed to find: ${err}`)
+    )
 }
 
 function updateElementInDB (oldElement, newElement, collection, message) {
-  collection.updateOne(oldElement, newElement, function (err, result) {
+  collection.updateOne(oldElement, {$set : newElement}, function (err, result) {
     if (err) console.log(err)
     else if (result) console.log(message)
   })
