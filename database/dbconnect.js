@@ -19,6 +19,10 @@ function findElementInDB (element, collection, message, failMessage) {
     )
 }
 
+function getWholeCollection (collection) {
+  return collection.find().toArray()
+}
+
 function updateElementInDB (oldElement, newElement, collection, message) {
   collection.updateOne(oldElement, {$set : newElement}, function (err, result) {
     if (err) console.log(err)
@@ -58,6 +62,7 @@ connectToDB()
 module.exports = {
   addElementToDB,
   findElementInDB,
+  getWholeCollection,
   updateElementInDB,
   deleteElementFromDB,
   deleteCollection,
