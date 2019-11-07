@@ -1,17 +1,22 @@
 function addElementToDB (element, collection, message) {
-  collection.insertOne(element, function (err, result) {
-    if (err) console.log(err)
-    else if (result) console.log(message)
-  })
+  return collection.insertOne(element, '')
+    .then(result => {
+      if (result) console.log(message || `Successfully added: ${result}`)
+      return result
+    })
+    .catch(err => {
+      console.error(`Failed to add: ${err}`)
+      return null
+    })
 }
 
 function findElementInDB (element, collection, message, failMessage) {
   return collection.findOne(element, '')
     .then(result => {
-      if(result) {
-        console.log(message ? message : `Successfully found: ${result}`)  
+      if (result) {
+        console.log(message || `Successfully found: ${result}`)
       } else {
-        console.log(failMessage ? failMessage : 'Not found')
+        console.log(failMessage || 'Not found')
       }
       return result
     })
@@ -24,7 +29,7 @@ function getWholeCollection (collection) {
 }
 
 function updateElementInDB (oldElement, newElement, collection, message) {
-  collection.updateOne(oldElement, {$set : newElement}, function (err, result) {
+  collection.updateOne(oldElement, { $set: newElement }, function (err, result) {
     if (err) console.log(err)
     else if (result) console.log(message)
   })

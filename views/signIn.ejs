@@ -2,20 +2,26 @@
 <html lang=fr>
     <head>
         <meta charset="utf-8"/>
+        <%include ./navbar.ejs%>
         <title>Connexion</title>
     </head>
     <body>
         <h1>Se connecter</h1>
         <form method="post" action="/signIn">
-            <div>
-                <input type="text" name="email" placeholder="Adresse Email">
-                <input type="text" name="password" placeholder="Mot de passe">
+            <div class="form-group">
+                <label for="email">Addresse Email</label>
+                <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Addresse Email" required>
+                <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons votre adresse email à personne d'autre.</small>
             </div>
-            <div id="error"></div>
-            <div>
-                <input type="submit" name="login" value="Se connecter">
-                <input type="button" onclick="window.location.replace('/signUp')" value="S'inscrire" />
+            <div class="form-group">
+                <label for="password">Mot de passe</label>
+                <input type="password" class="form-control" name="password" placeholder="Mot de passe" minlength="8" required>
             </div>
+            <div>
+                <%=invalidMail%>
+            </div>
+            <input type="submit" class="btn btn-success" value="Se connecter">
+            <input type="button" class="btn btn-outline-success" onclick="window.location.replace('/signUp')" value="S'inscrire">
         </form>
     </body>
 </html>

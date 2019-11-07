@@ -1,11 +1,11 @@
-const dbconnect = require('./database/dbconnect')
-const User = require('./logModel')
+const dbconnect = require('../database/dbconnect')
+const User = require('../models/logModel')
 
 exports.userConnected = ''
 
 exports.createAccount = function (req, res) {
   const collection = dbconnect.client.db('accounts').collection('logins')
-  const user = new User(req.body.email, req.body.username, req.body.password)
+  const user = new User(req.body.email, req.body.password, req.body.username)
   dbconnect.addElementToDB(user, collection, 'User "' + req.body.username + '" (tied to "' + req.body.email + '") has been succesfully created.').then(result => {
     if (result) {
       this.userConnected = req.body.username

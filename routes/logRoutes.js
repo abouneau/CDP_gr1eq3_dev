@@ -1,23 +1,18 @@
 const express = require('express')
 const app = express()
 const path = require('path')
-const bodyParser = require('body-parser')
-const logController = require('./logController')
-
-// let userConnected = ''
-
-app.use(bodyParser.urlencoded({ extended: false }))
+const logController = require('../controllers/logController')
 
 // set the view engine to ejs
 app.set('view engine', 'ejs')
-app.set('views', path.join(__dirname, '.', '/views'))
+app.set('views', path.join(__dirname, '..', '/views'))
 app.use(express.static(path.join(__dirname, '..', 'css')))
 
 app.get('/', function (req, res) {
   res.render('backlog', { user: logController.userConnected })
 })
 
-app.get('/task', function (req, res) {
+app.get('/tasks', function (req, res) {
   res.render('task', { user: logController.userConnected })
 })
 
