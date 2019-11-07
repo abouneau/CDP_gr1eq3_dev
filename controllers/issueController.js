@@ -1,18 +1,19 @@
 const Issue = require('../models/issueModel')
 const dbconnect = require('../database/dbconnect')
+const logController = require('../controllers/logController')
 
 function getBacklogPage(req, res) {
   collection = dbconnect.client.db('Projet1').collection('issues')
   dbconnect.getWholeCollection(collection)
   .then( issues => {
-          res.render("backlog.ejs", {issues: issues})
+          res.render("backlog.ejs", {issues: issues, user: logController.userConnected})
         }
   )
 }
 
 function getAddPage(req, res) {
   console.log("get")
-  res.render('addIssue.ejs')
+  res.render('addIssue.ejs', {user: logController.userConnected})
 }
 
 function getUpdatePage(req, res) {
@@ -24,9 +25,7 @@ function getUpdatePage(req, res) {
   collection = dbconnect.client.db('Projet1').collection('issues')
   dbconnect.findElementInDB(query,collection,'element find', 'element not find')
   .then(element => {
-      res.render('./updateIssue.ejs', {
-              issue: element
-          })
+      res.render('./updateIssue.ejs', { issue: element, user: logController.userConnected})
   })
   .catch(e =>res.send(e.message))
 }

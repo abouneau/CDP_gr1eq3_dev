@@ -8,10 +8,6 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '..', '/views'))
 app.use(express.static(path.join(__dirname, '..', 'css')))
 
-app.get('/', function (req, res) {
-  res.render('backlog', { user: logController.userConnected })
-})
-
 app.get('/tasks', function (req, res) {
   res.render('task', { user: logController.userConnected })
 })
