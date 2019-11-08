@@ -6,14 +6,14 @@ function getBacklogPage(req, res) {
   collection = dbconnect.client.db('Projet1').collection('issues')
   dbconnect.getWholeCollection(collection)
   .then( issues => {
-          res.render("backlog.ejs", {issues: issues, user: logController.userConnected})
+          res.render("../views/backlog.ejs", {issues: issues, user: logController.userConnected})
         }
   )
 }
 
 function getAddPage(req, res) {
   console.log("get")
-  res.render('addIssue.ejs', {user: logController.userConnected})
+  res.render('../views/addIssue.ejs', {user: logController.userConnected})
 }
 
 function getUpdatePage(req, res) {
@@ -25,7 +25,7 @@ function getUpdatePage(req, res) {
   collection = dbconnect.client.db('Projet1').collection('issues')
   dbconnect.findElementInDB(query,collection,'element find', 'element not find')
   .then(element => {
-      res.render('./updateIssue.ejs', { issue: element, user: logController.userConnected})
+      res.render('../views/updateIssue.ejs', { issue: element, user: logController.userConnected})
   })
   .catch(e =>res.send(e.message))
 }
@@ -46,7 +46,7 @@ function createIssue(req, res) {
 };
 
 function updateIssue(req, res) {
-    const issueToUpdate = {'_id' : req.params.id}
+    const issueToUpdate = {'_id' : req.body.id}
 
     const updatedIssue = {
         '_id' : req.body.id,
@@ -55,6 +55,8 @@ function updateIssue(req, res) {
         '_priority' : req.body.priority,
         '_difficulty' : req.body.difficulty
     }
+    console.log(updatedIssue)
+    console.log(issueToUpdate)
 
     collection = dbconnect.client.db('Projet1').collection('issues')
 
