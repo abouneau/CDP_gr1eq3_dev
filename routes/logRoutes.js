@@ -22,7 +22,7 @@ app.get('/signIn', function (req, res) {
 
 app.get('/signOut', function (req, res) {
   logController.userConnected = ''
-  res.render('backlog', { user: logController.userConnected })
+  res.redirect('/')
 })
 
 app.post('/signUp', function (req, res) {
