@@ -8,11 +8,11 @@
 <body class="container">
 
 <div class="jumbotron">
-    <h1>Issue</h1>
-    <p>here is the list of issues</p>
+    <h1>Issues</h1>
+    <p>Voici la liste des issues</p>
 </div>
 
-<a type="button" href="/addIssue" class="btn btn-success btn-lg">Create new issue</a>
+<a href="/addIssue" class="btn btn-success btn-lg">Créer une nouvelle issue</a>
 
 <ul class="list-unstyled"></ul>
 <% issues.forEach(function(issue) { %>
@@ -26,9 +26,9 @@
           </div> 
           <form action="/deleteIssue" method="post">
             <input type="text" name="id" class="form-control" id="id" value="<%= issue._id %>" hidden>
-            <button type="submit" class="btn btn-primary">Delete</button>
+            <button type="submit" class="btn btn-danger">Supprimer</button>
           </form>  
-          <a type="button" href="/updateIssue?id=<%=issue._id%>" class="btn btn-success btn-lg">Update</a>  
+          <a href="/updateIssue?id=<%=issue._id%>" class="btn btn-primary">Modifier</a>  
           
     </li>
 <% }); %>
