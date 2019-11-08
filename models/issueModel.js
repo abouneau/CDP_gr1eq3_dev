@@ -1,5 +1,5 @@
-class Issue{
-  constructor(id, name, description, priority, difficulty){
+class Issue {
+  constructor (id, name, description, priority, difficulty) {
     this._id = id
     this._name = name
     this._description = description

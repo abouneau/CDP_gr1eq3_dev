@@ -9,16 +9,14 @@ const app = express()
 app.set('view engine', 'ejs')
 
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended : false }))
+app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/', issue)
 app.use('/', log)
 app.use('/', task)
 
-
-
-let port = 4321
+const port = 4321
 
 app.listen(port, () => {
-    console.log('Server is listenning on port ' + port )
+  console.log('Server is listenning on port ' + port)
 })

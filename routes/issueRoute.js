@@ -15,6 +15,4 @@ router.post('/updateIssue', issueController.updateIssue)
 
 router.post('/deleteIssue', issueController.deleteIssue)
 
-
-
 module.exports = router

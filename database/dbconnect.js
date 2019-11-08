@@ -39,6 +39,16 @@ function findElementInDB (element, collection, message, failMessage) {
     )
 }
 
+function elementExists (element, collection) {
+  return collection.findOne(element)
+    .then(result => {
+      if (result) {
+        return true
+      }
+      return false
+    })
+}
+
 /**
  * Get all elements from a whole collection, in an array
  * @param {*} collection The collection to get
@@ -112,6 +122,7 @@ connectToDB()
 module.exports = {
   addElementToDB,
   findElementInDB,
+  elementExists,
   getWholeCollection,
   updateElementInDB,
   deleteElementFromDB,
