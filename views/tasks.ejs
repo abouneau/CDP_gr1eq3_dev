@@ -4,12 +4,13 @@
     <title> Tâches </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <%include ./navbar.ejs%>
 </head>
 
 <body>
     <div class="container">
-        <a href=/tasks/create class="btn btn-success"> Nouvelle tâche </a>
         <h2> Tâches </h2>
+        <a href=/tasks/create class="btn btn-success"> Nouvelle tâche </a>
         <% for( let task of tasks ){ %>
         <li>
             <div>ID : <%= task._id %></div>
