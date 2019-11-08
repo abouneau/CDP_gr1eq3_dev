@@ -24,6 +24,13 @@ function findElementInDB (element, collection, message, failMessage) {
     )
 }
 
+function elementExists (element, collection) {
+  return collection.findOne(element)
+  .then(result => {
+    return result ? true : false}
+    )
+}
+
 function getWholeCollection (collection) {
   return collection.find().toArray()
 }
@@ -67,6 +74,7 @@ connectToDB()
 module.exports = {
   addElementToDB,
   findElementInDB,
+  elementExists,
   getWholeCollection,
   updateElementInDB,
   deleteElementFromDB,
