@@ -1,0 +1,44 @@
+<html>
+
+<head>
+    <title> Nouvelle tâche </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <form action="/tasks/<%= task._id %>/update" method="POST">
+        <div>
+            <label for="id">ID</label>
+            <input value = "<%= task._id %>"  name="id" required disabled>
+        </div>
+        <div>
+            <label for="description">Nom</label>
+            <input value="<%= task._description %>" name="description" required>
+        </div>
+        <div>
+            <label for="estimatedTime">Temps estimé</label>
+            <input value="<%= task._estimatedTime %>" name="estimatedTime" required>
+        </div>
+        <div>
+            <label for="dependencies">Dépendances</label>
+            <input value="<%= task._dependencies %>" name="dependencies" required>
+        </div>
+        <div>
+            <label for="linkedUserStories">User Stories liées liées</label>
+            <input value="<%= task._linkedUserStories %>" name="linkedUserStories" required>
+        </div>
+        <div>
+            <label for="advancementState">Etat d'avancement</label>
+            <input value="<%= task._advancementState %>" name="advancementState" required>
+        </div>
+        <div>
+            <label for="developer">Développeur</label>
+            <input value="<%= task._assignedDeveloper %>" name="assignedDeveloper" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a type="button" class="btn btn-secondary" href="/">Annuler</a>
+    </form>
+</body>
+
+</html>

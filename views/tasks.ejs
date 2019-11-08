@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <title> Tâches </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <a href=/tasks/create class="btn btn-success"> Nouvelle tâche </a>
+        <h2> Tâches </h2>
+        <% for( let task of tasks ){ %>
+        <li>
+            <div>ID : <%= task._id %></div>
+            <div>Description : <%= task._description %></div>
+            <div>Temps estimé : <%= task._estimatedTime %></div>
+            <div>Dépendances : <%= task._dependencies %></div>
+            <div>User Stories liées : <%= task._linkedUserStories %></div>
+            <div>Etat d'avancement : <%= task._advancementState %></div>
+            <div>Développeur(s) : <%= task._assignedDeveloper %></div>
+            <a href="/tasks/<%= task._id %>/update" class = "btn btn-primary"> Modifier </a>
+
+            <form action="/tasks/<%= task._id %>/delete" method="POST">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+        </li>
+        <% } %>
+    </div>
+</body>
+
+</html>

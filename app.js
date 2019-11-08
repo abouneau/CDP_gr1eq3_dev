@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended : false }))
 
 app.use('/', issue)
 app.use('/', log)
-app.use('/tasks', task)
+app.use('/', task)
 
 
 

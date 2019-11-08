@@ -8,9 +8,9 @@ app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '..', '/views'))
 app.use(express.static(path.join(__dirname, '..', 'css')))
 
-app.get('/tasks', function (req, res) {
-  res.render('task', { user: logController.userConnected })
-})
+// app.get('/tasks', function (req, res) {
+//   res.render('task', { user: logController.userConnected })
+// })
 
 app.get('/signUp', function (req, res) {
   res.render('signUp', { mailError: '', user: logController.userConnected })
