@@ -2,7 +2,7 @@
 
 - Somme des difficultés = 24
 
-## Backlog Sprint1
+## Backlog du sprint 1
 
 | ID | DESCRIPTION | DIFFICULTÉ | PRIORITÉ |
 |---|---|---|---|

@@ -1,6 +1,6 @@
 # Conduite de projet - Groupe 1 équipe 3
 
-## Task Sprint1
+## Tâches du sprint 1
 
 |ID  | DESCRIPTION  | Definition of Done | Temps prévu (pour un développeur)  | Dépendances  | US Liée(s)  | Etat | Responsable|
 |---|---|---|---|---|---|---|---|
