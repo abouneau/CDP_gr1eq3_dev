@@ -1,48 +1,70 @@
 <!DOCTYPE html>
 <html lang=fr>
-    <head>
-        <meta charset="utf-8"/>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">Site</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-              
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/">Backlog</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/tasks">Tâches</a>
-                    </li>
-                    <span>
-                        <%if (user !== '') {%>
-                            <li class="nav-item">
-                                Utilisateur :
-                                <%=user%>
-                            </li>
-                        <%}%>
-                    </span>
-                    <li class="nav-item">
-                        <span>
-                            <%if (user === '') {%>
-                                <button type="button" class="btn btn-success" onclick="window.location.replace('/signIn')">Se connecter</button>
-                            <%} else {%>
-                                <button type="button" class="btn btn-danger" onclick="window.location.replace('/signOut')">Déconnexion</button>
-                            <%}%>
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <button type="button" class="btn btn-outline-success" onclick="window.location.replace('/signUp')">S'inscrire</button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    </body>
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body class="container">
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="/">Projet 1</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Backlog</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/tasks">Tâches</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Tests</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Release</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Documentation</a>
+        </li>
+        <li class="nav-item dropdown disabled">
+          <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sprints</a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Nouveau Sprint</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item disabled" href="#">Sprint 1</a>
+          </div>
+        </li>
+      </ul>
+      <ul class="navbar-nav mr-md-2">
+        <span>
+          <%if (user === '') {%>
+            <li class="nav-item">
+              <button type="button" class="btn btn-success" onclick="window.location.replace('/signIn')">
+                Se connecter
+              </button>
+            </li>
+          <%} else {%>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <%=user._name%>
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="/user/<%=user._id%>/profile">Profil</a>
+                <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Projets</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="/signOut">Déconnexion</a>
+              </div>
+            </li>
+          <%}%>
+        </span>
+      </ul>
+    </div>
+  </nav>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
 </html>

@@ -15,7 +15,7 @@ exports.createAccount = function (req, res) {
   const user = new User(req.body.email, req.body.password, req.body.username)
   dbconnect.addElementToDB(user, collection, 'User "' + req.body.username + '" (tied to "' + req.body.email + '") has been succesfully created.').then(result => {
     if (result) {
-      this.userConnected = req.body.username
+      this.userConnected = new User(req.body.email, req.body.password, req.body.username)
       res.redirect('/')
     } else {
       res.render('signUp', { mailError: 'Adresse mail déjà utilisée', user: this.userConnected })
@@ -23,18 +23,23 @@ exports.createAccount = function (req, res) {
   })
 }
 
-/* exports.changeUsernameOrPassword = function (mail, newUsername, newPassword) {
+exports.changeUsernameOrPassword = function (req, res) {
+  const mail = req.params.id
+  const newUsername = req.body.username
+  const newPassword = req.body.password
   const collection = dbconnect.client.db('accounts').collection('logins')
-  const user = { _id: mail }
-  const newUser = { _id: mail, _name: newUsername, _password: newPassword }
+  const user = new User(mail)
+  const newUser = new User(mail, newPassword, newUsername)
   dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.')
-} */
+  this.userConnected = newUser
+}
 
-/* exports.deleteAccount = function (mail) {
+exports.deleteAccount = function (req, res) {
+  const mail = req.params.id
   const collection = dbconnect.client.db('accounts').collection('logins')
   const user = { _id: mail }
   dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.')
-} */
+}
 
 /**
  * Find an account given an email and a password, in order to connect this account.
@@ -51,7 +56,7 @@ exports.findAccount = function (req, res) {
     if (!result) {
       res.render('signIn', { invalidMail: 'Adresse mail ou mot de passe invalide', user: this.userConnected })
     } else {
-      this.userConnected = result._name
+      this.userConnected = result
       res.redirect('/')
     }
   })

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang=fr>
+
+<head>
+  <meta charset="utf-8" />
+  <%include ./navbar.ejs%>
+  <title>Profil : <%=userToSee._name%></title>
+</head>
+
+<body>
+  <span>
+    <%if(userToSee._id === user._id) {%>
+      <h1>Mettre le profil à jour</h1>
+      <form method="post" action="/user/<%=user._id%>/profile">
+        <div class="form-group">
+          <label for="email">Addresse Email</label>
+          <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Addresse Email" value="<%=user._id%>" disabled>
+          <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons vos informations personnelles à personne d'autre.</small>
+        </div>
+        <div class="form-group">
+          <label for="username">Nom d'utilisateur (3 à 30 caractères)</label>
+          <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur (3 à 30 caractères)" minlength="3" maxlength="30" value="<%=user._name%>" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" class="form-control" name="password" placeholder="Mot de passe" minlength="8" value="<%=user._password%>" required>
+          <input type="submit" type="button" class="btn btn-success" name="update" value="Mettre à jour">
+          <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/')" value="Annuler" />
+          <input type="button" type="button" class="btn btn-outline-danger" onclick="window.location.replace('/user/<%=user._id%>/deleteAccount')" value="Supprimer le compte" />
+        </div>
+      </form>
+    <%} else {%>
+      <h1>Profil : <%=userToSee._name%> </h1>
+      <div>
+        <label for="email">Addresse Email : </label>
+        <%=userToSee._id%>
+      </div>
+      <div>
+        <label for="username">Nom d'utilisateur : </label>
+        <%=userToSee._name%>
+      </div>
+    <%}%>
+  </span>
+
+</body>
+
+</html>
