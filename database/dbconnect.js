@@ -53,8 +53,8 @@ function elementExists (element, collection) {
  * Get all elements from a whole collection, in an array
  * @param {*} collection The collection to get
  */
-function getWholeCollection (collection) {
-  return collection.find().toArray()
+function getWholeCollection (collection, filterCriterion) {
+  return collection.find(filterCriterion).toArray()
 }
 
 /**

@@ -1,0 +1,29 @@
+<html>
+
+<head>
+    <title> Tests </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <%- include('./navbar.ejs', {project: project}) %>
+</head>
+
+<body>
+    <div class="container">
+        
+        <h2> Tests </h2>
+        <a href="/projects/<%= project._id %>/tests/create" class="btn btn-success"> Nouveau test </a>
+        <% for( let test of tests ){ %>
+        <li>
+            <div>Name : <%= test._name %></div>
+            <div>Description : <%= test._description %></div>
+            <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class = "btn btn-primary"> Modifier </a>
+
+            <form action="/projects/<%= project._id %>/tests/<%= test._id %>/delete" method="POST">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+        </li>
+        <% } %>
+    </div>
+</body>
+
+</html>

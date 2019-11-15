@@ -5,6 +5,7 @@ const issue = require('./routes/issueRoute')
 const log = require('./routes/logRoutes')
 const task = require('./routes/taskRoutes')
 const test = require('./routes/testRoutes')
+const project = require('./routes/projectRoutes')
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -16,6 +17,7 @@ app.use('/', issue)
 app.use('/', log)
 app.use('/', task)
 app.use('/', test)
+app.use('/', project)
 
 const port = 4321
 

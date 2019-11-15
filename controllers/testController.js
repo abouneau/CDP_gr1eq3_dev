@@ -1,77 +1,52 @@
 const Test = require('../models/testModel')
 const dbconnect = require('../database/dbconnect')
-const logController = require('../controllers/logController')
-const { ObjectId } = require('mongodb')
+const ObjectID = require('mongodb').ObjectID
 
-function getTestPage (req, res) {
-  const collection = dbconnect.client.db('Projet1').collection('tests')
-  dbconnect.getWholeCollection(collection)
+const databaseName = 'Projets'
+const collectionName = 'Tests'
+
+exports.getAllTests = function (projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.getWholeCollection(collection, { _projectID: projectID })
     .then(tests => {
-      res.render('../views/test.ejs', { tests: tests, user: logController.userConnected })
-    }
-    )
-}
-
-function getAddPage (req, res) {
-  console.log('get')
-  res.render('../views/addTest.ejs', { user: logController.userConnected })
-}
-
-function getUpdatePage (req, res) {
-  const id = req.query.id
-  if (!id) {
-    throw (new Error('id parameter is required'))
-  }
-  const query = { _id: ObjectId(id) }
-  const collection = dbconnect.client.db('Projet1').collection('tests')
-  dbconnect.findElementInDB(query, collection, 'element find', 'element not find')
-    .then(element => {
-      res.render('../views/updateTest.ejs', { test: element, id: id, user: logController.userConnected })
+      return tests
     })
-    .catch(e => res.send(e.message))
 }
 
-function createTest (req, res) {
+exports.getTest = function (testID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.findElementInDB({ _id: ObjectID(testID) }, collection)
+    .then(test => {
+      return test
+    })
+}
+
+exports.createTest = function (req, res) {
   const test = new Test(
+    req.params.projectID,
     req.body.name,
     req.body.description
   )
-
-  const collection = dbconnect.client.db('Projet1').collection('tests')
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.addElementToDB(test, collection, 'Test added successfully.')
-  res.redirect('/test')
-};
+}
 
-function updateTest (req, res) {
-  const testToUpdate = { _id: ObjectId(req.body.id) }
-
+exports.updateTest = function (req, res) {
+  const testToUpdate = { _id: ObjectID(req.params.id) }
   const updatedTest = {
-    _id: ObjectId(req.body.id),
+    _projectID: req.params.projectID,
     _name: req.body.name,
     _description: req.body.description
   }
-  console.log(updatedTest)
-  console.log(testToUpdate)
-
-  const collection = dbconnect.client.db('Projet1').collection('tests')
-
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.updateElementInDB(testToUpdate, updatedTest, collection, 'Test updated')
-  res.redirect('/test')
-};
+}
 
-function deleteTest (req, res) {
-  const testToDelete = { _id: ObjectId(req.body.id) }
-  const collection = dbconnect.client.db('Projet1').collection('tests')
+exports.deleteTest = function (req, res) {
+  const testToDelete = { _id: ObjectID(req.params.id) }
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
   dbconnect.deleteElementFromDB(testToDelete, collection, 'Test deleted')
-  res.redirect('/test')
-};
-
-module.exports = {
-  getTestPage,
-  getAddPage,
-  getUpdatePage,
-  createTest,
-  updateTest,
-  deleteTest
 }

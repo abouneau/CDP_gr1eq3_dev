@@ -1,5 +1,6 @@
 class Test {
-  constructor (name, description) {
+  constructor (projectID, name, description) {
+    this._projectID = projectID
     this._name = name
     this._description = description
   }

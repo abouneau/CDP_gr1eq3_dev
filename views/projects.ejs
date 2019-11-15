@@ -1,0 +1,20 @@
+<html>
+
+<head>
+  <title> Mes projets </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+  <a href=/projects/create class="btn btn-success"> Nouveau projet </a>
+
+  <% for( let project of projects ){ %>
+  <li>
+    <div>Nom : <a href="/projects/<%= project._id %>"><%= project._name %></a></div>
+    <div>Description : <%= project._description %></div>
+  </li>
+  <% } %>
+</body>
+
+</html>

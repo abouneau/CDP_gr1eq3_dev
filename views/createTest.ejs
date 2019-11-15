@@ -1,0 +1,27 @@
+<html>
+
+<head>
+    <title> Nouveau test </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <%- include('./navbar.ejs', {project: project})%>
+</head>
+
+<body>
+    <form action="/projects/<%= project._id %>/tests/create" method="POST">
+        <div>
+            <label for="name">Nom</label>
+            <input placeholder="Nom du test" name="name" required>
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <textarea placeholder="Descrption du Test" name="description" required>Etant donné ... , Lorsque ... , Alors ...</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tests">Annuler</a>
+    </form>
+
+
+</body>
+
+</html>

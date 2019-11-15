@@ -4,11 +4,11 @@
     <title> Nouvelle tâche </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%include ./navbar.ejs%>
+    <%- include('./navbar.ejs', {project: project})%>
 </head>
 
 <body>
-    <form action="/tasks/create" method="POST">
+    <form action="/projects/<%= project._id %>/tasks/create" method="POST">
         <div>
             <label for="id">ID</label>
             <input placeholder="ID"  name="id" id="idInput" required>
@@ -38,7 +38,7 @@
             <input placeholder="Développeur" name="assignedDeveloper" required>
         </div>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
-        <a type="button" class="btn btn-secondary" href="/tasks">Annuler</a>
+        <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
     </form>
 
 

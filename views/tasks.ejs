@@ -4,13 +4,14 @@
     <title> Tâches </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%include ./navbar.ejs%>
+    <%- include('./navbar.ejs', {project: project}) %>
 </head>
 
 <body>
     <div class="container">
+        
         <h2> Tâches </h2>
-        <a href=/tasks/create class="btn btn-success"> Nouvelle tâche </a>
+        <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
         <% for( let task of tasks ){ %>
         <li>
             <div>ID : <%= task._id %></div>
@@ -20,9 +21,9 @@
             <div>User Stories liées : <%= task._linkedUserStories %></div>
             <div>Etat d'avancement : <%= task._advancementState %></div>
             <div>Développeur(s) : <%= task._assignedDeveloper %></div>
-            <a href="/tasks/<%= task._id %>/update" class = "btn btn-primary"> Modifier </a>
+            <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class = "btn btn-primary"> Modifier </a>
 
-            <form action="/tasks/<%= task._id %>/delete" method="POST">
+            <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </form>
         </li>

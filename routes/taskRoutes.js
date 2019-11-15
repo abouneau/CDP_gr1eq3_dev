@@ -2,41 +2,64 @@ const express = require('express')
 const router = express.Router()
 
 const taskController = require('../controllers/taskController')
-const logControler = require('../controllers/logController')
+const projectController = require('../controllers/projectController')
+const logController = require('../controllers/logController')
 
-router.get('/tasks', function (req, res) {
-  taskController.getAllTasks()
+const baseURL = '/projects/:projectID'
+
+router.get(baseURL + '/tasks', function (req, res) {
+  taskController.getAllTasks(req.params.projectID)
     .then(tasks => {
-      res.render('../views/tasks', { tasks: tasks, user: logControler.userConnected })
+      projectController.getProject(req.params.projectID)
+        .then(project => {
+          res.render('../views/tasks', {
+            tasks: tasks,
+            project: project,
+            user: logController.userConnected
+          })
+        })
     })
 })
 
-router.get('/tasks/create', function (req, res) {
-  res.render('../views/createTask', { taskExists: taskController.taskExists, user: logControler.userConnected })
+router.get(baseURL + '/tasks/create', function (req, res) {
+  projectController.getProject(req.params.projectID)
+    .then(project => {
+      res.render('../views/createTask', {
+        project: project,
+        user: logController.userConnected
+      })
+    })
 })
 
-router.post('/tasks/create', function (req, res) {
+router.post(baseURL + '/tasks/create', function (req, res) {
   taskController.createTask(req, res)
-  res.redirect('/tasks')
+  res.redirect('/projects/' + req.params.projectID + '/tasks')
 })
 
-router.get('/tasks/:id', taskController.getTask)
+router.get(baseURL + '/tasks/:id', taskController.getTask)
 
-router.get('/tasks/:id/update', function (req, res) {
+router.get(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.getTask(req, res)
     .then(task => {
-      res.render('../views/updateTask', { task: task, user: logControler.userConnected })
+      projectController.getProject(req.params.projectID)
+        .then(project => {
+          res.render('../views/updateTask', {
+            task: task,
+            project: project,
+            user: logController.userConnected
+          })
+        })
     })
 })
 
-router.post('/tasks/:id/update', function (req, res) {
+router.post(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.updateTask(req, res)
-  res.redirect('/tasks')
+  res.redirect('/projects/' + req.params.projectID + '/tasks')
 })
 
-router.post('/tasks/:id/delete', function (req, res) {
+router.post(baseURL + '/tasks/:id/delete', function (req, res) {
   taskController.deleteTask(req, res)
-  res.redirect('/tasks')
+  res.redirect('/projects/' + req.params.projectID + '/tasks')
 })
 
 module.exports = router

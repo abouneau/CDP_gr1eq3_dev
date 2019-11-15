@@ -1,39 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-  <meta charset="UTF-8">
-  <%include ./navbar.ejs%>
-  <title>Backlog</title>
+    <title> Backlog </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <%- include('./navbar.ejs', {project: project}) %>
 </head>
-<body class="container">
 
-<div class="jumbotron">
-    <h1>Issues</h1>
-    <p>Voici la liste des issues</p>
-</div>
-
-<a href="/addIssue" class="btn btn-success btn-lg">Créer une nouvelle issue</a>
-
-<ul class="list-unstyled"></ul>
-<% issues.forEach(function(issue) { %>
-    <li class="media my-4">
+<body>
+    <div class="container">
         
-          
-          <div class="media-body">
-              <h5 class="mt-0 mb-1"><%= issue._id %></h5>
-              <%= issue._name%>
-              <%= issue._priority %>
-          </div> 
-          <form action="/deleteIssue" method="post">
-            <input type="text" name="id" class="form-control" id="id" value="<%= issue._id %>" hidden>
-            <button type="submit" class="btn btn-danger">Supprimer</button>
-          </form>  
-          <a href="/updateIssue?id=<%=issue._id%>" class="btn btn-primary">Modifier</a>  
-          
-    </li>
-<% }); %>
-</ul>
+        <h2> Backlog </h2>
+        <a href="/projects/<%= project._id %>/issues/create" class="btn btn-success"> Nouvelle issue </a>
+        <% for( let issue of issues ){ %>
+        <li>
+            <div>ID : <%= issue._id %></div>
+            <div>Nom : <%= issue._name %></div>
+            <div>Description : <%= issue._description %></div>
+            <div>Priorié : <%= issue._priority %></div>
+            <div>Difficulté : <%= issue._difficulty %></div>
+            <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class = "btn btn-primary"> Modifier </a>
 
-
+            <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
+        </li>
+        <% } %>
+    </div>
 </body>
+
 </html>

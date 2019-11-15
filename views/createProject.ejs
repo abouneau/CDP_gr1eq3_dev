@@ -1,0 +1,26 @@
+<html>
+
+<head>
+    <title> Nouveau Projet </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <form action="/projects/create" method="POST">
+        <div>
+            <label for="name">Nom</label>
+            <input placeholder="Nom"  name="name" required>
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <input placeholder="Descrption" name="description" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a type="button" class="btn btn-secondary" href="/projects">Annuler</a>
+    </form>
+
+
+</body>
+
+</html>

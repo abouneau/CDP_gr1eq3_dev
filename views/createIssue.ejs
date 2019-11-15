@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 
 <head>
@@ -9,30 +8,32 @@
 </head>
 
 <body>
-    <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/update" method="POST">
+    <form action="/projects/<%= project._id %>/issues/create" method="POST">
         <div>
             <label for="id">ID</label>
-            <input value = "<%= issue._id %>"  name="id" required disabled>
+            <input placeholder="ID"  name="id" id="idInput" required>
         </div>
         <div>
             <label for="name">Nom</label>
-            <input value="<%= issue._name %>" name="name" required>
+            <input placeholder="Nom" name="name" required>
         </div>
         <div>
             <label for="description">Nom</label>
-            <input value="<%= issue._description %>" name="description" required>
+            <input placeholder="Descrption" name="description" required>
         </div>
         <div>
             <label for="priority">Priorité</label>
-            <input value="<%= issue._priority %>" name="priority" required>
+            <input placeholder="Priorité" name="priority" required>
         </div>
         <div>
             <label for="difficulty">Difficulté</label>
-            <input value="<%= issue._difficulty %>" name="difficulty" required>
+            <input placeholder="Difficulté" name="difficulty" required>
         </div>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
     </form>
+
+
 </body>
 
 </html>
