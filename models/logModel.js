@@ -10,7 +10,9 @@ class User {
     if (username) {
       this._name = username
     }
-    this._password = password
+    if (password) {
+      this._password = password
+    }
   }
 }
 
