@@ -1,30 +1,80 @@
 <!DOCTYPE html>
 <html lang=fr>
-    <head>
-        <meta charset="utf-8"/>
-        <%include ./navbar.ejs%>
-        <title>Inscription</title>
-    </head>
-    <body>
-        <h1>S'inscrire</h1>
-        <form method="post" action="/signUp">
-            <div class="form-group">
-                <label for="email">Addresse Email</label>
-                <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Addresse Email" required>
-                <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons vos informations personnelles à personne d'autre.</small>
-            </div>
-            <div class="form-group">
-                    <label for="username">Nom d'utilisateur (3 à 30 caractères)</label>
-                    <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur (3 à 30 caractères)" minlength="3" maxlength="30" required>
-                </div>
-            <div class="form-group">
-                <label for="password">Mot de passe</label>
-                <input type="password" class="form-control" name="password" placeholder="Mot de passe" minlength="8" required>
-            </div>
-                <%=mailError%>
-            </div>
-            <input type="submit" type="button" class="btn btn-success" name="signup" value = "S'inscrire">
-            <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/signIn')" value="Annuler" />
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <title>Inscription</title>
+</head>
+
+<body class="container">
+  <!--<h1>S'inscrire</h1>
+    <form method="post" action="/signUp">
+        <div class="form-group">
+            <label for="email">Addresse Email</label>
+            <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+                placeholder="Addresse Email" required>
+            <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons vos informations personnelles à
+                personne d'autre.</small>
+        </div>
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur (3 à 30 caractères)</label>
+            <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur (3 à 30 caractères)"
+                minlength="3" maxlength="30" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input type="password" class="form-control" name="password" placeholder="Mot de passe" minlength="8"
+                required>
+        </div>
+        <%=//mailError%>
+        </div>
+        <input type="submit" type="button" class="btn btn-success" name="signup" value="S'inscrire">
+        <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/signIn')"
+            value="Annuler" />
+    </form>-->
+
+  <div class="w-25 mx-auto">
+    <h1>S'inscrire</h1>
+    <form action="/signUp" method="post">
+      <div class="form-group">
+        <label for="exampleInputEmail1">Adresse email</label>
+        <input type="email" class="form-control" name="email" placeholder="Adresse email" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Nom d'utilisateur</label>
+        <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur" required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Mot de passe</label>
+        <input type="password" class="form-control" name="password" placeholder="Mot de passe" required>
+      </div>
+      <div class="form-group">
+        <label for="exampleInputPassword1">Confirmer le mot de passe</label>
+        <input type="password" class="form-control" name="passwordConf" placeholder="Confirmer le mot de passe" required>
+      </div>
+      <input type="submit" class="btn btn-success" value="S'inscrire'">
+      <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/signIn')"
+        value="Annuler" />
+    </form>
+  </div>
+  <div>
+    <!--<div class="agile">
+    <div class="signin-form profile">
+      <h3>Register</h3>
+      <div class="login-form">
+        <form action="/" method="post">
+          <input type="text" name="email" placeholder="E-mail" required="">
+          <input type="text" name="username" placeholder="Username" required="">
+          <input type="password" name="password" placeholder="Password" required="">
+          <input type="password" name="passwordConf" placeholder="Confirm Password" required="">
+          <input type="submit" value="REGISTER">
         </form>
-    </body>
+      </div>
+    </div>
+  </div>
+  <div class="clear"></div>-->
+</body>
+
 </html>

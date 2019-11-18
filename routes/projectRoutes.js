@@ -2,18 +2,16 @@ const express = require('express')
 const router = express.Router()
 
 const projectController = require('../controllers/projectController')
-const logController = require('../controllers/logController')
 
 router.get('/', function (req, res) {
-  res.redirect('/projects')
+  res.redirect('/signIn')
 })
 
 router.get('/projects', function (req, res) {
   projectController.getAllProjects()
     .then(projects => {
       res.render('../views/projects', {
-        projects: projects,
-        user: logController.userConnected
+        projects: projects
       })
     })
 })
@@ -26,8 +24,7 @@ router.get('/projects/:projectID', function (req, res) {
   projectController.getProject(req.params.projectID)
     .then(project => {
       res.render('../views/project', {
-        project: project,
-        user: logController.userConnected
+        project: project
       })
     })
 })

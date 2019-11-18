@@ -1,4 +1,4 @@
-const express = require('express')
+/* const express = require('express')
 const app = express()
 const path = require('path')
 const logController = require('../controllers/logController')
@@ -9,10 +9,6 @@ const User = require('../models/logModel')
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '..', '/views'))
 app.use(express.static(path.join(__dirname, '..', 'css')))
-
-// app.get('/tasks', function (req, res) {
-//   res.render('task', { user: logController.userConnected })
-// })
 
 app.get('/signUp', function (req, res) {
   res.render('signUp', { mailError: '', user: logController.userConnected })
@@ -59,4 +55,56 @@ app.post('/user/:id/profile', function (req, res) {
   res.redirect('/')
 })
 
-module.exports = app
+module.exports = app */
+
+const express = require('express')
+const router = express()
+const logController = require('../controllers/logController')
+const path = require('path')
+const User = require('../models/logModel')
+
+router.set('view engine', 'ejs')
+router.set('views', path.join(__dirname, '..', '/views'))
+router.use(express.static(path.join(__dirname, '..', 'css')))
+
+// GET route for reading data
+router.get('/signIn', function (req, res) {
+  res.render('signIn')
+})
+
+router.get('/signUp', function (req, res) {
+  res.render('signUp')
+})
+
+router.get('/profile', function (req, res) {
+  res.render('profile')
+})
+
+router.post('/signIn', function (req, res) {
+  logController.authenticate(req, res).then(result => {
+    console.log('User = ' + JSON.stringify(result))
+    if (result) {
+      req.session.user = new User(result._id, result._password, result._name)
+      res.redirect('/projects')
+    } else {
+      res.redirect('/signIn')
+    }
+  })
+})
+
+router.post('/signUp', function (req, res) {
+  logController.createAccount(req, res).then(result => {
+    const user = result.ops[0]
+    req.session.user = new User(user._id, user._password, user._name)
+    res.redirect('/projects')
+  })
+})
+
+/* router.post('/profile', function (req, res) {
+  logController.changeUsernameOrPassword(req, res).then(result => {
+    req.session.user = new User(result._id, result._password, result._name)
+    res.redirect('/projects')
+  })
+}) */
+
+module.exports = router

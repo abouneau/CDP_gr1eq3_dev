@@ -3,7 +3,6 @@ const router = express.Router()
 
 const testController = require('../controllers/testController')
 const projectController = require('../controllers/projectController')
-const logController = require('../controllers/logController')
 
 const baseURL = '/projects/:projectID'
 
@@ -14,8 +13,7 @@ router.get(baseURL + '/tests', function (req, res) {
         .then(project => {
           res.render('../views/tests', {
             tests: tests,
-            project: project,
-            user: logController.userConnected
+            project: project
           })
         })
     })
@@ -25,8 +23,7 @@ router.get(baseURL + '/tests/create', function (req, res) {
   projectController.getProject(req.params.projectID)
     .then(project => {
       res.render('../views/createTest', {
-        project: project,
-        user: logController.userConnected
+        project: project
       })
     })
 })
@@ -46,8 +43,7 @@ router.get(baseURL + '/tests/:id/update', function (req, res) {
           console.log(project._name)
           res.render('../views/updateTest', {
             test: test,
-            project: project,
-            user: logController.userConnected
+            project: project
           })
         })
     })
