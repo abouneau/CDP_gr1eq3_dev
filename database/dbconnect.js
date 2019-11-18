@@ -31,12 +31,13 @@ function findElementInDB (element, collection, message, failMessage) {
       if (result) {
         console.log(message || `Successfully found: ${result}`)
       } else {
-        console.log(failMessage || 'Not found')
+        throw new Error('Element not found...')
       }
       return result
     })
-    .catch(err => console.error(`Failed to find: ${err}`)
-    )
+    .catch(err => {
+      throw err
+    })
 }
 
 function elementExists (element, collection) {

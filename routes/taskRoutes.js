@@ -3,6 +3,7 @@ const router = express.Router()
 
 const taskController = require('../controllers/taskController')
 const projectController = require('../controllers/projectController')
+const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
@@ -16,7 +17,9 @@ router.get(baseURL + '/tasks', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.get(baseURL + '/tasks/create', function (req, res) {
@@ -26,6 +29,7 @@ router.get(baseURL + '/tasks/create', function (req, res) {
         project: project
       })
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post(baseURL + '/tasks/create', function (req, res) {
@@ -33,7 +37,7 @@ router.post(baseURL + '/tasks/create', function (req, res) {
   res.redirect('/projects/' + req.params.projectID + '/tasks')
 })
 
-router.get(baseURL + '/tasks/:id', taskController.getTask)
+// router.get(baseURL + '/tasks/:id', taskController.getTask)
 
 router.get(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.getTask(req, res)
@@ -45,7 +49,9 @@ router.get(baseURL + '/tasks/:id/update', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post(baseURL + '/tasks/:id/update', function (req, res) {

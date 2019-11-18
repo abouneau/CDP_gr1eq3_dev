@@ -18,9 +18,19 @@ app.use(session({
   saveUninitialized: false,
   resave: false
 }))
+
 app.use(function (req, res, next) {
-  res.locals.user = req.session.user
-  next()
+  if (req.originalUrl === '/signIn') {
+    res.locals.user = req.session.user
+    next()
+  } else {
+    if (req.session.user === undefined && req.originalUrl !== '/signUp') {
+      res.render('signIn')
+    } else {
+      res.locals.user = req.session.user
+      next()
+    }
+  }
 })
 
 app.use('/', issue)
@@ -28,6 +38,14 @@ app.use('/', log)
 app.use('/', task)
 app.use('/', test)
 app.use('/', project)
+
+app.get('/pageNotFound', function (req, res) {
+  res.render('pageNotFound')
+})
+
+app.use(function (req, res) {
+  res.redirect('/pageNotFound')
+})
 
 const port = 4321
 

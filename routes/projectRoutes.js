@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const projectController = require('../controllers/projectController')
+const errorRoutes = require('./errorRoutes')
 
 router.get('/projects', function (req, res) {
   projectController.getAllProjects()
@@ -10,6 +11,7 @@ router.get('/projects', function (req, res) {
         projects: projects
       })
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.get('/projects/create', function (req, res) {
@@ -23,6 +25,7 @@ router.get('/projects/:projectID', function (req, res) {
         project: project
       })
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post('/projects/create', function (req, res) {

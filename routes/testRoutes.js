@@ -3,6 +3,7 @@ const router = express.Router()
 
 const testController = require('../controllers/testController')
 const projectController = require('../controllers/projectController')
+const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
@@ -16,7 +17,9 @@ router.get(baseURL + '/tests', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.get(baseURL + '/tests/create', function (req, res) {
@@ -26,14 +29,19 @@ router.get(baseURL + '/tests/create', function (req, res) {
         project: project
       })
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
-router.get(baseURL + '/tests/:id', function (req, res) {
-  testController.getTest(req.params.id)
-    .then(test => {
-      console.log(test._name)
-    })
-})
+// router.get(baseURL + '/tests/:id', function (req, res) {
+//   testController.getTest(req.params.id)
+//     .then(test => {
+//       console.log(test._name)
+//     })
+//     .catch(err => {
+//       console.log(err)
+//       res.redirect('/pageNotFound')
+//     })
+// })
 
 router.get(baseURL + '/tests/:id/update', function (req, res) {
   testController.getTest(req.params.id)
@@ -46,7 +54,9 @@ router.get(baseURL + '/tests/:id/update', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post(baseURL + '/tests/create', function (req, res) {

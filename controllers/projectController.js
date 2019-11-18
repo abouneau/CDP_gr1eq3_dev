@@ -9,10 +9,22 @@ exports.createProject = function (req, res) {
 }
 
 exports.getProject = function (projectID) {
+  // check if projectID is a valid argument for ObjectID()
+  try {
+    ObjectID(projectID)
+  } catch (err) {
+    return new Promise((resolve, reject) => {
+      reject(err)
+    })
+  }
+
   const collection = dbconnect.client.db('Projets').collection('Projets')
   return dbconnect.findElementInDB({ _id: ObjectID(projectID) }, collection)
     .then(project => {
       return project
+    })
+    .catch(err => {
+      throw err
     })
 }
 

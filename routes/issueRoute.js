@@ -3,6 +3,7 @@ const router = express.Router()
 
 const issueController = require('../controllers/issueController')
 const projectController = require('../controllers/projectController')
+const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
@@ -16,7 +17,9 @@ router.get(baseURL + '/issues', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.get(baseURL + '/issues/create', function (req, res) {
@@ -26,6 +29,7 @@ router.get(baseURL + '/issues/create', function (req, res) {
         project: project
       })
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post(baseURL + '/issues/create', function (req, res) {
@@ -33,12 +37,13 @@ router.post(baseURL + '/issues/create', function (req, res) {
   res.redirect('/projects/' + req.params.projectID + '/issues')
 })
 
-router.get(baseURL + '/issues/:id', function (req, res) {
-  issueController.getIssue(req.params.id)
-    .then(issue => {
-      console.log(issue._name)
-    })
-})
+// router.get(baseURL + '/issues/:id', function (req, res) {
+//   issueController.getIssue(req.params.id)
+//     .then(issue => {
+//       console.log(issue._name)
+//     })
+//     .catch(err => errorRoutes.pageNotFound(res, err))
+// })
 
 router.get(baseURL + '/issues/:id/update', function (req, res) {
   issueController.getIssue(req.params.id)
@@ -51,7 +56,9 @@ router.get(baseURL + '/issues/:id/update', function (req, res) {
             project: project
           })
         })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
+    .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
 router.post(baseURL + '/issues/:id/update', function (req, res) {
