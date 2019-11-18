@@ -3,10 +3,6 @@ const router = express.Router()
 
 const projectController = require('../controllers/projectController')
 
-router.get('/', function (req, res) {
-  res.redirect('/signIn')
-})
-
 router.get('/projects', function (req, res) {
   projectController.getAllProjects()
     .then(projects => {

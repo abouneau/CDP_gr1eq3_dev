@@ -65,9 +65,11 @@ function getWholeCollection (collection, filterCriterion) {
  * @param {*} message The message to show when successful
  */
 function updateElementInDB (oldElement, newElement, collection, message) {
-  collection.updateOne(oldElement, { $set: newElement }, function (err, result) {
-    if (err) console.log(err)
-    else if (result) console.log(message)
+  return collection.updateOne(oldElement, { $set: newElement }).then(result => {
+    if (result) {
+      console.log(message)
+      return result
+    }
   })
 }
 
@@ -78,9 +80,11 @@ function updateElementInDB (oldElement, newElement, collection, message) {
  * @param {*} message The essage to show when successful
  */
 function deleteElementFromDB (element, collection, message) {
-  collection.deleteOne(element, function (err, result) {
-    if (err) console.log(err)
-    else if (result) console.log(message)
+  collection.deleteOne(element).then(result => {
+    if (result) {
+      console.log(message)
+      return result
+    }
   })
 }
 

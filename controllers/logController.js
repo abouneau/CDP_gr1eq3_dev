@@ -38,7 +38,6 @@ exports.createAccount = function (req, res) {
     res.send('passwords dont match')
     console.log(err)
   }
-  // hashing a password before saving it to the database
   return bcrypt.hash(password, 10).then(encryptedPassword => {
     const user = new User(email, encryptedPassword, username)
     return dbconnect.addElementToDB(user, collection, 'User successfully added').then(user => {
@@ -47,62 +46,23 @@ exports.createAccount = function (req, res) {
   })
 }
 
-/**
- * Create an account given an email, a password and a username,
- * and save it in the collection 'logins' from the database 'accounts').
- * If the email is already used, then the account won't be created, and
- * a message will tell the user about it.
- * It connects the account newly created if successful.
- */
-/* exports.createAccount = function (req, res) {
-  const collection = dbconnect.client.db('accounts').collection('logins')
-  const user = new User(req.body.email, req.body.password, req.body.username)
-  dbconnect.addElementToDB(user, collection, 'User "' + req.body.username + '" (tied to "' + req.body.email + '") has been succesfully created.').then(result => {
-    if (result) {
-      this.userConnected = new User(req.body.email, req.body.password, req.body.username)
-      res.redirect('/')
-    } else {
-      res.render('signUp', { mailError: 'Adresse mail déjà utilisée', user: this.userConnected })
-    }
-  })
-} */
-
-/* exports.changeUsernameOrPassword = function (req, res) { // Not yet functional
-  const mail = req.session.userId
+exports.changeUsernameOrPassword = function (req, res) { // Not yet functional
+  const mail = req.session.user._id
   const newUsername = req.body.username
   const newPassword = req.body.password
   const collection = dbconnect.client.db('accounts').collection('logins')
   const user = new User(mail)
-  const newUser = new User(mail, newPassword, newUsername)
-  return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
-    return newUser
+  return bcrypt.hash(newPassword, 10).then(encryptedPassword => {
+    const newUser = new User(mail, encryptedPassword, newUsername)
+    return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
+      return newUser
+    })
   })
-} */
+}
 
-/* exports.deleteAccount = function (req, res) {
-  const mail = req.params.id
+exports.deleteAccount = function (req, res) {
+  const mail = req.session.user._id
   const collection = dbconnect.client.db('accounts').collection('logins')
   const user = { _id: mail }
   dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.')
-} */
-
-/**
- * Find an account given an email and a password, in order to connect this account.
- * If the account is found, this means the user have entered a correct email and a
- * correct password. If not, then one of the two arguments is wrong, either the email
- * or the password (or even both), a message will tell the user about it.
- */
-/* exports.findAccount = function (req, res) {
-  const mail = req.body.email
-  const password = req.body.password
-  const collection = dbconnect.client.db('accounts').collection('logins')
-  const userToFind = new User(mail, password)
-  dbconnect.findElementInDB(userToFind, collection, 'User tied to "' + mail + '" has been connected.', 'Invalid mail or password').then(result => {
-    if (!result) {
-      res.render('signIn', { invalidMail: 'Adresse mail ou mot de passe invalide', user: this.userConnected })
-    } else {
-      this.userConnected = result
-      res.redirect('/')
-    }
-  })
-} */
+}
