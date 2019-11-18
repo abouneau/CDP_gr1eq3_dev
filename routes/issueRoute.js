@@ -7,6 +7,20 @@ const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
+// if the issue id doesn't belong to project with id projectID, redirect to pageNotFound
+router.get(baseURL + '/issues/:id/*', function (req, res, next) {
+  projectController.getProject(req.params.projectID)
+    .then(project => {
+      issueController.getIssue(req.params.id)
+        .then(issue => {
+          if (JSON.stringify(project._id) !== JSON.stringify(issue._projectID)) {
+            res.redirect('pageNotFound')
+          }
+        })
+      next()
+    })
+})
+
 router.get(baseURL + '/issues', function (req, res) {
   issueController.getAllIssues(req.params.projectID)
     .then(issues => {

@@ -7,6 +7,20 @@ const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
+// if the test id doesn't belong to project with id projectID, redirect to pageNotFound
+router.get(baseURL + '/tests/:id/*', function (req, res, next) {
+  projectController.getProject(req.params.projectID)
+    .then(project => {
+      testController.getTest(req.params.id)
+        .then(test => {
+          if (JSON.stringify(project._id) !== JSON.stringify(test._projectID)) {
+            res.redirect('pageNotFound')
+          }
+        })
+      next()
+    })
+})
+
 router.get(baseURL + '/tests', function (req, res) {
   testController.getAllTests(req.params.projectID)
     .then(tests => {

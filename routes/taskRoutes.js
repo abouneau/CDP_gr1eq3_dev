@@ -7,6 +7,20 @@ const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
 
+// if the task id doesn't belong to project with id projectID, redirect to pageNotFound
+router.get(baseURL + '/tasks/:id/*', function (req, res, next) {
+  projectController.getProject(req.params.projectID)
+    .then(project => {
+      taskController.getTask(req, res)
+        .then(task => {
+          if (JSON.stringify(project._id) !== JSON.stringify(task._projectID)) {
+            res.redirect('pageNotFound')
+          }
+        })
+      next()
+    })
+})
+
 router.get(baseURL + '/tasks', function (req, res) {
   taskController.getAllTasks(req.params.projectID)
     .then(tasks => {
