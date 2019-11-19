@@ -9,9 +9,9 @@
 </head>
 
 <body class="container">
-  <div class="w-25 mx-auto">
-    <h1>S'inscrire</h1>
-    <form action="/signUp" method="post">
+  <div class="card w-50 mx-auto">
+    <h1 class="card-header">S'inscrire</h1>
+    <form class="card-body" action="/signUp" method="post">
       <div class="form-group">
         <label for="exampleInputEmail1">Adresse email</label>
         <input type="email" class="form-control" name="email" placeholder="Adresse email" required autofocus>
@@ -29,9 +29,10 @@
         <input type="password" class="form-control" name="passwordConf" minlength="8" placeholder="Confirmer le mot de passe" required>
       </div>
       <input type="submit" class="btn btn-success" value="S'inscrire">
-      <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/signIn')"
-        value="Annuler" />
     </form>
+    <div class="card-footer">
+      Déjà un compte ? <a href="/signIn">Se connecter</a>
+    </div>
   </div>
   <div>
 </body>

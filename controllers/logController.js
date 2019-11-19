@@ -35,7 +35,7 @@ exports.createAccount = function (req, res) {
   if (password !== passwordConf) {
     const err = new Error('Passwords do not match.')
     err.status = 400
-    res.send('passwords dont match')
+    res.send('Passwords do not match.')
     console.log(err)
   }
   return bcrypt.hash(password, 10).then(encryptedPassword => {
@@ -46,17 +46,47 @@ exports.createAccount = function (req, res) {
   })
 }
 
-exports.changeUsernameOrPassword = function (req, res) { // Not yet functional
+exports.changeUsernameOrPassword = function (req, res) {
   const mail = req.session.user._id
   const newUsername = req.body.username
+  const oldPassword = req.body.oldPassword
   const newPassword = req.body.password
+  const newPasswordConf = req.body.passwordConf
   const collection = dbconnect.client.db('accounts').collection('logins')
   const user = new User(mail)
-  return bcrypt.hash(newPassword, 10).then(encryptedPassword => {
-    const newUser = new User(mail, encryptedPassword, newUsername)
-    return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
-      return newUser
-    })
+  return dbconnect.findElementInDB(user, collection).then(resultUser => {
+    if (!resultUser) {
+      const error = new Error('User not found.')
+      error.status = 401
+      console.log(error)
+      return null
+    } else {
+      return bcrypt.compare(oldPassword, resultUser._password).then(result => {
+        if (result === true) {
+          if (newPassword !== newPasswordConf) {
+            const err = new Error('Passwords do not match.')
+            err.status = 400
+            res.send('Les mots de passe ne correspondent pas')
+            console.log(err)
+            return null
+          } else {
+            return bcrypt.hash(newPassword, 10).then(encryptedPassword => {
+              const newUser = new User(mail, encryptedPassword, newUsername)
+              return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
+                return newUser
+              })
+            })
+          }
+        } else {
+          const err = new Error('Invalid password.')
+          err.status = 400
+          res.send('Le mot de passe est invalide')
+          console.log(err)
+          console.log('Invalid password')
+          return null
+        }
+      })
+    }
   })
 }
 

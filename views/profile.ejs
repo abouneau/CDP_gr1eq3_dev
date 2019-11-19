@@ -9,26 +9,46 @@
 </head>
 
 <body class="container">
-  <span>
-      <h1>Mettre le profil à jour</h1>
-      <form method="post" action="/profile">
+  <span class="card mx-auto">
+    <h1 class="card-header">Mettre le profil à jour</h1>
+    <form method="post" action="/profile">
+      <div class="card-body">
         <div class="form-group">
           <label for="email">Addresse Email</label>
-          <input type="email" class="form-control" name="email" aria-describedby="emailHelp" placeholder="Addresse Email" value="<%=user._id%>" disabled>
-          <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons vos informations personnelles à personne d'autre.</small>
+          <input type="email" class="form-control" name="email" aria-describedby="emailHelp"
+            placeholder="Addresse Email" value="<%=user._id%>" disabled>
+          <small id="emailHelp" class="form-text text-muted">Nous ne transmettrons vos informations personnelles à
+            personne d'autre.</small>
         </div>
         <div class="form-group">
           <label for="username">Nom d'utilisateur (3 à 30 caractères)</label>
-          <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur (3 à 30 caractères)" minlength="3" maxlength="30" value="<%=user._name%>" required>
+          <input type="text" class="form-control" name="username" placeholder="Nom d'utilisateur (3 à 30 caractères)"
+            minlength="3" maxlength="30" value="<%=user._name%>" required>
         </div>
         <div class="form-group">
-          <label for="password">Mot de passe</label>
-          <input type="password" class="form-control" name="password" placeholder="Mot de passe" minlength="8" required>
-          <input type="submit" type="button" class="btn btn-success" name="update" value="Mettre à jour">
-          <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/projects')" value="Annuler" />
-          <input type="button" type="button" class="btn btn-outline-danger" onclick="window.location.replace('/deleteAccount')" value="Supprimer le compte" />
+          <label for="oldPassword">Ancien mot de passe</label>
+          <input type="password" class="form-control" name="oldPassword" placeholder="Ancien mot de passe" minlength="8"
+            required>
         </div>
-      </form>
+        <div class="form-group">
+          <label for="password">Nouveau mot de passe</label>
+          <input type="password" class="form-control" name="password" placeholder="Nouveau mot de passe" minlength="8"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="passwordConf">Confirmer le nouveau mot de passe</label>
+          <input type="password" class="form-control" name="passwordConf" placeholder="Confirmer le nouveau mot de passe"
+            minlength="8" required>
+        </div>
+      </div>
+      <div class="card-footer">
+        <input type="submit" type="button" class="btn btn-success" name="update" value="Mettre à jour">
+        <input type="button" type="button" class="btn btn-danger" onclick="window.location.replace('/projects')"
+          value="Annuler" />
+        <input type="button" type="button" class="btn btn-outline-danger"
+          onclick="window.location.replace('/deleteAccount')" value="Supprimer le compte" />
+      </div>
+    </form>
   </span>
 
 </body>

@@ -11,9 +11,9 @@
 </head>
 
 <body class="container">
-  <div class="w-25 mx-auto">
-    <h1>Se connecter</h1>
-    <form action="/signIn" method="post">
+  <div class="card w-50 mx-auto">
+    <h1 class="card-header">Se connecter</h1>
+    <form class="card-body" action="/signIn" method="post">
       <div class="form-group">
         <label for="exampleInputEmail1">Adresse email</label>
         <input type="email" class="form-control" name="email" placeholder="Adresse email" required autofocus>
@@ -28,7 +28,7 @@
       </div>
       <input type="submit" class="btn btn-success" value="Se connecter">
     </form>
-    <div>
+    <div class="card-footer">
       Pas encore de compte ? <a href="/signUp">S'inscrire</a>
     </div>
   </div>
