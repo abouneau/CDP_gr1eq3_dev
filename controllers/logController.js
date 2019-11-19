@@ -96,3 +96,11 @@ exports.deleteAccount = function (req, res) {
   const user = { _id: mail }
   dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.')
 }
+
+exports.getAllUsers = function () {
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  return dbconnect.getWholeCollection(collection)
+    .then(users => {
+      return users
+    })
+}
