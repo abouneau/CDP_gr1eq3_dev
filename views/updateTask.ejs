@@ -1,45 +1,52 @@
 <html>
 
 <head>
-    <title> Modification de tâche </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%- include('./navbar.ejs', {project: project})%>
+  <title> Modification de tâche </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <%- include('./navbar.ejs', {project: project})%>
 </head>
 
 <body>
-    <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/update" method="POST">
-        <div>
-            <label for="id">ID</label>
-            <input value = "<%= task._id %>"  name="id" required disabled>
-        </div>
-        <div>
-            <label for="description">Nom</label>
-            <input value="<%= task._description %>" name="description" required>
-        </div>
-        <div>
-            <label for="estimatedTime">Temps estimé</label>
-            <input value="<%= task._estimatedTime %>" name="estimatedTime" required>
-        </div>
-        <div>
-            <label for="dependencies">Dépendances</label>
-            <input value="<%= task._dependencies %>" name="dependencies" required>
-        </div>
-        <div>
-            <label for="linkedUserStories">User Stories liées liées</label>
-            <input value="<%= task._linkedUserStories %>" name="linkedUserStories" required>
-        </div>
-        <div>
-            <label for="advancementState">Etat d'avancement</label>
-            <input value="<%= task._advancementState %>" name="advancementState" required>
-        </div>
-        <div>
-            <label for="developer">Développeur</label>
-            <input value="<%= task._assignedDeveloper %>" name="assignedDeveloper" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Sauvegarder</button>
-        <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
-    </form>
+  <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/update" method="POST">
+    <div class="form-group">
+      <label for="id">ID</label>
+      <input type="text" placeholder="ID" class="form-control" name="id" id="idInput" value="<%=task._id%>" required disabled>
+    </div>
+    <div class="form-group">
+      <label for="description">Nom</label>
+      <input placeholder="Descrption" class="form-control" name="description" id="description" value="<%=task._description%>" required>
+    </div>
+    <div class="form-group">
+      <label for="estimatedTime">Temps estimé</label>
+      <input type="text" placeholder="Temps estimé" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=task._estimatedTime%>" required>
+    </div>
+    <div class="form-group">
+      <label for="dependencies">Dépendances</label>
+      <input type="text" placeholder="Dépendances" class="form-control" name="dependencies" id="dependencies" value="<%=task._dependencies%>" required>
+    </div>
+    <div class="form-group">
+      <label for="linkedUserStories">User Stories liées</label>
+      <input type="text" placeholder="User Stories liées" class="form-control" name="linkedUserStories" id="linkedUserStories" value="<%=task._linkedUserStories%>" required>
+    </div>
+    <div class="form-group">
+        <label for="advancementState">Etat d'avancement</label>
+        <select name="advancementState" id="advancementState" size="1">
+          <option value="ref1">A faire</option>
+          <option value="ref2">En cours</option>
+          <option value="ref3">Terminée</option>
+        </select>
+    </div>
+    <div class="form-group">
+      <label for="developer">Développeur</label>
+      <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper" value="<%=task._assignedDeveloper%>">
+    </div>
+    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+    <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
+  </form>
+  <script>
+      document.getElementById('advancementState').value = "<%=task._advancementState%>"
+  </script>
 </body>
 
 </html>

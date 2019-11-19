@@ -5,6 +5,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
+    <script type="text/javascript">
+      function showDetail(id, b) {
+        document.getElementById(id).style.display = b ? '' : 'none';
+      }
+    </script>
 </head>
 
 <body>
@@ -13,20 +18,23 @@
         <h2> Tâches </h2>
         <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
         <% for( let task of tasks ){ %>
-        <li>
-            <div>ID : <%= task._id %></div>
-            <div>Description : <%= task._description %></div>
-            <div>Temps estimé : <%= task._estimatedTime %></div>
-            <div>Dépendances : <%= task._dependencies %></div>
-            <div>User Stories liées : <%= task._linkedUserStories %></div>
-            <div>Etat d'avancement : <%= task._advancementState %></div>
-            <div>Développeur(s) : <%= task._assignedDeveloper %></div>
+        <li class="media my-4">
+            <div class="media-body <%=task._color%>" onmouseover="showDetail('<%=task._id%>', true);" onmouseout="showDetail('<%=task._id%>', false);">
+              <h5>ID : <%= task._id%></h5>
+                Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
+            </div>
+            
             <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class = "btn btn-primary"> Modifier </a>
 
             <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </form>
         </li>
+        <div id="<%= task._id %>" style="display:none;">
+          <p>Description : <%= task._description %></p>
+          <p>Temps estimé : <%= task._estimatedTime %></p>
+          <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+        </div>
         <% } %>
     </div>
 </body>

@@ -9,6 +9,7 @@ class Task {
     this._linkedUserStories = linkedUserStories
     this._advancementState = advancementState
     this._assignedDeveloper = assignedDeveloper
+    this._color = null
   }
 }
 

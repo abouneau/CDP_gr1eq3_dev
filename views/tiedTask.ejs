@@ -30,12 +30,8 @@
             <input type="text" placeholder="User Stories liées" class="form-control" name="linkedUserStories" id="linkedUserStories" value="<%=issueId%>/" required>
         </div>
         <div class="form-group">
-            <label for="advancementState">Etat d'avancement</label>
-            <input type="text" placeholder="Etat d'avancement" class="form-control" name="advancementState" id="advancementState" required>
-        </div>
-        <div class="form-group">
             <label for="developer">Développeur</label>
-            <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper" required>
+            <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper">
         </div>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>

@@ -13,9 +13,11 @@
         <h2> Tests </h2>
         <a href="/projects/<%= project._id %>/tests/create" class="btn btn-success"> Nouveau test </a>
         <% for( let test of tests ){ %>
-        <li>
-            <div>Name : <%= test._name %></div>
-            <div>Description : <%= test._description %></div>
+        <li class="media my-4">
+            <div class="media-body">
+              <h5>Name : <%= test._name %></h5>
+                Description : <%= test._description %>
+            </div>
             <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class = "btn btn-primary"> Modifier </a>
 
             <form action="/projects/<%= project._id %>/tests/<%= test._id %>/delete" method="POST">
