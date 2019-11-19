@@ -68,6 +68,25 @@ router.get(baseURL + '/tasks/:id/update', function (req, res) {
     .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
+router.get(baseURL + '/tasks/:id/tiedTask', function (req, res) {
+  console.log('in tied task')
+  projectController.getProject(req.params.projectID)
+    .then(project => {
+      console.log(project._name)
+      res.render('../views/tiedTask', {
+        issueId: req.params.id,
+        project: project
+      })
+        .catch(err => errorRoutes.pageNotFound(res, err))
+    })
+    .catch(err => errorRoutes.pageNotFound(res, err))
+})
+
+router.post(baseURL + '/tasks/tiedTask', function (req, res) {
+  taskController.createTask(req, res)
+  res.redirect('/projects/' + req.params.projectID + '/issues')
+})
+
 router.post(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.updateTask(req, res)
   res.redirect('/projects/' + req.params.projectID + '/tasks')

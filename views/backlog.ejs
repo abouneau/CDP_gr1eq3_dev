@@ -2,10 +2,16 @@
 <html>
 
 <head>
+    <meta charset="UTF-8">
     <title> Backlog </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
+    <script type="text/javascript">
+      function showDetail(id, b) {
+        document.getElementById(id).style.display = b ? '' : 'none';
+      }
+    </script>
 </head>
 
 <body>
@@ -14,18 +20,23 @@
         <h2> Backlog </h2>
         <a href="/projects/<%= project._id %>/issues/create" class="btn btn-success"> Nouvelle issue </a>
         <% for( let issue of issues ){ %>
-        <li>
-            <div>ID : <%= issue._id %></div>
-            <div>Nom : <%= issue._name %></div>
-            <div>Description : <%= issue._description %></div>
-            <div>Priorié : <%= issue._priority %></div>
-            <div>Difficulté : <%= issue._difficulty %></div>
-            <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class = "btn btn-primary"> Modifier </a>
+        <li class="media my-4">
+            <div class="media-body" onmouseover="showDetail('<%=issue._id%>', true);" onmouseout="showDetail('<%=issue._id%>', false);">
+              <h5><%=issue._id%></h5>
+              <%=issue._name%> <%=issue._priority%>
+            </div>
+            <a href="/projects/<%= project._id %>/tasks/<%= issue._id %>/tiedTask" class = "btn btn-primary"> Créer une tâche liée</a>
+
+            <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class = "btn btn-primary"> Modifier</a>
 
             <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </form>
         </li>
+        <div id="<%= issue._id %>" style="display:none;">
+          <p><%=issue._description%></p>
+          <p><%=issue._difficulty%></p>
+        </div>
         <% } %>
     </div>
 </body>

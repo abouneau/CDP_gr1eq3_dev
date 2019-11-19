@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title> Nouvelle issue </title>
+    <meta charset="UTF-8">
+    <title> Modification d'issue </title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project})%>
@@ -10,29 +11,41 @@
 
 <body>
     <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/update" method="POST">
-        <div>
+        <div class="form-group">
             <label for="id">ID</label>
-            <input value = "<%= issue._id %>"  name="id" required disabled>
+            <input type="text" placeholder="ID" class="form-control" name="id" id="idInput" value="<%=issue._id%>" required disabled>
         </div>
-        <div>
+        <div class="form-group">
             <label for="name">Nom</label>
-            <input value="<%= issue._name %>" name="name" required>
+            <input type="text" placeholder="Nom" class="form-control" name="name" id="name" value="<%=issue._name%>" required>
         </div>
-        <div>
-            <label for="description">Nom</label>
-            <input value="<%= issue._description %>" name="description" required>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" class="form-control" id="description" placeholder="Description de l'issue"><%=issue._description%>
+            </textarea>
         </div>
-        <div>
+        <div class="form-group">
             <label for="priority">Priorité</label>
-            <input value="<%= issue._priority %>" name="priority" required>
+            <input type="number" placeholder="Priorité" class="form-control" name="priority" id="priority" value="<%=issue._priority%>" required>
         </div>
-        <div>
+        <div class="form-group">
             <label for="difficulty">Difficulté</label>
-            <input value="<%= issue._difficulty %>" name="difficulty" required>
+            <input type="number" placeholder="Difficulté" class="form-control" name="difficulty" id="difficulty" value="<%=issue._difficulty%>" required>
         </div>
+        <div class="form-group">
+            <label for="state">Etat</label>
+            <select name="state" id="state" size="1">
+              <option value="ref1">A faire</option>
+              <option value="ref2">En cours</option>
+              <option value="ref3">Terminée</option>
+            </select>
+          </div>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
     </form>
+    <script>
+      document.getElementById('state').value = "<%=issue._state%>"
+    </script>
 </body>
 
 </html>

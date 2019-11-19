@@ -46,11 +46,6 @@ router.get(baseURL + '/issues/create', function (req, res) {
     .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
-router.post(baseURL + '/issues/create', function (req, res) {
-  issueController.createIssue(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/issues')
-})
-
 // router.get(baseURL + '/issues/:id', function (req, res) {
 //   issueController.getIssue(req.params.id)
 //     .then(issue => {
@@ -73,6 +68,11 @@ router.get(baseURL + '/issues/:id/update', function (req, res) {
         .catch(err => errorRoutes.pageNotFound(res, err))
     })
     .catch(err => errorRoutes.pageNotFound(res, err))
+})
+
+router.post(baseURL + '/issues/create', function (req, res) {
+  issueController.createIssue(req, res)
+  res.redirect('/projects/' + req.params.projectID + '/issues')
 })
 
 router.post(baseURL + '/issues/:id/update', function (req, res) {

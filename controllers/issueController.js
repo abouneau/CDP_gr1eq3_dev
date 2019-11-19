@@ -29,7 +29,8 @@ exports.createIssue = function (req, res) {
     req.body.name,
     req.body.description,
     req.body.priority,
-    req.body.difficulty
+    req.body.difficulty,
+    req.body.state
   )
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.addElementToDB(issue, collection, 'Issue added successfully.')
@@ -43,7 +44,8 @@ exports.updateIssue = function (req, res) {
     _name: req.body.name,
     _description: req.body.description,
     _priority: req.body.priority,
-    _difficulty: req.body.difficulty
+    _difficulty: req.body.difficulty,
+    _state: req.body.state
   }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.updateElementInDB(issueToUpdate, updatedIssue, collection, 'Issue updated')

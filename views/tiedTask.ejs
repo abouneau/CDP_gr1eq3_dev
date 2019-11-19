@@ -1,0 +1,45 @@
+<html>
+
+<head>
+    <title> Nouvelle tâche </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <%- include('./navbar.ejs', {project: project})%>
+</head>
+
+<body>
+    <form action="/projects/<%= project._id %>/tasks/tiedTask" method="POST">
+        <div class="form-group">
+            <label for="id">ID</label>
+            <input type="text" placeholder="ID" class="form-control" name="id" id="id" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Nom</label>
+            <input type="text" placeholder="Nom" class="form-control" name="description" id="description" required>
+        </div>
+        <div class="form-group">
+            <label for="estimatedTime">Temps estimé</label>
+            <input type="text" placeholder="Temps estimé" class="form-control" name="estimatedTime" id="estimatedTime" required>
+        </div>
+        <div class="form-group">
+            <label for="dependencies">Dépendances</label>
+            <input type="text" placeholder="Dépendances" class="form-control" name="dependencies" id="dependancies" required>
+        </div>
+        <div class="form-group">
+            <label for="linkedUserStories">User Stories liées</label>
+            <input type="text" placeholder="User Stories liées" class="form-control" name="linkedUserStories" id="linkedUserStories" value="<%=issueId%>/" required>
+        </div>
+        <div class="form-group">
+            <label for="advancementState">Etat d'avancement</label>
+            <input type="text" placeholder="Etat d'avancement" class="form-control" name="advancementState" id="advancementState" required>
+        </div>
+        <div class="form-group">
+            <label for="developer">Développeur</label>
+            <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sauvegarder</button>
+        <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
+    </form>
+</body>
+
+</html>
