@@ -23,6 +23,9 @@ exports.authenticate = function (req, res) {
         }
       })
     }
+  }).catch(error => {
+    console.log(error)
+    return null
   })
 }
 
