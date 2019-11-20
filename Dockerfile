@@ -5,7 +5,7 @@ ADD package.json /app/
 WORKDIR /app
 RUN npm install
 ADD . /app/
-EXPOSE 3000
+EXPOSE 4321
 VOLUME /app/
 
 CMD node app.js
