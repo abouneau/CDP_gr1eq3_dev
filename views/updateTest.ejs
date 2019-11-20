@@ -9,14 +9,14 @@
 
 <body>
   <form action="/projects/<%= project._id %>/tests/<%= test._id %>/update" method="POST">
-    <div>
+    <div class="form-group">
       <label for="name">Nom</label>
-      <input value="<%= test._name %>" name="name" required>
-    </div>
-    <div>
+      <input placeholder="Nom du test" class="form-control" name="name" id="name" value="<%=test._name%>" required>
+  </div>
+  <div class="form-group">
       <label for="description">Description</label>
-      <input value="<%= test._description %>" name="description" required></input>
-    </div>
+      <textarea placeholder="Descrption du Test" class="form-control" name="description" id="description" required><%=test._description%></textarea>
+  </div>
     <button type="submit" class="btn btn-primary">Sauvegarder</button>
     <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tests">Annuler</a>
   </form>

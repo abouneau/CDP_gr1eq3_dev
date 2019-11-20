@@ -7,6 +7,7 @@ class Issue {
     this._priority = priority
     this._difficulty = difficulty
     this._state = state
+    this._color = null
   }
 }
 

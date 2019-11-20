@@ -30,14 +30,6 @@
             <label for="difficulty">Difficulté</label>
             <input type="number" placeholder="Difficulté" class="form-control" name="difficulty" id="difficulty" required>
         </div>
-        <div class="form-group">
-            <label for="state">Etat</label>
-            <select name="state" id="state" size="1">
-              <option value="ref1">A faire</option>
-              <option value="ref2">En cours</option>
-              <option value="ref3">Terminée</option>
-            </select>
-          </div>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
     </form>

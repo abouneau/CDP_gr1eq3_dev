@@ -12,9 +12,10 @@ exports.createTask = function (req, res) {
     req.body.estimatedTime,
     req.body.dependencies,
     req.body.linkedUserStories,
-    req.body.advancementState,
     req.body.assignedDeveloper
   )
+  task._advancementState = 'ref1'
+  task._color = 'bg-danger text-white'
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.addElementToDB(task, collection, 'Task added successfully.')
@@ -41,6 +42,14 @@ exports.updateTask = function (req, res) {
     _linkedUserStories: req.body.linkedUserStories,
     _advancementState: req.body.advancementState,
     _assignedDeveloper: req.body.assignedDeveloper
+  }
+
+  if (updatedTask._advancementState === 'ref1') {
+    updatedTask._color = 'bg-danger text-white'
+  } else if (updatedTask._advancementState === 'ref2') {
+    updatedTask._color = 'bg-primary text-white'
+  } else {
+    updatedTask._color = 'bg-success text-white'
   }
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
