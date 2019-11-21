@@ -1,15 +1,18 @@
-version: '0.1.0'
+version: '3'
 services:
+  mongo:
+    image: mongo:latest
+    ports:
+      - "4320:4320"
+    volumes:
+      - ./database
   app:
     build: .
     ports:
-    - "4321:4321"
+      - "4321:4321"
     volumes:
-    - .:/code
-    - logvolume01:/var/log
-    links:
-    - redis
-  redis:
-    image: redis
-volumes:
-  logvolume01: {}
+      - ./controllers
+      - ./models
+      - ./views
+    depends_on:
+      - mongo
