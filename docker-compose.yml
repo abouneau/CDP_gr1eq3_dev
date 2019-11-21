@@ -14,7 +14,5 @@ services:
       - ./controllers
       - ./models
       - ./views
-    links:
-      - redis
     depends_on:
       - mongo
