@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 
 const taskController = require('../controllers/taskController')
+const issueController = require('../controllers/issueController')
 const projectController = require('../controllers/projectController')
 const errorRoutes = require('./errorRoutes')
 
@@ -37,11 +38,16 @@ router.get(baseURL + '/tasks', function (req, res) {
 })
 
 router.get(baseURL + '/tasks/create', function (req, res) {
-  projectController.getProject(req.params.projectID)
-    .then(project => {
-      res.render('../views/createTask', {
-        project: project
-      })
+  issueController.getAllIssues(req.params.projectID)
+    .then(issues => {
+      projectController.getProject(req.params.projectID)
+        .then(project => {
+          res.render('../views/createTask', {
+            issues: issues,
+            project: project
+          })
+        })
+        .catch(err => errorRoutes.pageNotFound(res, err))
     })
     .catch(err => errorRoutes.pageNotFound(res, err))
 })
@@ -56,12 +62,17 @@ router.post(baseURL + '/tasks/create', function (req, res) {
 router.get(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.getTask(req, res)
     .then(task => {
-      projectController.getProject(req.params.projectID)
-        .then(project => {
-          res.render('../views/updateTask', {
-            task: task,
-            project: project
-          })
+      issueController.getAllIssues(req.params.projectID)
+        .then(issues => {
+          projectController.getProject(req.params.projectID)
+            .then(project => {
+              res.render('../views/updateTask', {
+                task: task,
+                issues: issues,
+                project: project
+              })
+            })
+            .catch(err => errorRoutes.pageNotFound(res, err))
         })
         .catch(err => errorRoutes.pageNotFound(res, err))
     })
@@ -69,17 +80,26 @@ router.get(baseURL + '/tasks/:id/update', function (req, res) {
 })
 
 router.get(baseURL + '/tasks/:id/tiedTask', function (req, res) {
-  console.log('in tied task')
-  projectController.getProject(req.params.projectID)
-    .then(project => {
-      console.log(project._name)
-      res.render('../views/tiedTask', {
-        issueId: req.params.id,
-        project: project
-      })
+  issueController.getAllIssues(req.params.projectID)
+    .then(issues => {
+      projectController.getProject(req.params.projectID)
+        .then(project => {
+          console.log(project._name)
+          res.render('../views/tiedTask', {
+            issueId: req.params.id,
+            issues: issues,
+            project: project
+          })
+            .catch(err => errorRoutes.pageNotFound(res, err))
+        })
         .catch(err => errorRoutes.pageNotFound(res, err))
     })
     .catch(err => errorRoutes.pageNotFound(res, err))
+})
+
+router.post(baseURL + '/tasks/:id/linkTask', function (req, res) {
+  taskController.linkToIssue(req, res)
+  res.redirect('/projects/' + req.params.projectID + '/issues')
 })
 
 router.post(baseURL + '/tasks/tiedTask', function (req, res) {

@@ -30,9 +30,9 @@ exports.createIssue = function (req, res) {
     req.body.description,
     req.body.priority,
     req.body.difficulty,
-    'ref1'
+    'toDo'
   )
-  issue._color = 'bg-danger text-white'
+  issue._color = 'alert-danger'
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.addElementToDB(issue, collection, 'Issue added successfully.')
 }
@@ -49,12 +49,12 @@ exports.updateIssue = function (req, res) {
     _state: req.body.state
   }
 
-  if (updatedIssue._state === 'ref1') {
-    updatedIssue._color = 'bg-danger text-white'
-  } else if (updatedIssue._state === 'ref2') {
-    updatedIssue._color = 'bg-primary text-white'
+  if (updatedIssue._state === 'toDo') {
+    updatedIssue._color = 'alert-danger'
+  } else if (updatedIssue._state === 'onGoing') {
+    updatedIssue._color = 'alert-warning'
   } else {
-    updatedIssue._color = 'bg-success text-white'
+    updatedIssue._color = 'alert-success'
   }
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)

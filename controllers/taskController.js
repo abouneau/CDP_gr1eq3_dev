@@ -11,11 +11,16 @@ exports.createTask = function (req, res) {
     req.body.description,
     req.body.estimatedTime,
     req.body.dependencies,
-    req.body.linkedUserStories,
+    'toDo',
     req.body.assignedDeveloper
   )
-  task._advancementState = 'ref1'
-  task._color = 'bg-danger text-white'
+  if (req.body.linkedUserStories !== '') {
+    const userStoriesToLink = req.body.linkedUserStories.split(',')
+    for (let us of userStoriesToLink) {
+      task.addLinkedUserStory(us)
+    }
+  }
+  task._color = 'alert-danger'
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   dbconnect.addElementToDB(task, collection, 'Task added successfully.')
@@ -31,25 +36,48 @@ exports.getTask = function (req, res) {
     })
 }
 
+exports.linkToIssue = function (req, res) {
+  const issueToLinkWith = req.params.id
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  const taskToLinkId = { _id: req.body.taskList }
+  dbconnect.findElementInDB(taskToLinkId, collection)
+    .then(taskToLink => {
+      console.log('test')
+      if (!taskToLink._linkedUserStories.includes(issueToLinkWith)) {
+        console.log('TEST')
+        console.log(issueToLinkWith)
+        taskToLink._linkedUserStories.push(issueToLinkWith)
+        dbconnect.updateElementInDB(taskToLinkId, taskToLink, collection, 'TaskLinked')
+      }
+    })
+}
+
 exports.updateTask = function (req, res) {
   const taskToUpdate = { _id: req.params.id }
+  const issuesToLinkWith = []
+  if (req.body.linkedUserStories !== '') {
+    const userStoriesToLink = req.body.linkedUserStories.split(',')
+    for (let us of userStoriesToLink) {
+      issuesToLinkWith.push(us)
+    }
+  }
   const updatedTask = {
     _id: req.params.id, // for now, id is immutable, so we keep the id from the params
     _projectID: req.params.projectID,
     _description: req.body.description,
     _estimatedTime: req.body.estimatedTime,
     _dependencies: req.body.dependencies,
-    _linkedUserStories: req.body.linkedUserStories,
+    _linkedUserStories: issuesToLinkWith,
     _advancementState: req.body.advancementState,
     _assignedDeveloper: req.body.assignedDeveloper
   }
 
-  if (updatedTask._advancementState === 'ref1') {
-    updatedTask._color = 'bg-danger text-white'
-  } else if (updatedTask._advancementState === 'ref2') {
-    updatedTask._color = 'bg-primary text-white'
+  if (updatedTask._advancementState === 'toDo') {
+    updatedTask._color = 'alert-danger'
+  } else if (updatedTask._advancementState === 'onGoing') {
+    updatedTask._color = 'alert-warning'
   } else {
-    updatedTask._color = 'bg-success text-white'
+    updatedTask._color = 'alert-success'
   }
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)

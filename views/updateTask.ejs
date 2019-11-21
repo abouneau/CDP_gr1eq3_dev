@@ -5,6 +5,18 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <%- include('./navbar.ejs', {project: project})%>
+  <script>
+    function addIssue(value){
+      oldValue = document.getElementById('linkedUserStories').value
+      if(!((oldValue.startsWith(value) && oldValue.length===value.length) || oldValue.includes(","+value+",") || oldValue.includes(','+value+""))){
+        if (oldValue.length === 0){
+          document.getElementById('linkedUserStories').value = value
+        }else{
+          document.getElementById('linkedUserStories').value = oldValue+','+value
+        }
+      }
+    }
+  </script>
 </head>
 
 <body>
@@ -27,14 +39,24 @@
     </div>
     <div class="form-group">
       <label for="linkedUserStories">User Stories liées</label>
-      <input type="text" placeholder="User Stories liées" class="form-control" name="linkedUserStories" id="linkedUserStories" value="<%=task._linkedUserStories%>" required>
+      <div class="form-group">
+          <label for="linkedUserStories">User Stories liées</label>
+          <select name="issueList" id="issueList" size="1" selected="default">
+            <option value="default"> US à liée </option>
+            <% for( let issue of issues ){ %>
+              <option value=<%=issue._id%>> <%=issue._id%> </option>
+            <% } %>
+          </select>
+          <button type="button" onclick="addIssue(document.getElementById('issueList').value);">Ajouter</button>
+          <input type="text" class="form-control" name="linkedUserStories" id="linkedUserStories" value="<%=task._linkedUserStories%>" readonly>
+      </div>
     </div>
     <div class="form-group">
         <label for="advancementState">Etat d'avancement</label>
         <select name="advancementState" id="advancementState" size="1">
-          <option value="ref1">A faire</option>
-          <option value="ref2">En cours</option>
-          <option value="ref3">Terminée</option>
+          <option value="toDo">A faire</option>
+          <option value="onGoing">En cours</option>
+          <option value="end">Terminée</option>
         </select>
     </div>
     <div class="form-group">
