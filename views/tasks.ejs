@@ -19,7 +19,7 @@
         <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
         <% for( let task of tasks ){ %>
         <li class="media my-4">
-            <div class="media-body <%=task._color%>" onmouseover="showDetail('<%=task._id%>', true);" onmouseout="showDetail('<%=task._id%>', false);">
+            <div class="media-body <%=task._color%>" role="alert" onmouseover="showDetail('<%=task._id%>', true);" onmouseout="showDetail('<%=task._id%>', false);">
               <h5>ID : <%= task._id%></h5>
                 Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
             </div>

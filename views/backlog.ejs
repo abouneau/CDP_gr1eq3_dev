@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
-    <script type="text/javascript">
+    <script>
       function showDetail(id, b) {
-        document.getElementById(id).style.display = b ? '' : 'none';
+        document.getElementById(id).style.display = b ? '' : 'none'
       }
     </script>
 </head>
@@ -21,10 +21,21 @@
         <a href="/projects/<%= project._id %>/issues/create" class="btn btn-success"> Nouvelle issue </a>
         <% for( let issue of issues ){ %>
         <li class="media my-4">
-            <div class="media-body <%=issue._color%>" onmouseover="showDetail('<%=issue._id%>', true);" onmouseout="showDetail('<%=issue._id%>', false);">
+            <div class="media-body <%=issue._color%>" role="alert" onmouseover="showDetail('<%=issue._id%>', true);" onmouseout="showDetail('<%=issue._id%>', false);">
               <h5>ID : <%=issue._id%></h5>
               Nom : <%=issue._name%> Priorité : <%=issue._priority%>
             </div>
+
+            <form action="/projects/<%= project._id %>/tasks/<%= issue._id %>/linkTask" method="POST"> 
+              <select name="taskList" id="taskList" size="1" selected="default">
+                <option value="default"> Tâche à liée </option>
+                <% for( let task of tasks ){ %>
+                  <option value=<%=task._id%>> <%=task._id%> </option>
+                <% } %>
+              </select>
+              <button type="submit" class="btn btn-success">Liée la tâche</button>
+            </form>
+
             <a href="/projects/<%= project._id %>/tasks/<%= issue._id %>/tiedTask" class = "btn btn-success"> Créer une tâche liée</a>
 
             <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class = "btn btn-primary"> Modifier</a>

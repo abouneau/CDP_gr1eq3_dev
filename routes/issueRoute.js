@@ -3,6 +3,7 @@ const router = express.Router()
 
 const issueController = require('../controllers/issueController')
 const projectController = require('../controllers/projectController')
+const taskController = require('../controllers/taskController')
 const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
@@ -24,12 +25,17 @@ router.get(baseURL + '/issues/:id/*', function (req, res, next) {
 router.get(baseURL + '/issues', function (req, res) {
   issueController.getAllIssues(req.params.projectID)
     .then(issues => {
-      projectController.getProject(req.params.projectID)
-        .then(project => {
-          res.render('../views/backlog', {
-            issues: issues,
-            project: project
-          })
+      taskController.getAllTasks(req.params.projectID)
+        .then(tasks => {
+          projectController.getProject(req.params.projectID)
+            .then(project => {
+              res.render('../views/backlog', {
+                issues: issues,
+                tasks: tasks,
+                project: project
+              })
+            })
+            .catch(err => errorRoutes.pageNotFound(res, err))
         })
         .catch(err => errorRoutes.pageNotFound(res, err))
     })
