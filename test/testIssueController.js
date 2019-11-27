@@ -13,9 +13,7 @@ client.connect().then(() => {
 })
 
 describe('Test les fonctions de issueController.js', function () {
-
   it('Test de createIssue', function () {
-
     client.connect().then(() => {
       const id = 'id'
       const projectID = 'project'
@@ -48,7 +46,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de getIssue', function () {
-
     client.connect().then(() => {
       issueController.getIssue('id')
         .then(issue => {
@@ -65,7 +62,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de getAllIssue', function () {
-
     client.connect().then(() => {
       issueController.getAllIssues('project')
         .then(issues => {
@@ -82,7 +78,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de updateIssue état toDo', function () {
-
     client.connect().then(() => {
       const id = 'id'
       const projectID = 'project1'
@@ -116,7 +111,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de updateIssue état onGoing', function () {
-
     client.connect().then(() => {
       const id = 'id'
       const projectID = 'project1'
@@ -150,7 +144,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de updateIssue état end', function () {
-
     client.connect().then(() => {
       const id = 'id'
       const projectID = 'project1'
@@ -184,7 +177,6 @@ describe('Test les fonctions de issueController.js', function () {
   })
 
   it('Test de deleteIssue', function () {
-
     client.connect().then(() => {
       const id = 'id'
       const params = { id }
