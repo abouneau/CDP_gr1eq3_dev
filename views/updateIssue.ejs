@@ -26,7 +26,11 @@
         </div>
         <div class="form-group">
             <label for="priority">Priorité</label>
-            <input type="number" placeholder="Priorité" class="form-control" name="priority" id="priority" value="<%=issue._priority%>" required>
+            <select name="priority" id="priority" selected="low">
+              <option value="Basse"> Basse </option>
+              <option value="Moyenne"> Moyenne </option>
+              <option value="Haute"> Haute </option>
+            </select>
         </div>
         <div class="form-group">
             <label for="difficulty">Difficulté</label>
