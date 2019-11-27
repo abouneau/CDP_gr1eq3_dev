@@ -28,12 +28,12 @@
 
             <form action="/projects/<%= project._id %>/tasks/<%= issue._id %>/linkTask" method="POST"> 
               <select name="taskList" id="taskList" size="1" selected="default">
-                <option value="default"> Tâche à liée </option>
+                <option value="default"> Tâche à lier </option>
                 <% for( let task of tasks ){ %>
                   <option value=<%=task._id%>> <%=task._id%> </option>
                 <% } %>
               </select>
-              <button type="submit" class="btn btn-success">Liée la tâche</button>
+              <button type="submit" class="btn btn-success">Lier la tâche</button>
             </form>
 
             <a href="/projects/<%= project._id %>/tasks/<%= issue._id %>/tiedTask" class = "btn btn-success"> Créer une tâche liée</a>
