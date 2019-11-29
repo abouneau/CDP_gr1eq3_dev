@@ -56,4 +56,9 @@ router.post('/projects/:projectID', function (req, res) {
     })
 })
 
+router.post('/projects/:projectID/delete', function (req, res) {
+  projectController.deleteProject(req.params.projectID)
+  res.redirect('/projects')
+})
+
 module.exports = router
