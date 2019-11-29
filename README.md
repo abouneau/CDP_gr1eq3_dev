@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/abouneau/CDP_gr1eq3_dev.svg?branch=master)](https://travis-ci.com/abouneau/CDP_gr1eq3_dev)
+
 # Conduite de projet - Groupe 1 équipe 3
 
 ## Membres de l'équipe

@@ -4,7 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "lint": "./node_modules/.bin/eslint"
   },
   "author": "",
   "license": "ISC",
