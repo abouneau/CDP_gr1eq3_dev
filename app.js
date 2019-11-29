@@ -12,6 +12,7 @@ const app = express()
 app.set('view engine', 'ejs')
 
 app.use('/scripts', express.static('scripts'))
+app.use('/styles', express.static('styles'))
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
