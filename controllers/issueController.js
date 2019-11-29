@@ -7,19 +7,21 @@ const collectionName = 'Issues'
 exports.getAllIssues = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
-  return dbconnect.getWholeCollection(collection, { _projectID: projectID })
-    .then(issues => {
-      return issues
-    })
+  return dbconnect.getWholeCollection(collection, { _projectID: projectID }).then(issues => {
+    return issues
+  }).catch(error => {
+    console.log(error)
+  })
 }
 
 exports.getIssue = function (issueID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
-  return dbconnect.findElementInDB({ _id: issueID }, collection)
-    .then(issue => {
-      return issue
-    })
+  return dbconnect.findElementInDB({ _id: issueID }, collection).then(issue => {
+    return issue
+  }).catch(err => {
+    throw err
+  })
 }
 
 exports.createIssue = function (req, res) {
@@ -34,7 +36,11 @@ exports.createIssue = function (req, res) {
   )
   issue._color = 'alert-danger'
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.addElementToDB(issue, collection, 'Issue added successfully.')
+  return dbconnect.addElementToDB(issue, collection, 'Issue added successfully.').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
 }
 
 exports.updateIssue = function (req, res) {
@@ -58,12 +64,20 @@ exports.updateIssue = function (req, res) {
   }
 
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.updateElementInDB(issueToUpdate, updatedIssue, collection, 'Issue updated')
+  return dbconnect.updateElementInDB(issueToUpdate, updatedIssue, collection, 'Issue updated').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
 }
 
 exports.deleteIssue = function (req, res) {
   const issueToDelete = { _id: req.params.id }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
-  dbconnect.deleteElementFromDB(issueToDelete, collection, 'Test deleted')
+  return dbconnect.deleteElementFromDB(issueToDelete, collection, 'Issue deleted').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
 }

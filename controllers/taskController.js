@@ -16,7 +16,7 @@ exports.createTask = function (req, res) {
   )
   if (req.body.linkedUserStories !== '') {
     const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (let us of userStoriesToLink) {
+    for (const us of userStoriesToLink) {
       task.addLinkedUserStory(us)
     }
   }
@@ -57,7 +57,7 @@ exports.updateTask = function (req, res) {
   const issuesToLinkWith = []
   if (req.body.linkedUserStories !== '') {
     const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (let us of userStoriesToLink) {
+    for (const us of userStoriesToLink) {
       issuesToLinkWith.push(us)
     }
   }

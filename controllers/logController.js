@@ -23,9 +23,8 @@ exports.authenticate = function (req, res) {
         }
       })
     }
-  }).catch(error => {
-    console.log(error)
-    return null
+  }).catch(err => {
+    throw err
   })
 }
 
@@ -45,6 +44,8 @@ exports.createAccount = function (req, res) {
     const user = new User(email, encryptedPassword, username)
     return dbconnect.addElementToDB(user, collection, 'User successfully added').then(user => {
       return user
+    }).catch(err => {
+      throw err
     })
   })
 }
@@ -77,6 +78,8 @@ exports.changeUsernameOrPassword = function (req, res) {
               const newUser = new User(mail, encryptedPassword, newUsername)
               return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
                 return newUser
+              }).catch(err => {
+                throw err
               })
             })
           }
@@ -97,7 +100,9 @@ exports.deleteAccount = function (req, res) {
   const mail = req.session.user._id
   const collection = dbconnect.client.db('accounts').collection('logins')
   const user = { _id: mail }
-  dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.')
+  dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.').catch(err => {
+    throw err
+  })
 }
 
 exports.getAllUsers = function () {
@@ -105,5 +110,7 @@ exports.getAllUsers = function () {
   return dbconnect.getWholeCollection(collection)
     .then(users => {
       return users
+    }).catch(err => {
+      throw err
     })
 }

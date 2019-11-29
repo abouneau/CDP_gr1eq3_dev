@@ -5,15 +5,13 @@
  * @param {*} message The message to show when successful
  */
 function addElementToDB (element, collection, message) {
-  return collection.insertOne(element, '')
-    .then(result => {
-      if (result) console.log(message || `Successfully added: ${result}`)
-      return result
-    })
-    .catch(err => {
-      console.error(`Failed to add: ${err}`)
-      return null
-    })
+  return collection.insertOne(element, '').then(result => {
+    if (result) console.log(message || `Successfully added: ${result}`)
+    return result
+  }).catch(err => {
+    console.error(`Failed to add: ${err}`)
+    return null
+  })
 }
 
 /**
@@ -26,28 +24,27 @@ function addElementToDB (element, collection, message) {
  * @param {*} failMessage The message to show when not successful
  */
 function findElementInDB (element, collection, message, failMessage) {
-  return collection.findOne(element, '')
-    .then(result => {
-      if (result) {
-        console.log(message || `Successfully found: ${result}`)
-      } else {
-        throw new Error('Element not found...')
-      }
-      return result
-    })
-    .catch(err => {
-      throw err
-    })
+  return collection.findOne(element, '').then(result => {
+    if (result) {
+      console.log(message || `Successfully found: ${result}`)
+    } else {
+      console.log('Element not found...')
+    }
+    return result
+  }).catch(err => {
+    throw err
+  })
 }
 
 function elementExists (element, collection) {
-  return collection.findOne(element)
-    .then(result => {
-      if (result) {
-        return true
-      }
-      return false
-    })
+  return collection.findOne(element).then(result => {
+    if (result) {
+      return true
+    }
+    return false
+  }).catch(err => {
+    throw err
+  })
 }
 
 /**
@@ -71,6 +68,8 @@ function updateElementInDB (oldElement, newElement, collection, message) {
       console.log(message)
       return result
     }
+  }).catch(err => {
+    throw err
   })
 }
 
@@ -81,11 +80,13 @@ function updateElementInDB (oldElement, newElement, collection, message) {
  * @param {*} message The essage to show when successful
  */
 function deleteElementFromDB (element, collection, message) {
-  collection.deleteOne(element).then(result => {
+  return collection.deleteOne(element).then(result => {
     if (result) {
       console.log(message)
       return result
     }
+  }).catch(err => {
+    throw err
   })
 }
 
@@ -96,9 +97,10 @@ function deleteElementFromDB (element, collection, message) {
  * @param {*} message The message to show when successful
  */
 function deleteCollection (collection, message) {
-  collection.drop(function (err, result) {
-    if (err) console.log(err)
-    else if (result) console.log(message)
+  return collection.drop().then(() => {
+    console.log('Collection removed')
+  }).catch(err => {
+    throw err
   })
 }
 
@@ -116,13 +118,17 @@ function connectToDB () {
  * To be used in emergency cases only!
  */
 function disconnectFromDB () {
-  client.close()
+  return client.close().then(() => {
+    console.log('Connection to the database closed')
+  }).catch(err => {
+    throw err
+  })
 }
 
 const MongoClient = require('mongodb').MongoClient
 const uri = 'mongodb+srv://collabcdp2019:cdp2019@cdp2019-iaivu.gcp.mongodb.net/test?retryWrites=true&w=majority'
-const url = 'mongodb://mongo:27017'
-const client = new MongoClient(url, { useUnifiedTopology: true, useNewUrlParser: true })
+// const url = 'mongodb://mongo:27017'
+const client = new MongoClient(uri, { useUnifiedTopology: true, useNewUrlParser: true })
 connectToDB()
 
 module.exports = {
