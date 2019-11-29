@@ -13,4 +13,5 @@ before_install:
 script:
  - docker-compose build
  - npm install
+ - npm test
  - npm run lint controllers database models routes test
