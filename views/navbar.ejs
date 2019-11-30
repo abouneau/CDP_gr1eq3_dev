@@ -26,17 +26,17 @@
           <a class="nav-link" href="/projects/<%= project._id %>/tests" tabindex="-1" aria-disabled="true">Tests</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Release</a>
+            <a class="nav-link" href="/projects/<%= project._id %>/release" tabindex="-1" aria-disabled="true">Releases</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Documentation</a>
+          <a class="nav-link" href="/projects/<%= project._id %>/doc" tabindex="-1" aria-disabled="true">Documentation</a>
         </li>
-        <li class="nav-item dropdown disabled">
-          <a class="nav-link dropdown-toggle disabled" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sprints</a>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sprints</a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item disabled" href="#" tabindex="-1" aria-disabled="true">Nouveau Sprint</a>
+            <a class="dropdown-item" href="/projects/<%= project._id %>/createSprint" tabindex="-1" aria-disabled="true">Nouveau Sprint</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item disabled" href="#">Sprint 1</a>
+            <a class="dropdown-item" href="/projects/<%= project._id %>/sprint1">Sprint 1</a>
           </div>
         </li>
       </ul>
