@@ -1,0 +1,272 @@
+const Sprint = require('../models/sprintModel')
+const dbconnect = require('../database/dbconnect')
+const issueController = require('./issueController')
+
+const databaseName = 'Projets'
+const collectionName = 'Sprints'
+const issueCollectionName = 'Issues'
+
+const dateBeforeOrIsToday = function (dateToCompare) {
+  const date = new Date()
+  if (dateToCompare[0] < date.getFullYear()) {
+    return true 
+  } else if (dateToCompare[0] == date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) {
+    return true
+  } else if (dateToCompare[0] == date.getFullYear() && dateToCompare[1] == (date.getMonth() + 1) && dateToCompare[2] <= date.getDate()) {
+    return true
+  }
+  return false
+}
+
+exports.getAllSprints = function (projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.getWholeCollection(collection, { _projectID: projectID }).then(sprints => {
+    return sprints
+  }).catch(error => {
+    console.log(error)
+  })
+}
+
+exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  const collection1 = dbconnect.client.db(databaseName).collection(issueCollectionName)
+
+  if (sprints == null && projectID == null) {
+    console.log('Error with updateAllSprintLinkedIssue : need at least projectID not null or sprints not null')
+  } else {
+    if (sprints == null) {
+      sprints = this.getAllSprints(projectID)
+    }
+
+    for (let sprint of sprints) {
+      let newLinkedUserStories = []
+      let allIssuesExist = true
+      let wait = 0
+      for (let issueId of sprint._linkedUserStories) {
+        let id = { _id: issueId }
+        dbconnect.elementExists(id, collection1)
+          .then(issueExist => {
+            if (issueExist) {
+              newLinkedUserStories.push(issueId)
+              ++wait
+            } else {
+              allIssuesExist = false
+              ++wait
+            }
+            if (wait >= sprint._linkedUserStories.length && !allIssuesExist) {
+              const updatedSprint = {
+                _id: sprint._id,
+                _projectID: sprint._projectID,
+                _description: sprint._description,
+                _beginDate: sprint._beginDate,
+                _endDate: sprint.endDate,
+                _linkedUserStories: newLinkedUserStories,
+                _totalDifficulty: sprint._totalDifficulty,
+                _state: sprint._state,
+                _color: sprint._color
+              }
+              const sprintToUpdate = {_id: sprint._id}
+              dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, collection, 'Sprint updated')
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    }
+  }
+}
+
+exports.updateAllSprintState = function (sprints, projectID) {
+  if (sprints == null) {
+    sprints = this.getAllSprints(projectID)
+  }
+  if (sprints == null && projectID == null) {
+    console.log('Error with updateAllSprintState : need at least projectID not null or sprints not null')
+  }
+
+  for (let sprint of sprints) {
+
+    let valueString = sprint._beginDate.split('-')
+    let valueBegin = []
+    let count = 0
+    for (let s of valueString) {
+      valueBegin[count] = parseInt(s, 10)
+      ++count
+    }
+
+    valueString = sprint._endDate.split('-')
+    let valueEnd = []
+    count = 0
+    for (let s of valueString) {
+      valueEnd[count] = parseInt(s, 10)
+      ++count
+    }
+
+    if (dateBeforeOrIsToday(valueEnd)) {
+      sprint._state = 'end'
+      sprint._color = 'alert-success'
+    } else if (dateBeforeOrIsToday(valueBegin)) {
+      sprint._state = 'onGoing'
+      sprint._color = 'alert-warning'
+    } else {
+      sprint._state = 'toDo'
+      sprint._color = 'alert-danger'
+    }
+  }
+}
+
+exports.getSprint = function (sprintID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.findElementInDB({ _id: sprintID }, collection).then(sprint => {
+    return sprint
+  }).catch(err => {
+    throw err
+  })
+}
+
+exports.getIssueListOfSprint(sprintID) {
+  return this.getSprint(sprintID)
+  .then( sprint => {
+    return issueController.getAllIssues(sprint._projectID)
+    .then(issues => {
+      let issuesList = []
+      for (let issue of issues){
+        //if(sprint._linkedUserStories.startsWith(issue._id) || sprint._linkedUserStories.includes(","+issue._id+",") || sprint._linkedUserStories.includes(','+issue._id+""))
+        if(sprint._linkedUserStories.includes(issue._id)){
+          issuesList.push(issue)
+        }
+      }
+      return issueList
+    })
+  })
+}
+
+exports.createSprint = function (req, res) {
+  const sprint = new Sprint(
+    req.body.id,
+    req.params.projectID,
+    req.body.description,
+    req.body.beginDate,
+    req.body.endDate
+  )
+
+  sprint._totalDifficulty = 0
+
+  if (req.body.linkedUserStories !== '') {
+    const userStoriesToLink = req.body.linkedUserStories.split(',')
+    for (const us of userStoriesToLink) {
+      sprint.addLinkedUserStory(us)
+      issueController.getIssue(us)
+        .then( issue => {
+          sprint._totalDifficulty += issue._difficulty
+        })
+    }
+  }
+
+  let valueString = req.body.beginDate.split('-')
+  let value = []
+  let count = 0
+  for (let s of valueString) {
+    value[count] = parseInt(s, 10)
+    ++count
+  }
+
+  if (dateBeforeOrIsToday(value)) {
+    sprint._state = 'onGoing'
+    sprint._color = 'alert-warning'
+  } else {
+    sprint._state = 'toDo'
+    sprint._color = 'alert-danger'
+  }
+
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  dbconnect.addElementToDB(sprint, collection, 'Sprint added successfully.')
+}
+
+exports.linkToIssue = function (req, res) {
+  const issueToLinkWith = req.body.issueList
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  const sprintToLinkId = { _id: req.params.id }
+  dbconnect.findElementInDB(sprintToLinkId, collection)
+    .then(sprintToLink => {
+      if (!sprintToLink._linkedUserStories.includes(issueToLinkWith)) {
+        sprintToLink._linkedUserStories.push(issueToLinkWith)
+        dbconnect.updateElementInDB(sprintToLinkId, sprintToLink, collection, 'Sprint Linked')
+      }
+    })
+}
+
+exports.updateSprint = function (req, res) {
+  const sprintToUpdate = { _id: req.params.id }
+
+  const issuesToLinkWith = []
+  let totalDifficulty = 0
+  if (req.body.linkedUserStories !== '') {
+    const userStoriesToLink = req.body.linkedUserStories.split(',')
+    for (const us of userStoriesToLink) {
+      issuesToLinkWith.push(us)
+      issueController.getIssue(us)
+        .then(issue => {
+          totalDifficulty += issue._difficulty
+        })
+    }
+  }
+
+  const updatedSprint = {
+    _id: req.params.id,
+    _projectID: req.params.projectID,
+    _description: req.body.description,
+    _beginDate: req.body.beginDate,
+    _endDate: req.body.endDate,
+    _linkedUserStories: issuesToLinkWith,
+    _totalDifficulty: totalDifficulty
+  }
+
+  let valueString = req.body.beginDate.split('-')
+  let valueBegin = []
+  let count = 0
+  for (let s of valueString) {
+    valueBegin[count] = parseInt(s, 10)
+    ++count
+  }
+
+  valueString = req.body.endDate.split('-')
+  let valueEnd = []
+  count = 0
+  for (let s of valueString) {
+    valueEnd[count] = parseInt(s, 10)
+    ++count
+  }
+
+  if (dateBeforeOrIsToday(valueEnd)) {
+    updatedSprint._state = 'end'
+    updatedSprint._color = 'alert-success'
+  } else if (dateBeforeOrIsToday(valueBegin)) {
+    updatedSprint._state = 'onGoing'
+    updatedSprint._color = 'alert-warning'
+  } else {
+    updatedSprint._state = 'toDo'
+    updatedSprint._color = 'alert-danger'
+  }
+
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  return dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, collection, 'Issue updated').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
+}
+
+exports.deleteSprint = function (req, res) {
+  const sprintToDelete = { _id: req.params.id }
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.deleteElementFromDB(sprintToDelete, collection, 'Sprint deleted').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
+}

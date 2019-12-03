@@ -25,6 +25,7 @@ router.get(baseURL + '/tasks/:id/*', function (req, res, next) {
 router.get(baseURL + '/tasks', function (req, res) {
   taskController.getAllTasks(req.params.projectID)
     .then(tasks => {
+      taskController.updateAllTask(tasks)
       projectController.getProject(req.params.projectID)
         .then(project => {
           res.render('../views/tasks', {

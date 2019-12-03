@@ -3,6 +3,7 @@ const dbconnect = require('../database/dbconnect')
 
 const databaseName = 'Projets'
 const collectionName = 'Tasks'
+const issueCollectionName = 'Issues'
 
 exports.createTask = function (req, res) {
   const task = new Task(
@@ -99,6 +100,57 @@ exports.getAllTasks = function (projectID) {
     .then(tasks => {
       return tasks
     })
+}
+
+exports.updateAllTask = function (tasks, projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  const collection1 = dbconnect.client.db(databaseName).collection(issueCollectionName)
+
+  if(tasks == null && projectID == null) {
+    console.log("Error with updateAllTask : need at least projectID not null or tasks not null")
+  }
+  else{
+    if (tasks == null) {
+      tasks = this.getAllTasks(projectID)
+    }
+
+    for (let task of tasks) {
+      let newLinkedUserStories = []
+      let allIssuesExist = true
+      let wait = 0
+      for (let issueId of task._linkedUserStories) {
+        let id = { _id: issueId }
+        dbconnect.elementExists(id, collection1)
+          .then(issueExist => {
+            if (issueExist) {
+              newLinkedUserStories.push(issueId)
+              ++wait
+            } else {
+              allIssuesExist = false
+              ++wait
+            }
+            if(wait >= task._linkedUserStories.length && !allIssuesExist) {
+              const updatedTask = {
+                _id: task._id,
+                _projectID: task._projectID,
+                _description: task._description,
+                _estimatedTime: task._estimatedTime,
+                _dependencies: task._dependencies,
+                _linkedUserStories: newLinkedUserStories,
+                _advancementState: task._advancementState,
+                _assignedDeveloper: task._assignedDeveloper,
+                _color: task._color
+              }
+              const taskToUpdate = {_id: task._id}
+              dbconnect.updateElementInDB(taskToUpdate, updatedTask, collection, 'Task updated')
+            }
+          })
+          .catch(error => {
+            console.log(error)
+          })
+      }
+    }
+  }
 }
 
 exports.taskExists = function (req, res) {

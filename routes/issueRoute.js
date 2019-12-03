@@ -27,6 +27,7 @@ router.get(baseURL + '/issues', function (req, res) {
     .then(issues => {
       taskController.getAllTasks(req.params.projectID)
         .then(tasks => {
+          issueController.updateAllIssue(issues, tasks)
           projectController.getProject(req.params.projectID)
             .then(project => {
               res.render('../views/backlog', {

@@ -7,6 +7,7 @@ const log = require('./routes/logRoutes')
 const task = require('./routes/taskRoutes')
 const test = require('./routes/testRoutes')
 const project = require('./routes/projectRoutes')
+const sprint = require('./routes/sprintRoutes')
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -41,6 +42,7 @@ app.use('/', log)
 app.use('/', task)
 app.use('/', test)
 app.use('/', project)
+app.use('/', sprint)
 
 app.get('/pageNotFound', function (req, res) {
   res.render('pageNotFound')

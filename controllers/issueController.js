@@ -1,5 +1,6 @@
 const Issue = require('../models/issueModel')
 const dbconnect = require('../database/dbconnect')
+const taskController = require('../controllers/taskController')
 
 const databaseName = 'Projets'
 const collectionName = 'Issues'
@@ -14,6 +15,41 @@ exports.getAllIssues = function (projectID) {
   })
 }
 
+exports.updateAllIssue = function (issues, tasks, projectID) {
+  if (issues == null) {
+    issues = this.getAllIssues(projectID)
+  }
+  if (tasks == null) {
+    tasks = taskController.getAllTasks(projectID)
+  }
+  if((issues == null || tasks == null) && projectID == null) {
+    console.log("Error with updateAllIssue : need at least projectID not null or issues and tasks not null")
+  }
+  for (let issue of issues) {
+    let issueNewState = 'end'
+    let issueNewColor = 'alert-success'
+    let taskLinked = false
+    for (let task of tasks) {
+      if (task._linkedUserStories.includes(issue._id)) {
+        taskLinked = true
+        if (task._advancementState === 'toDo') {
+          issueNewState = 'toDo'
+          issueNewColor = 'alert-danger'
+        }
+        if (task._advancementState === 'onGoing') {
+          issueNewState = 'onGoing'
+          issueNewColor = 'alert-warning'
+          break
+        }
+      }
+    }
+    if (taskLinked) {
+      issue._state = issueNewState
+      issue._color = issueNewColor
+    }
+  }
+}
+
 exports.getIssue = function (issueID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -22,6 +58,23 @@ exports.getIssue = function (issueID) {
   }).catch(err => {
     throw err
   })
+}
+
+exports.getTaskLinked = function (issueID) {
+  return this.getIssue(issueID)
+    .then(issue => {
+      return taskController.getAllTasks(issue._projectID)
+        .then(tasks => {
+          let tasksList = []
+          for (let task of tasks) {
+            // if(task._linkedUserStories.startsWith(issue._id) || task._linkedUserStories.includes(","+issue._id+",") || task._linkedUserStories.includes(','+issue._id+""))
+            if (task._linkedUserStories.includes(issue._id)) {
+              tasksList.push(task)
+            }
+          }
+          return tasksList
+        })
+    })
 }
 
 exports.createIssue = function (req, res) {
