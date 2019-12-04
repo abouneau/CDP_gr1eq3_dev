@@ -17,7 +17,7 @@ router.get(baseURL + '/sprints', function (req, res) {
           sprintController.updateAllSprintState(sprints, req.params.projectID)
           projectController.getProject(req.params.projectID)
             .then(project => {
-              res.render('../views/sprintAll', {
+              res.render('../views/sprints', {
                 sprints: sprints,
                 issues: issues,
                 project: project
