@@ -9,10 +9,10 @@ const issueCollectionName = 'Issues'
 const dateBeforeOrIsToday = function (dateToCompare) {
   const date = new Date()
   if (dateToCompare[0] < date.getFullYear()) {
-    return true 
-  } else if (dateToCompare[0] == date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) {
     return true
-  } else if (dateToCompare[0] == date.getFullYear() && dateToCompare[1] == (date.getMonth() + 1) && dateToCompare[2] <= date.getDate()) {
+  } else if (dateToCompare[0] === date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) {
+    return true
+  } else if (dateToCompare[0] === date.getFullYear() && dateToCompare[1] === (date.getMonth() + 1) && dateToCompare[2] <= date.getDate()) {
     return true
   }
   return false
@@ -39,12 +39,12 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
       sprints = this.getAllSprints(projectID)
     }
 
-    for (let sprint of sprints) {
-      let newLinkedUserStories = []
+    for (const sprint of sprints) {
+      const newLinkedUserStories = []
       let allIssuesExist = true
       let wait = 0
-      for (let issueId of sprint._linkedUserStories) {
-        let id = { _id: issueId }
+      for (const issueId of sprint._linkedUserStories) {
+        const id = { _id: issueId }
         dbconnect.elementExists(id, collection1)
           .then(issueExist => {
             if (issueExist) {
@@ -66,7 +66,7 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
                 _state: sprint._state,
                 _color: sprint._color
               }
-              const sprintToUpdate = {_id: sprint._id}
+              const sprintToUpdate = { _id: sprint._id }
               dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, collection, 'Sprint updated')
             }
           })
@@ -86,20 +86,19 @@ exports.updateAllSprintState = function (sprints, projectID) {
     console.log('Error with updateAllSprintState : need at least projectID not null or sprints not null')
   }
 
-  for (let sprint of sprints) {
-
+  for (const sprint of sprints) {
     let valueString = sprint._beginDate.split('-')
-    let valueBegin = []
+    const valueBegin = []
     let count = 0
-    for (let s of valueString) {
+    for (const s of valueString) {
       valueBegin[count] = parseInt(s, 10)
       ++count
     }
 
     valueString = sprint._endDate.split('-')
-    let valueEnd = []
+    const valueEnd = []
     count = 0
-    for (let s of valueString) {
+    for (const s of valueString) {
       valueEnd[count] = parseInt(s, 10)
       ++count
     }
@@ -127,19 +126,17 @@ exports.getSprint = function (sprintID) {
   })
 }
 
-exports.getIssueListOfSprint(sprintID) {
-  return this.getSprint(sprintID)
-  .then( sprint => {
-    return issueController.getAllIssues(sprint._projectID)
-    .then(issues => {
-      let issuesList = []
-      for (let issue of issues){
-        //if(sprint._linkedUserStories.startsWith(issue._id) || sprint._linkedUserStories.includes(","+issue._id+",") || sprint._linkedUserStories.includes(','+issue._id+""))
-        if(sprint._linkedUserStories.includes(issue._id)){
+exports.getIssueListOfSprint = function (sprintID) {
+  return this.getSprint(sprintID).then(sprint => {
+    return issueController.getAllIssues(sprint._projectID).then(issues => {
+      const issuesList = []
+      for (const issue of issues) {
+        // if(sprint._linkedUserStories.startsWith(issue._id) || sprint._linkedUserStories.includes(","+issue._id+",") || sprint._linkedUserStories.includes(','+issue._id+""))
+        if (sprint._linkedUserStories.includes(issue._id)) {
           issuesList.push(issue)
         }
       }
-      return issueList
+      return issuesList
     })
   })
 }
@@ -159,17 +156,16 @@ exports.createSprint = function (req, res) {
     const userStoriesToLink = req.body.linkedUserStories.split(',')
     for (const us of userStoriesToLink) {
       sprint.addLinkedUserStory(us)
-      issueController.getIssue(us)
-        .then( issue => {
-          sprint._totalDifficulty += issue._difficulty
-        })
+      issueController.getIssue(us).then(issue => {
+        sprint._totalDifficulty += issue._difficulty
+      })
     }
   }
 
-  let valueString = req.body.beginDate.split('-')
-  let value = []
+  const valueString = req.body.beginDate.split('-')
+  const value = []
   let count = 0
-  for (let s of valueString) {
+  for (const s of valueString) {
     value[count] = parseInt(s, 10)
     ++count
   }
@@ -226,17 +222,17 @@ exports.updateSprint = function (req, res) {
   }
 
   let valueString = req.body.beginDate.split('-')
-  let valueBegin = []
+  const valueBegin = []
   let count = 0
-  for (let s of valueString) {
+  for (const s of valueString) {
     valueBegin[count] = parseInt(s, 10)
     ++count
   }
 
   valueString = req.body.endDate.split('-')
-  let valueEnd = []
+  const valueEnd = []
   count = 0
-  for (let s of valueString) {
+  for (const s of valueString) {
     valueEnd[count] = parseInt(s, 10)
     ++count
   }

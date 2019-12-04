@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title> Sprints </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
 </head>
 
@@ -14,7 +12,7 @@
         
         <h2> Sprints </h2>
         <a href="/projects/<%= project._id %>/sprints/create" class="btn btn-success"> Nouveau sprint </a>
-        <% for( let sprint of sprints ){ %>
+        <% for(const sprint of sprints){ %>
         <li class="media my-4">
             <a href="/projects/<%= project._id %>/sprints/<%=sprint._id%>" class="btn btn-success"> Voir sprint </a>
             <div class="media-body <%=sprint._color%>" role="alert">
@@ -24,12 +22,12 @@
 
             <form action="/projects/<%= project._id %>/sprints/<%=sprint._id%>/linkIssue" method="POST"> 
               <select name="issueList" id="issueList" size="1" selected="default">
-                <option value="default"> User storie à lier </option>
+                <option value="default"> User story à lier </option>
                 <% for( let issue of issues ){ %>
                   <option value=<%=issue._id%>> <%=issue._id%> </option>
                 <% } %>
               </select>
-              <button type="submit" class="btn btn-success">Lier l'user storie</button>
+              <button type="submit" class="btn btn-success">Lier l'user story</button>
             </form>
 
             <a href="/projects/<%= project._id %>/sprints/<%= sprint._id %>/update" class = "btn btn-primary"> Modifier</a>

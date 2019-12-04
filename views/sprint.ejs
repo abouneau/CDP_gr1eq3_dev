@@ -4,8 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <title> Backlog </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
     <script>
       function showDetailMouse(id, b) {
@@ -29,7 +27,7 @@
         
         <h2> Sprint </h2>
         <a href="/projects/<%= project._id %>/sprints" class="btn btn-success"> Retour à la liste des sprints </a>
-        <% for( let issue of sprintIssues ){ %>
+        <% for (const issue of sprintIssues){ %>
         <li class="media my-4">
           <button id="showButton<%=issue._id%>" class="btn btn-info" onclick="showDetail('<%=issue._id%>')">Plus</button>
           <button id="hideButton<%=issue._id%>" class="btn btn-info" onclick="hideDetail('<%=issue._id%>')" style="display:none">Moins</button>

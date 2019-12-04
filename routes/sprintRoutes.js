@@ -31,7 +31,7 @@ router.get(baseURL + '/sprints', function (req, res) {
 })
 
 /* router.get(baseURL + '/sprints/:id', function (req, res) {
-  
+
 }) */
 
 router.get(baseURL + '/sprints/create', function (req, res) {

@@ -22,14 +22,14 @@ exports.updateAllIssue = function (issues, tasks, projectID) {
   if (tasks == null) {
     tasks = taskController.getAllTasks(projectID)
   }
-  if((issues == null || tasks == null) && projectID == null) {
-    console.log("Error with updateAllIssue : need at least projectID not null or issues and tasks not null")
+  if ((issues == null || tasks == null) && projectID == null) {
+    console.log('Error with updateAllIssue : need at least projectID not null or issues and tasks not null')
   }
-  for (let issue of issues) {
+  for (const issue of issues) {
     let issueNewState = 'end'
     let issueNewColor = 'alert-success'
     let taskLinked = false
-    for (let task of tasks) {
+    for (const task of tasks) {
       if (task._linkedUserStories.includes(issue._id)) {
         taskLinked = true
         if (task._advancementState === 'toDo') {
@@ -65,8 +65,8 @@ exports.getTaskLinked = function (issueID) {
     .then(issue => {
       return taskController.getAllTasks(issue._projectID)
         .then(tasks => {
-          let tasksList = []
-          for (let task of tasks) {
+          const tasksList = []
+          for (const task of tasks) {
             // if(task._linkedUserStories.startsWith(issue._id) || task._linkedUserStories.includes(","+issue._id+",") || task._linkedUserStories.includes(','+issue._id+""))
             if (task._linkedUserStories.includes(issue._id)) {
               tasksList.push(task)

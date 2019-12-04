@@ -106,20 +106,19 @@ exports.updateAllTask = function (tasks, projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   const collection1 = dbconnect.client.db(databaseName).collection(issueCollectionName)
 
-  if(tasks == null && projectID == null) {
-    console.log("Error with updateAllTask : need at least projectID not null or tasks not null")
-  }
-  else{
+  if (tasks == null && projectID == null) {
+    console.log('Error with updateAllTask : need at least projectID not null or tasks not null')
+  } else {
     if (tasks == null) {
       tasks = this.getAllTasks(projectID)
     }
 
-    for (let task of tasks) {
-      let newLinkedUserStories = []
+    for (const task of tasks) {
+      const newLinkedUserStories = []
       let allIssuesExist = true
       let wait = 0
-      for (let issueId of task._linkedUserStories) {
-        let id = { _id: issueId }
+      for (const issueId of task._linkedUserStories) {
+        const id = { _id: issueId }
         dbconnect.elementExists(id, collection1)
           .then(issueExist => {
             if (issueExist) {
@@ -129,7 +128,7 @@ exports.updateAllTask = function (tasks, projectID) {
               allIssuesExist = false
               ++wait
             }
-            if(wait >= task._linkedUserStories.length && !allIssuesExist) {
+            if (wait >= task._linkedUserStories.length && !allIssuesExist) {
               const updatedTask = {
                 _id: task._id,
                 _projectID: task._projectID,
@@ -141,7 +140,7 @@ exports.updateAllTask = function (tasks, projectID) {
                 _assignedDeveloper: task._assignedDeveloper,
                 _color: task._color
               }
-              const taskToUpdate = {_id: task._id}
+              const taskToUpdate = { _id: task._id }
               dbconnect.updateElementInDB(taskToUpdate, updatedTask, collection, 'Task updated')
             }
           })
