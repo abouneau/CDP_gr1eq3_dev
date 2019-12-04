@@ -8,11 +8,9 @@ const issueCollectionName = 'Issues'
 
 const dateBeforeOrIsToday = function (dateToCompare) {
   const date = new Date()
-  if (dateToCompare[0] < date.getFullYear()) {
-    return true
-  } else if (dateToCompare[0] === date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) {
-    return true
-  } else if (dateToCompare[0] === date.getFullYear() && dateToCompare[1] === (date.getMonth() + 1) && dateToCompare[2] <= date.getDate()) {
+  if ((dateToCompare[0] < date.getFullYear()) ||
+      (dateToCompare[0] === date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) ||
+      (dateToCompare[0] === date.getFullYear() && dateToCompare[1] === (date.getMonth() + 1) && dateToCompare[2] <= date.getDate())) {
     return true
   }
   return false

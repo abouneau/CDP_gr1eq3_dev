@@ -14,7 +14,7 @@
         <a href="/projects/<%= project._id %>/sprints/create" class="btn btn-success"> Nouveau sprint </a>
         <% for(const sprint of sprints){ %>
         <li class="media my-4">
-            <a href="/projects/<%= project._id %>/sprints/<%=sprint._id%>" class="btn btn-success"> Voir sprint </a>
+            <a href="/projects/<%= project._id %>/sprints/show/<%=sprint._id%>" class="btn btn-success"> Voir sprint </a>
             <div class="media-body <%=sprint._color%>" role="alert">
               <h5>ID : <%=sprint._id%></h5>
               Difficulté total : <%=sprint._totalDifficulty%>

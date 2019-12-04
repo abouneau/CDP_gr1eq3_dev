@@ -30,9 +30,46 @@ router.get(baseURL + '/sprints', function (req, res) {
     .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
-/* router.get(baseURL + '/sprints/:id', function (req, res) {
-
-}) */
+router.get(baseURL + '/sprints/show/:id', function (req, res) {
+  sprintController.getIssueListOfSprint(req.params.id)
+    .then(issues => {
+      projectController.getProject(req.params.projectID)
+        .then(project => {
+          const issuesTaskList = []
+          let wait = 0
+          if (issues.length === 0) {
+            sprintController.getSprint(req.params.id)
+              .then(sprint => {
+                res.render('../views/sprint', {
+                  sprint: sprint,
+                  issues: issues,
+                  issuesTaskList: issuesTaskList,
+                  project: project
+                })
+              })
+          } else {
+            for (const issue of issues) {
+              issueController.getTaskLinked(issue._id)
+                .then(tasks => {
+                  issuesTaskList[issue._id] = tasks
+                  ++wait
+                  if (wait >= issues.length) {
+                    sprintController.getSprint(req.params.id)
+                      .then(sprint => {
+                        res.render('../views/sprint', {
+                          sprint: sprint,
+                          issues: issues,
+                          issuesTaskList: issuesTaskList,
+                          project: project
+                        })
+                      })
+                  }
+                })
+            }
+          }
+        })
+    })
+})
 
 router.get(baseURL + '/sprints/create', function (req, res) {
   issueController.getAllIssues(req.params.projectID)

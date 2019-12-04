@@ -2,62 +2,72 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title> Backlog </title>
-    <%- include('./navbar.ejs', {project: project}) %>
-    <script>
-      function showDetailMouse(id, b) {
-        document.getElementById(id).style.display = b ? '' : 'none';
-      }
-      function showDetail(id) {
-        document.getElementById(id).style.display = ''
-        document.getElementById("showButton"+id).style.display = 'none'
-        document.getElementById("hideButton"+id).style.display = ''
-      }
-      function hideDetail(id) {
-        document.getElementById(id).style.display = 'none'
-        document.getElementById("showButton"+id).style.display = ''
-        document.getElementById("hideButton"+id).style.display = 'none'
-      }
-    </script>
+  <meta charset="UTF-8">
+  <title> Sprint </title>
+  <%- include('./navbar.ejs', {project: project}) %>
+  <script>
+    function showDetail(id) {
+      document.getElementById(id).style.display = ''
+      document.getElementById("showButton" + id).style.display = 'none'
+      document.getElementById("hideButton" + id).style.display = ''
+    }
+    function hideDetail(id) {
+      document.getElementById(id).style.display = 'none'
+      document.getElementById("showButton" + id).style.display = ''
+      document.getElementById("hideButton" + id).style.display = 'none'
+    }
+  </script>
 </head>
 
 <body>
-    <div class="container">
-        
-        <h2> Sprint </h2>
-        <a href="/projects/<%= project._id %>/sprints" class="btn btn-success"> Retour à la liste des sprints </a>
-        <% for (const issue of sprintIssues){ %>
-        <li class="media my-4">
-          <button id="showButton<%=issue._id%>" class="btn btn-info" onclick="showDetail('<%=issue._id%>')">Plus</button>
-          <button id="hideButton<%=issue._id%>" class="btn btn-info" onclick="hideDetail('<%=issue._id%>')" style="display:none">Moins</button>
-            <div class="media-body <%=issue._color%>" role="alert">
-              <h5>ID : <%=issue._id%></h5>
-              Nom : <%=issue._name%> Priorité : <%=issue._priority%>
-            </div>
+  <div class="container">
 
-<!--             <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST">
+    <h2> Sprint </h2>
+    <a href="/projects/<%= project._id %>/sprints" class="btn btn-success"> Retour à la liste des sprints </a>
+    <div>
+      <h5>ID : <%=sprint._id%></h5>
+      Description : <%=sprint._description%> </br>
+      Date de début : <%=sprint._beginDate%> </br>
+      Date de fin : <%=sprint._endDate%> </br>
+      Difficulté total : <%=sprint._totalDifficulty%>
+    </div>
+    <% for( let issue of issues ){ %>
+    <li class="media my-4">
+      <button id="showButton<%=issue._id%>" class="btn btn-info" onclick="showDetail('<%=issue._id%>')">Plus</button>
+      <button id="hideButton<%=issue._id%>" class="btn btn-info" onclick="hideDetail('<%=issue._id%>')"
+        style="display:none">Moins</button>
+      <div class="media-body <%=issue._color%>" role="alert">
+        <h5>ID : <%=issue._id%></h5>
+        Nom : <%=issue._name%> Priorité : <%=issue._priority%>
+      </div>
+
+      <!--             <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST">
                 <button type="submit" class="btn btn-danger">Supprimer</button>
             </form> -->
-        </li>
-        <div id="<%= issue._id %>" style="display:none;">
-          <p>Description : <%=issue._description%></p>
-          <p>Difficulté : <%=issue._difficulty%></p>
-          <% for( let task of sprintIssuesTasks ){ %>
-            <li class="media my-4">
-                <div class="media-body <%=task._color%>" role="alert" onmouseover="showDetailMouse('<%=task._id%>', true);" onmouseout="showDetailMouse('<%=task._id%>', false);">
-                    <h5>ID : <%= task._id%></h5>
-                    Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
-                </div>
-                <div id="<%= task._id %>" style="display:none;">
-                    <p>Description : <%= task._description %></p>
-                    <p>Temps estimé : <%= task._estimatedTime %></p>
-                    <p>Développeur(s) : <%= task._assignedDeveloper %></p>
-                </div>
-            </li>
+    </li>
+    <div id="<%= issue._id %>" style="display:none;">
+      <p>Description : <%=issue._description%></p>
+      <p>Difficulté : <%=issue._difficulty%></p>
+      <% for( let task of issuesTaskList[issue._id] ){ %>
+      <li class="media my-4">
+        <button id="showButtontask-<%=task._id%>" class="btn btn-secondary"
+          onclick="showDetail('task-<%=task._id%>')">Plus</button>
+        <button id="hideButtontask-<%=task._id%>" class="btn btn-secondary" onclick="hideDetail('task-<%=task._id%>')"
+          style="display:none">Moins</button>
+        <div class="media-body <%=task._color%>" role="alert">
+          <h5>ID : <%= task._id%></h5>
+          Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
         </div>
-        <% } %>
+      </li>
+      <div id="task-<%= task._id %>" style="display:none;">
+        <p>Description : <%= task._description %></p>
+        <p>Temps estimé : <%= task._estimatedTime %></p>
+        <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+      </div>
+      <% } %>
     </div>
+    <% } %>
+  </div>
 </body>
 
 </html>

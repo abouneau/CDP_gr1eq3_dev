@@ -36,14 +36,7 @@
             <label for="difficulty">Difficulté</label>
             <input type="number" placeholder="Difficulté" class="form-control" name="difficulty" id="difficulty" value="<%=issue._difficulty%>" required>
         </div>
-        <div class="form-group">
-            <label for="state">Etat</label>
-            <select name="state" id="state" size="1">
-              <option value="toDo">A faire</option>
-              <option value="onGoing">En cours</option>
-              <option value="end">Terminée</option>
-            </select>
-        </div>
+        <input type="text" class="form-control" name="state" id="state" value="<%=issue._state%>" hidden>
         <button type="submit" class="btn btn-primary">Sauvegarder</button>
         <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
     </form>

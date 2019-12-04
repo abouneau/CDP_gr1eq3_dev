@@ -6,8 +6,15 @@
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <%- include('./navbar.ejs', {project: project}) %>
     <script type="text/javascript">
-      function showDetail(id, b) {
-        document.getElementById(id).style.display = b ? '' : 'none';
+      function showDetail(id) {
+        document.getElementById(id).style.display = ''
+        document.getElementById("showButton"+id).style.display = 'none'
+        document.getElementById("hideButton"+id).style.display = ''
+      }
+      function hideDetail(id) {
+        document.getElementById(id).style.display = 'none'
+        document.getElementById("showButton"+id).style.display = ''
+        document.getElementById("hideButton"+id).style.display = 'none'
       }
     </script>
 </head>
@@ -19,7 +26,9 @@
         <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
         <% for( let task of tasks ){ %>
         <li class="media my-4">
-            <div class="media-body <%=task._color%>" role="alert" onmouseover="showDetail('<%=task._id%>', true);" onmouseout="showDetail('<%=task._id%>', false);">
+            <button id="showButton<%=task._id%>" class="btn btn-info" onclick="showDetail('<%=task._id%>')">Plus</button>
+            <button id="hideButton<%=task._id%>" class="btn btn-info" onclick="hideDetail('<%=task._id%>')" style="display:none">Moins</button>
+            <div class="media-body <%=task._color%>" role="alert" >
               <h5>ID : <%= task._id%></h5>
                 Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
             </div>
