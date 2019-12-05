@@ -1,0 +1,94 @@
+:root {
+  --black  : #1A1A1D;
+  --gray   : #4E4E50;
+  --red    : #6F2232;
+  --fuschia: #950740;
+  --pink   : #C3073F;
+  --dark-gray  : rgb(50, 50, 53);
+  --black-font-color  : #555557;
+  --gray-font-color   : #7a7a7c;
+  --red-font-color    : #4e1923;
+  --fuschia-font-color: #b2466f;
+  --pink-font-color   : #d3446e;
+}
+
+/* JUMBOTRON (user for items in lists of projetcs, issues, tasks, etc) */
+
+.jumbotron {
+  padding: 0.5em;
+  margin: 0.3em;
+  background-color: var(--fuschia);
+}
+
+.jumbotron a {
+  font-weight: bold;
+  color: var(--fuschia-font-color);
+}
+
+.jumbotron a:hover {
+  color: var(--red-font-color);
+}
+
+.jumbotron:hover {
+  background-color: var(--red);
+}
+
+.jumbotron p {
+  font-weight: bold;
+  color: var(--black);
+}
+
+.project-description {
+  font-weight: 650;
+  background-color: var(--dark-gray);
+  color: var(--gray-font-color);
+}
+
+.inner-container {
+  height: 100%;
+  background-color: #4E4E50;
+}
+
+.inner-container h1 {
+  text-transform: uppercase;
+  text-shadow: 1px 1px 2px var(--black);
+  font-size: 50px;
+  font-weight: bolder;
+  color: var(--fuschia);
+}
+
+/* NAVBAR */
+.main-container {
+  background-color: #1A1A1D;
+}
+
+.navbar {
+  background-color: var(--pink);
+  margin-bottom: 1em;
+}
+
+.navbar-brand {
+  text-transform: uppercase;
+  padding: 0.5em;
+  font-weight: 900;
+  font-size: large;
+  color: var(--black);
+}
+
+.navbar-brand:hover {
+  color: var(--dark-gray);
+}
+
+.nav-link {
+  font-weight: 900;
+  color: var(--black)
+}
+
+.nav-link:hover {
+  color: var(--dark-gray);
+  background-color: var(--fuschia);
+}
+
+.nav-item:hover {
+  background-color: var(--fuschia);
+}

@@ -2,83 +2,113 @@
 
 <head>
   <title> <%= project._name %> </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/styles/style.css">
   <script type="text/javascript" src="/scripts/project.js"></script>
   <%- include('./navbar.ejs', {project: project}) %>
-  </head>
+</head>
 
 <body>
-  Nom du projet : <%= project._name %><br>
-  Description : <%= project._description %><br>
-  Collaborateurs : <%= project._contributors %>
-  <% let i = 0 %>
-  <% for(let user of users) { %>
-      <input type="hidden" id="user<%= i %>" value="<%= user._id %>">
-      <% i++ %>
-  <% } %>
-  <form action="/projects/<%= project._id %>" method = "POST">
-    <div class="autocomplete" style="width:300px;">
-      <input id="newContributor" type="text" placeholder="Recherche" name="newContributor" autocomplete="off" class="form-control" required>
-    </div>
-    <button type="submit" class="btn btn-default">Ajouter un collaborateur</button>
-  </form>
-  <script>
-    let emails = []
-    for(let i = 0; i< "<%= users.length %>"; i++) {
-      emails.push(document.getElementById("user"+i).value)
-    }
-    autocomplete(document.getElementById("newContributor"), emails)
-  </script> 
-
-<button class="btn btn-danger" id="btn-delete-project">Supprimer le projet</button>
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" id="my-modal">
-  <div class="modal-dialog modal-sm">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="myModalLabel">Voulez vous vramient supprimer ce projet ?</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <div class="inner-container rounded mb-0 col-lg-12">
+    <h1>
+      <%= project._name %>
+      <button class="btn btn-danger" id="btn-delete-project"><i class="fas fa-trash-alt fa-3x"></i></button>
+    </h1>
+    
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="project-description rounded mb-0 col-md-12">
+          Description : <%= project._description %>
+        </div>
       </div>
-      <div class="modal-footer">
-        <form action="/projects/<%= project._id %>/delete" method="POST">
-          <button type="submit" class="btn btn-danger" id="modal-btn-oui">Oui</button>
-        </form>
-        <form>
-          <button type="button" class="btn btn-primary" id="modal-btn-non">Non</button>
-        </form>
+      <div class="col-lg-6">
+        <div class="project-description rounded mb-0 col-md-12">
+          Collaborateurs :
+          <% for( let contributor of project._contributors ) { %>
+            <p><%= contributor %></p>
+          <% } %>
+        </div>
+      </div>
+
+    </div>
+    <% let i = 0 %>
+    <% for(let user of users) { %>
+    <input type="hidden" id="user<%= i %>" value="<%= user._id %>">
+    <% i++ %>
+    <% } %>
+    <form action="/projects/<%= project._id %>" method="POST">
+      <div class="autocomplete" style="width:300px;">
+        <input id="newContributor" type="text" placeholder="Recherche" name="newContributor" autocomplete="off"
+          class="form-control" required>
+      </div>
+      <button type="submit" class="btn btn-default">Ajouter un collaborateur</button>
+    </form>
+    <script>
+      let emails = []
+      for (let i = 0; i < "<%= users.length %>"; i++) {
+        emails.push(document.getElementById("user" + i).value)
+      }
+      autocomplete(document.getElementById("newContributor"), emails)
+    </script>
+
+    
+  </div>
+
+  <!-- Confirmation modal for deleting a project -->
+  <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"
+    id="my-modal">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="myModalLabel">Voulez vous vramient supprimer ce projet ?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">&times;</span></button>
+        </div>
+        <div class="modal-footer">
+          <form action="/projects/<%= project._id %>/delete" method="POST">
+            <button type="submit" class="btn btn-danger" id="modal-btn-oui">Oui</button>
+          </form>
+          <form>
+            <button type="button" class="btn btn-primary" id="modal-btn-non">Non</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="alert" role="alert" id="result"></div>
+  <div class="alert" role="alert" id="result"></div>
 
-<script>
-  var modalConfirm = function(callback){
-    
-    $("#btn-delete-project").on("click", function(){
-      $("#my-modal").modal('show');
+  <script>
+    var modalConfirm = function (callback) {
+
+      $("#btn-delete-project").on("click", function () {
+        $("#my-modal").modal('show');
+      });
+
+      $("#modal-btn-oui").on("click", function () {
+        callback(true);
+        $("#my-modal").modal('hide');
+      });
+
+      $("#modal-btn-non").on("click", function () {
+        callback(false);
+        $("#my-modal").modal('hide');
+      });
+    };
+
+    modalConfirm(function (confirm) {
+      if (confirm) {
+        console.log("Le projet a été supprimé.");
+      }
     });
-
-    $("#modal-btn-oui").on("click", function(){
-      callback(true);
-      $("#my-modal").modal('hide');
-    });
-    
-    $("#modal-btn-non").on("click", function(){
-      callback(false);
-      $("#my-modal").modal('hide');
-    });
-  };
-
-  modalConfirm(function(confirm){
-    if(confirm){
-      console.log("Le projet a été supprimé."); 
-    }
-  });
-</script>
+  </script>
 </body>
 
 </html>

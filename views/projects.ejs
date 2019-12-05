@@ -3,19 +3,72 @@
 <head>
   <%- include('./simple_navbar.ejs') %>
   <title> Mes projets </title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
-  <a href=/projects/create class="btn btn-success"> Nouveau projet </a>
+  <div class="inner-container rounded mb-0">
+    <div class="text-center">
+      <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalNewProjectForm">Créer
+        un
+        nouveau projet</a>
+    </div>
+    
+    <% for( let project of projects ){ %>
+    <div class="jumbotron">
+      <h2><a href="/projects/<%= project._id %>"><%= project._name %></a></h2>
+      <p><%= project._description %></p>
+    </div>
+    <% } %>
+  </div>
 
-  <% for( let project of projects ){ %>
-  <li>
-    <div>Nom : <a href="/projects/<%= project._id %>"><%= project._name %></a></div>
-    <div>Description : <%= project._description %></div>
-  </li>
-  <% } %>
+  <div class="modal fade" id="modalNewProjectForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">Nouveau Projet</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form role="form" action="/projects/create" method="POST">
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <input type="text" id="projectName" name="name" class="form-control validate" required>
+              <label for="projectName">Nom du projet</label>
+            </div>
+            <div class="md-form mb-4">
+              <input type="text" id="projectDescription" name="description" class="form-control validate" required>
+              <label for="projectDescription">Description du projet</label>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-default">Créer le projet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- jQuery -->
+  <script type="text/javascript" src="/js/jquery.min.js"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="/js/popper.min.js"></script>
+  <!-- Bootstrap core JavaScript -->
+  <!-- <script type="text/javascript" src="/js/bootstrap.min.js"></script> -->
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="/js/mdb.min.js"></script>
 </body>
 
 </html>
