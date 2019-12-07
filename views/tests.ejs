@@ -2,23 +2,29 @@
 
 <head>
     <title> Tests </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="/css/mdb.min.css">
+    <!-- Custom css -->
+    <link rel="stylesheet" href="/css/style.css">
     <%- include('./navbar.ejs', {project: project}) %>
 </head>
 
 <body>
-    <div class="container">
-        
+    <div class="inner-container rounded mb-0 col-lg-12">
+
         <h2> Tests </h2>
         <a href="/projects/<%= project._id %>/tests/create" class="btn btn-success"> Nouveau test </a>
         <% for( let test of tests ){ %>
         <li class="media my-4">
             <div class="media-body">
-              <h5>Name : <%= test._name %></h5>
+                <h5>Name : <%= test._name %></h5>
                 Description : <%= test._description %>
             </div>
-            <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class = "btn btn-primary"> Modifier </a>
+            <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class="btn btn-primary"> Modifier </a>
 
             <form action="/projects/<%= project._id %>/tests/<%= test._id %>/delete" method="POST">
                 <button type="submit" class="btn btn-danger">Supprimer</button>

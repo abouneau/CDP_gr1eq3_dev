@@ -15,6 +15,7 @@
 /* JUMBOTRON (user for items in lists of projetcs, issues, tasks, etc) */
 
 .jumbotron {
+  border-radius: 10px;
   padding: 0.5em;
   margin: 0.3em;
   background-color: var(--fuschia);
@@ -55,6 +56,23 @@
   font-size: 50px;
   font-weight: bolder;
   color: var(--fuschia);
+}
+
+.btn-sq {
+  width: 50px !important;
+  height: 50px !important;
+  padding:10px;
+}
+
+.btn-sq-xs {
+  width: 30px !important;
+  height: 30px !important;
+  padding:2px;
+}
+
+.my-card {
+  padding: 5px;
+  margin: 10px;
 }
 
 /* NAVBAR */

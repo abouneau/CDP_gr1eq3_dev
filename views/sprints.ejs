@@ -2,42 +2,50 @@
 <html>
 
 <head>
-    <meta charset="UTF-8">
-    <title> Sprints </title>
-    <%- include('./navbar.ejs', {project: project}) %>
+  <meta charset="UTF-8">
+  <title> Sprints </title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <%- include('./navbar.ejs', {project: project}) %>
 </head>
 
 <body>
-    <div class="container">
-        
-        <h2> Sprints </h2>
-        <a href="/projects/<%= project._id %>/sprints/create" class="btn btn-success"> Nouveau sprint </a>
-        <% for(const sprint of sprints){ %>
-        <li class="media my-4">
-            <a href="/projects/<%= project._id %>/sprints/show/<%=sprint._id%>" class="btn btn-success"> Voir sprint </a>
-            <div class="media-body <%=sprint._color%>" role="alert">
-              <h5>ID : <%=sprint._id%></h5>
-              Difficulté total : <%=sprint._totalDifficulty%>
-            </div>
+  <div class="inner-container rounded mb-0 col-lg-12">
 
-            <form action="/projects/<%= project._id %>/sprints/<%=sprint._id%>/linkIssue" method="POST"> 
-              <select name="issueList" id="issueList" size="1" selected="default">
-                <option value="default"> User story à lier </option>
-                <% for( let issue of issues ){ %>
-                  <option value=<%=issue._id%>> <%=issue._id%> </option>
-                <% } %>
-              </select>
-              <button type="submit" class="btn btn-success">Lier l'user story</button>
-            </form>
+    <h2> Sprints </h2>
+    <a href="/projects/<%= project._id %>/sprints/create" class="btn btn-success"> Nouveau sprint </a>
+    <% for(const sprint of sprints){ %>
+    <li class="media my-4">
+      <a href="/projects/<%= project._id %>/sprints/show/<%=sprint._id%>" class="btn btn-success"> Voir sprint </a>
+      <div class="media-body <%=sprint._color%>" role="alert">
+        <h5>ID : <%=sprint._id%></h5>
+        Difficulté total : <%=sprint._totalDifficulty%>
+      </div>
 
-            <a href="/projects/<%= project._id %>/sprints/<%= sprint._id %>/update" class = "btn btn-primary"> Modifier</a>
+      <form action="/projects/<%= project._id %>/sprints/<%=sprint._id%>/linkIssue" method="POST">
+        <select name="issueList" id="issueList" size="1" selected="default">
+          <option value="default"> User story à lier </option>
+          <% for( let issue of issues ){ %>
+          <option value=<%=issue._id%>> <%=issue._id%> </option>
+          <% } %>
+        </select>
+        <button type="submit" class="btn btn-success">Lier l'user story</button>
+      </form>
 
-            <form action="/projects/<%= project._id %>/sprints/<%= sprint._id %>/delete" method="POST">
-                <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form>
-        </li>
-        <% } %>
-    </div>
+      <a href="/projects/<%= project._id %>/sprints/<%= sprint._id %>/update" class="btn btn-primary"> Modifier</a>
+
+      <form action="/projects/<%= project._id %>/sprints/<%= sprint._id %>/delete" method="POST">
+        <button type="submit" class="btn btn-danger">Supprimer</button>
+      </form>
+    </li>
+    <% } %>
+  </div>
 </body>
 
 </html>

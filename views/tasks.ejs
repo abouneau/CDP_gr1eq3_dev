@@ -1,51 +1,59 @@
 <html>
 
 <head>
-    <title> Tâches </title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <%- include('./navbar.ejs', {project: project}) %>
-    <script type="text/javascript">
-      function showDetail(id) {
-        document.getElementById(id).style.display = ''
-        document.getElementById("showButton"+id).style.display = 'none'
-        document.getElementById("hideButton"+id).style.display = ''
-      }
-      function hideDetail(id) {
-        document.getElementById(id).style.display = 'none'
-        document.getElementById("showButton"+id).style.display = ''
-        document.getElementById("hideButton"+id).style.display = 'none'
-      }
-    </script>
+  <title> Tâches </title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <%- include('./navbar.ejs', {project: project}) %>
+  <script type="text/javascript" src="/js/scripts.js"></script>
 </head>
 
 <body>
-    <div class="container">
-        
-        <h2> Tâches </h2>
-        <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
-        <% for( let task of tasks ){ %>
-        <li class="media my-4">
-            <button id="showButton<%=task._id%>" class="btn btn-info" onclick="showDetail('<%=task._id%>')">Plus</button>
-            <button id="hideButton<%=task._id%>" class="btn btn-info" onclick="hideDetail('<%=task._id%>')" style="display:none">Moins</button>
-            <div class="media-body <%=task._color%>" role="alert" >
-              <h5>ID : <%= task._id%></h5>
-                Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
-            </div>
-            
-            <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class = "btn btn-primary"> Modifier </a>
+  <div class="inner-container rounded mb-0 col-lg-12">
 
-            <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST">
-                <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form>
-        </li>
-        <div id="<%= task._id %>" style="display:none;">
-          <p>Description : <%= task._description %></p>
-          <p>Temps estimé : <%= task._estimatedTime %></p>
-          <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+    <h1> Tâches </h1>
+
+    <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
+    <div class="row">
+      <% for( let task of tasks ){ %>
+      <div class="col-lg-4">
+
+        <div class="my-card rounded mb-0 <%=task._color%>" role="alert">
+          <a id="showButton<%=task._id%>" onclick="showDetail('<%=task._id%>')" class="btn btn-sq-xs btn-info">
+            <i class="fas fa-chevron-circle-right fa-2x"></i>
+          </a>
+          <a id="hideButton<%=task._id%>" onclick="hideDetail('<%=task._id%>')" class="btn btn-sq-xs btn-info"
+            style="display:none">
+            <i class="fas fa-chevron-circle-down fa-2x"></i>
+          </a>
+          <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class="btn btn-sq-xs btn-primary">
+            <i><i class="fas fa-pen"></i></i>
+          </a>
+          <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST"
+            style="display: inline">
+            <button type="submit" class="btn btn-sq-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
+          </form>
+          <h5>ID : <%= task._id%></h5>
+          Dépendances : <%= task._dependencies %>
+          User Stories liées : <%= task._linkedUserStories %>
+
+
+          <div id="<%= task._id %>" style="display:none;">
+            <p>Description : <%= task._description %></p>
+            <p>Temps estimé : <%= task._estimatedTime %></p>
+            <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+          </div>
         </div>
-        <% } %>
+      </div>
+      <% } %>
     </div>
+  </div>
 </body>
 
 </html>
