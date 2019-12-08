@@ -22,7 +22,7 @@
     <h1> Backlog </h1>
 
     <a href="/projects/<%= project._id %>/issues/create" class="btn btn-success">Nouvelle issue</a>
-    <br />
+   
     <div class="row">
       <% for( let issue of issues ){ %>
       <div class="col-lg-4">
@@ -35,7 +35,7 @@
             <i class="fas fa-chevron-circle-down fa-2x"></i>
           </a>
           <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class="btn btn-sq-xs btn-primary">
-            <i><i class="fas fa-pen"></i></i>
+            <i class="fas fa-pen"></i>
           </a>
           <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST"
             style="display: inline">

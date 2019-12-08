@@ -1,37 +1,41 @@
 <html>
 
 <head>
-    <title> Tests </title>
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-    <!-- Material Design Bootstrap -->
-    <link rel="stylesheet" href="/css/mdb.min.css">
-    <!-- Custom css -->
-    <link rel="stylesheet" href="/css/style.css">
-    <%- include('./navbar.ejs', {project: project}) %>
+  <title> Tests </title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <%- include('./navbar.ejs', {project: project}) %>
 </head>
 
 <body>
-    <div class="inner-container rounded mb-0 col-lg-12">
+  <div class="inner-container rounded mb-0 col-lg-12">
 
-        <h2> Tests </h2>
-        <a href="/projects/<%= project._id %>/tests/create" class="btn btn-success"> Nouveau test </a>
-        <% for( let test of tests ){ %>
-        <li class="media my-4">
-            <div class="media-body">
-                <h5>Name : <%= test._name %></h5>
-                Description : <%= test._description %>
-            </div>
-            <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class="btn btn-primary"> Modifier </a>
+    <h1> Tests </h1>
 
-            <form action="/projects/<%= project._id %>/tests/<%= test._id %>/delete" method="POST">
-                <button type="submit" class="btn btn-danger">Supprimer</button>
+    <a href="/projects/<%= project._id %>/tests/create" class="btn btn-success"> Nouveau test </a>
+
+    <div class="row">
+      <% for( let test of tests ){ %>
+      <div class="col-lg-4">
+        <div class="my-card rounded mb-0 cyan">
+            <a href="/projects/<%= project._id %>/tests/<%= test._id %>/update" class="btn btn-sq-xs btn-primary"> <i class="fas fa-pen"></i>
+            </a>
+            <form action="/projects/<%= project._id %>/tests/<%= test._id %>/delete" method="POST" style="display: inline">
+              <button type="submit" class="btn btn-sq-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
             </form>
-        </li>
-        <% } %>
+          <h3>Name : <%= test._name %></h3>
+          <h5>Description : <%= test._description %></h5>
+        </div>
+      </div>
+      <% } %>
     </div>
+  </div>
 </body>
 
 </html>
