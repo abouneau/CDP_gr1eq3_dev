@@ -1,6 +1,7 @@
 const Sprint = require('../models/sprintModel')
 const dbconnect = require('../database/dbconnect')
 const issueController = require('./issueController')
+const ObjectID = require('mongodb').ObjectID
 
 const databaseName = 'Projets'
 const collectionName = 'Sprints'
@@ -54,9 +55,8 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
             }
             if (wait >= sprint._linkedUserStories.length && !allIssuesExist) {
               const updatedSprint = {
-                _id: sprint._id,
                 _projectID: sprint._projectID,
-                _description: sprint._description,
+                _name: sprint._name,
                 _beginDate: sprint._beginDate,
                 _endDate: sprint.endDate,
                 _linkedUserStories: newLinkedUserStories,
@@ -64,7 +64,7 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
                 _state: sprint._state,
                 _color: sprint._color
               }
-              const sprintToUpdate = { _id: sprint._id }
+              const sprintToUpdate = { _id: ObjectID(sprint._id) }
               dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, collection, 'Sprint updated')
             }
           })
@@ -115,9 +115,17 @@ exports.updateAllSprintState = function (sprints, projectID) {
 }
 
 exports.getSprint = function (sprintID) {
+  try {
+    ObjectID(sprintID)
+  } catch (err) {
+    return new Promise((resolve, reject) => {
+      reject(err)
+    })
+  }
+
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
-  return dbconnect.findElementInDB({ _id: sprintID }, collection).then(sprint => {
+  return dbconnect.findElementInDB({ _id: ObjectID(sprintID) }, collection).then(sprint => {
     return sprint
   }).catch(err => {
     throw err
@@ -141,9 +149,8 @@ exports.getIssueListOfSprint = function (sprintID) {
 
 exports.createSprint = function (req, res) {
   const sprint = new Sprint(
-    req.body.id,
     req.params.projectID,
-    req.body.description,
+    req.body.name,
     req.body.beginDate,
     req.body.endDate
   )
@@ -183,7 +190,7 @@ exports.createSprint = function (req, res) {
 exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.body.issueList
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  const sprintToLinkId = { _id: req.params.id }
+  const sprintToLinkId = { _id: ObjectID(req.params.id) }
   dbconnect.findElementInDB(sprintToLinkId, collection)
     .then(sprintToLink => {
       if (!sprintToLink._linkedUserStories.includes(issueToLinkWith)) {
@@ -194,7 +201,7 @@ exports.linkToIssue = function (req, res) {
 }
 
 exports.updateSprint = function (req, res) {
-  const sprintToUpdate = { _id: req.params.id }
+  const sprintToUpdate = { _id: ObjectID(req.params.id) }
 
   const issuesToLinkWith = []
   let totalDifficulty = 0
@@ -210,9 +217,8 @@ exports.updateSprint = function (req, res) {
   }
 
   const updatedSprint = {
-    _id: req.params.id,
     _projectID: req.params.projectID,
-    _description: req.body.description,
+    _name: req.body.name,
     _beginDate: req.body.beginDate,
     _endDate: req.body.endDate,
     _linkedUserStories: issuesToLinkWith,
@@ -255,7 +261,7 @@ exports.updateSprint = function (req, res) {
 }
 
 exports.deleteSprint = function (req, res) {
-  const sprintToDelete = { _id: req.params.id }
+  const sprintToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
   return dbconnect.deleteElementFromDB(sprintToDelete, collection, 'Sprint deleted').then(result => {

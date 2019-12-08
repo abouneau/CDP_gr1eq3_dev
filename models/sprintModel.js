@@ -1,8 +1,7 @@
 class Sprint {
-  constructor (id, projectID, description, beginDate, endDate) {
-    this._id = id
+  constructor (projectID, name, beginDate, endDate) {
     this._projectID = projectID
-    this._description = description
+    this._name = name
     this._beginDate = beginDate
     this._endDate = endDate
     this._linkedUserStories = []
