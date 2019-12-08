@@ -1,7 +1,7 @@
 
 class Task {
-  constructor (id, projectID, description, estimatedTime, dependencies, advancementState, assignedDeveloper) {
-    this._id = id
+  constructor (taskID, projectID, description, estimatedTime, dependencies, advancementState, assignedDeveloper) {
+    this._taskID = taskID
     this._projectID = projectID
     this._description = description
     this._estimatedTime = estimatedTime

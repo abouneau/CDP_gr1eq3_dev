@@ -1,5 +1,6 @@
 const Task = require('../models/taskModel')
 const dbconnect = require('../database/dbconnect')
+const ObjectID = require('mongodb').ObjectID
 
 const databaseName = 'Projets'
 const collectionName = 'Tasks'
@@ -7,7 +8,7 @@ const issueCollectionName = 'Issues'
 
 exports.createTask = function (req, res) {
   const task = new Task(
-    req.body.id,
+    req.body.taskID,
     req.params.projectID,
     req.body.description,
     req.body.estimatedTime,
@@ -28,7 +29,7 @@ exports.createTask = function (req, res) {
 }
 
 exports.getTask = function (req, res) {
-  const taskToFind = { _id: req.params.id }
+  const taskToFind = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
   return dbconnect.findElementInDB(taskToFind, collection)
@@ -40,7 +41,7 @@ exports.getTask = function (req, res) {
 exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.params.id
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  const taskToLinkId = { _id: req.body.taskList }
+  const taskToLinkId = { _id: ObjectID(req.body.taskList) }
   dbconnect.findElementInDB(taskToLinkId, collection)
     .then(taskToLink => {
       console.log('test')
@@ -54,7 +55,7 @@ exports.linkToIssue = function (req, res) {
 }
 
 exports.updateTask = function (req, res) {
-  const taskToUpdate = { _id: req.params.id }
+  const taskToUpdate = { _id: ObjectID(req.params.id) }
   const issuesToLinkWith = []
   if (req.body.linkedUserStories !== '') {
     const userStoriesToLink = req.body.linkedUserStories.split(',')
@@ -63,7 +64,7 @@ exports.updateTask = function (req, res) {
     }
   }
   const updatedTask = {
-    _id: req.params.id, // for now, id is immutable, so we keep the id from the params
+    _taskID: req.body.taskID,
     _projectID: req.params.projectID,
     _description: req.body.description,
     _estimatedTime: req.body.estimatedTime,
@@ -87,7 +88,7 @@ exports.updateTask = function (req, res) {
 }
 
 exports.deleteTask = function (req, res) {
-  const taskToDelete = { _id: req.params.id }
+  const taskToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
   dbconnect.deleteElementFromDB(taskToDelete, collection, 'task deleted')
@@ -130,7 +131,7 @@ exports.updateAllTask = function (tasks, projectID) {
             }
             if (wait >= task._linkedUserStories.length && !allIssuesExist) {
               const updatedTask = {
-                _id: task._id,
+                _taskID: task._taskID,
                 _projectID: task._projectID,
                 _description: task._description,
                 _estimatedTime: task._estimatedTime,
@@ -140,7 +141,7 @@ exports.updateAllTask = function (tasks, projectID) {
                 _assignedDeveloper: task._assignedDeveloper,
                 _color: task._color
               }
-              const taskToUpdate = { _id: task._id }
+              const taskToUpdate = { _id: ObjectID(task._id) }
               dbconnect.updateElementInDB(taskToUpdate, updatedTask, collection, 'Task updated')
             }
           })

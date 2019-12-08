@@ -47,11 +47,11 @@ exports.getAllProjects = function (userID) {
     })
 }
 
-exports.addTaskToProject = function (projectID, taskID) {
-  const collection = dbconnect.client.db('Projets').collection('Projets')
-  const project = dbconnect.findElementInDB({ _id: ObjectID(projectID) }, collection)
-  project._issues.push(taskID)
-}
+// exports.addTaskToProject = function (projectID, taskID) {
+//   const collection = dbconnect.client.db('Projets').collection('Projets')
+//   const project = dbconnect.findElementInDB({ _id: ObjectID(projectID) }, collection)
+//   project._tasks.push(taskID)
+// }
 
 exports.addContributorToProject = function (projectID, newContributor) {
   const collection = dbconnect.client.db('Projets').collection('Projets')
