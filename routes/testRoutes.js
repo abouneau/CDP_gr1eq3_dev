@@ -62,7 +62,6 @@ router.get(baseURL + '/tests/:id/update', function (req, res) {
     .then(test => {
       projectController.getProject(req.params.projectID)
         .then(project => {
-          console.log(project._name)
           res.render('../views/updateTest', {
             test: test,
             project: project

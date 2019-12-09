@@ -1,8 +1,7 @@
 class Issue {
-  constructor (id, projectID, name, description, priority, difficulty, state) {
-    this._id = id
+  constructor (issueID, projectID, description, priority, difficulty, state) {
+    this._issueID = issueID
     this._projectID = projectID
-    this._name = name
     this._description = description
     this._priority = priority
     this._difficulty = difficulty

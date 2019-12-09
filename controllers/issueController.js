@@ -1,6 +1,7 @@
 const Issue = require('../models/issueModel')
 const dbconnect = require('../database/dbconnect')
 const taskController = require('../controllers/taskController')
+const ObjectID = require('mongodb').ObjectID
 
 const databaseName = 'Projets'
 const collectionName = 'Issues'
@@ -30,7 +31,7 @@ exports.updateAllIssue = function (issues, tasks, projectID) {
     let issueNewColor = 'alert-success'
     let taskLinked = false
     for (const task of tasks) {
-      if (task._linkedUserStories.includes(issue._id)) {
+      if (task._linkedUserStories.toString().includes(issue._issueID.toString())) {
         taskLinked = true
         if (task._advancementState === 'toDo') {
           issueNewState = 'toDo'
@@ -53,7 +54,7 @@ exports.updateAllIssue = function (issues, tasks, projectID) {
 exports.getIssue = function (issueID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
-  return dbconnect.findElementInDB({ _id: issueID }, collection).then(issue => {
+  return dbconnect.findElementInDB({ _id: ObjectID(issueID) }, collection).then(issue => {
     return issue
   }).catch(err => {
     throw err
@@ -78,54 +79,89 @@ exports.getTaskLinked = function (issueID) {
 }
 
 exports.createIssue = function (req, res) {
-  const issue = new Issue(
-    req.body.id,
-    req.params.projectID,
-    req.body.name,
-    req.body.description,
-    req.body.priority,
-    req.body.difficulty,
-    'toDo'
-  )
-  issue._color = 'alert-danger'
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  return dbconnect.addElementToDB(issue, collection, 'Issue added successfully.').then(result => {
-    return result
+  return dbconnect.findElementInDB({ _issueID: req.body.issueID, _projectID: req.params.projectID }, collection)
+    .then(issue => {
+      // if this issueID already exists in this project
+      if (issue !== null) {
+        return new Promise((resolve, reject) => {
+          reject(issue)
+        })
+      } else {
+        const issue = new Issue(
+          req.body.issueID,
+          req.params.projectID,
+          req.body.description,
+          req.body.priority,
+          req.body.difficulty,
+          'toDo'
+        )
+        issue._color = 'alert-danger'
+        return dbconnect.addElementToDB(issue, collection, 'Issue added successfully.').then(result => {
+          return result
+        }).catch(err => {
+          throw err
+        })
+      }
+    })
+}
+
+exports.updateIssue = function (req, res) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  return dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
+    .then(issue => {
+      if (issue._issueID !== req.body.issueID) {
+        return new Promise((resolve, reject) => {
+          reject(issue)
+        })
+      } else {
+        const issueToUpdate = { _id: ObjectID(req.params.id) }
+        const updatedIssue = {
+          _issueID: req.body.issueID,
+          _projectID: req.params.projectID,
+          _description: req.body.description,
+          _priority: req.body.priority,
+          _difficulty: req.body.difficulty,
+          _state: req.body.state
+        }
+
+        if (updatedIssue._state === 'toDo') {
+          updatedIssue._color = 'alert-danger'
+        } else if (updatedIssue._state === 'onGoing') {
+          updatedIssue._color = 'alert-warning'
+        } else {
+          updatedIssue._color = 'alert-success'
+        }
+
+        return dbconnect.updateElementInDB(issueToUpdate, updatedIssue, collection, 'Issue updated').then(result => {
+          return result
+        }).catch(err => {
+          throw err
+        })
+      }
+    })
+}
+
+exports.issueIDtoMongoID = function (issueID, projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  return dbconnect.findElementInDB({ _issueID: issueID, _projectID: projectID }, collection).then(issue => {
+    return issue._id
   }).catch(err => {
     throw err
   })
 }
 
-exports.updateIssue = function (req, res) {
-  const issueToUpdate = { _id: req.params.id }
-  const updatedIssue = {
-    _id: req.params.id,
-    _projectID: req.params.projectID,
-    _name: req.body.name,
-    _description: req.body.description,
-    _priority: req.body.priority,
-    _difficulty: req.body.difficulty,
-    _state: req.body.state
-  }
-
-  if (updatedIssue._state === 'toDo') {
-    updatedIssue._color = 'alert-danger'
-  } else if (updatedIssue._state === 'onGoing') {
-    updatedIssue._color = 'alert-warning'
-  } else {
-    updatedIssue._color = 'alert-success'
-  }
-
+exports.mongoIDtoIssueID = function (id) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  return dbconnect.updateElementInDB(issueToUpdate, updatedIssue, collection, 'Issue updated').then(result => {
-    return result
+  return dbconnect.findElementInDB({ _id: ObjectID(id) }, collection).then(issue => {
+    return issue._issueID
   }).catch(err => {
     throw err
   })
 }
 
 exports.deleteIssue = function (req, res) {
-  const issueToDelete = { _id: req.params.id }
+  const issueToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
   return dbconnect.deleteElementFromDB(issueToDelete, collection, 'Issue deleted').then(result => {

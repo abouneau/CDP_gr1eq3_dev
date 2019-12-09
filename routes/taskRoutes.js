@@ -85,7 +85,6 @@ router.get(baseURL + '/tasks/:id/tiedTask', function (req, res) {
     .then(issues => {
       projectController.getProject(req.params.projectID)
         .then(project => {
-          console.log(project._name)
           res.render('../views/tiedTask', {
             issueId: req.params.id,
             issues: issues,

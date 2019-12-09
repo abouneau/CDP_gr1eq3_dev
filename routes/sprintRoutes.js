@@ -93,7 +93,6 @@ router.get(baseURL + '/sprints/:id/update', function (req, res) {
         .then(issues => {
           projectController.getProject(req.params.projectID)
             .then(project => {
-              console.log(project._name)
               res.render('../views/updateSprint', {
                 sprint: sprint,
                 issues: issues,

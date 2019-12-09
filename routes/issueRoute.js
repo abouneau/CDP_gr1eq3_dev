@@ -66,7 +66,6 @@ router.get(baseURL + '/issues/:id/update', function (req, res) {
     .then(issue => {
       projectController.getProject(req.params.projectID)
         .then(project => {
-          console.log(project._name)
           res.render('../views/updateIssue', {
             issue: issue,
             project: project
@@ -79,11 +78,13 @@ router.get(baseURL + '/issues/:id/update', function (req, res) {
 
 router.post(baseURL + '/issues/create', function (req, res) {
   issueController.createIssue(req, res)
+    .catch(issue => console.log('The issue id already exists : ' + issue._issueID))
   res.redirect('/projects/' + req.params.projectID + '/issues')
 })
 
 router.post(baseURL + '/issues/:id/update', function (req, res) {
   issueController.updateIssue(req, res)
+    .catch(issue => console.log('The issue id cannot change. It must stay ' + issue._issueID))
   res.redirect('/projects/' + req.params.projectID + '/issues')
 })
 

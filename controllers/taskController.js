@@ -7,25 +7,33 @@ const collectionName = 'Tasks'
 const issueCollectionName = 'Issues'
 
 exports.createTask = function (req, res) {
-  const task = new Task(
-    req.body.taskID,
-    req.params.projectID,
-    req.body.description,
-    req.body.estimatedTime,
-    req.body.dependencies,
-    'toDo',
-    req.body.assignedDeveloper
-  )
-  if (req.body.linkedUserStories !== '') {
-    const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (const us of userStoriesToLink) {
-      task.addLinkedUserStory(us)
-    }
-  }
-  task._color = 'alert-danger'
-
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.addElementToDB(task, collection, 'Task added successfully.')
+  dbconnect.findElementInDB({ _taskID: req.body.taskID, _projectID: req.params.projectID }, collection)
+    .then(task => {
+      if (task !== null) {
+        return new Promise((resolve, reject) => {
+          reject(task)
+        })
+      } else {
+        const task = new Task(
+          req.body.taskID,
+          req.params.projectID,
+          req.body.description,
+          req.body.estimatedTime,
+          req.body.dependencies,
+          'toDo',
+          req.body.assignedDeveloper
+        )
+        if (req.body.linkedUserStories !== '') {
+          const userStoriesToLink = req.body.linkedUserStories.split(',')
+          for (const issueID of userStoriesToLink) {
+            task.addLinkedUserStory(issueID)
+          }
+        }
+        task._color = 'alert-danger'
+        dbconnect.addElementToDB(task, collection, 'Task added successfully.')
+      }
+    })
 }
 
 exports.getTask = function (req, res) {
@@ -55,36 +63,43 @@ exports.linkToIssue = function (req, res) {
 }
 
 exports.updateTask = function (req, res) {
-  const taskToUpdate = { _id: ObjectID(req.params.id) }
-  const issuesToLinkWith = []
-  if (req.body.linkedUserStories !== '') {
-    const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (const us of userStoriesToLink) {
-      issuesToLinkWith.push(us)
-    }
-  }
-  const updatedTask = {
-    _taskID: req.body.taskID,
-    _projectID: req.params.projectID,
-    _description: req.body.description,
-    _estimatedTime: req.body.estimatedTime,
-    _dependencies: req.body.dependencies,
-    _linkedUserStories: issuesToLinkWith,
-    _advancementState: req.body.advancementState,
-    _assignedDeveloper: req.body.assignedDeveloper
-  }
-
-  if (updatedTask._advancementState === 'toDo') {
-    updatedTask._color = 'alert-danger'
-  } else if (updatedTask._advancementState === 'onGoing') {
-    updatedTask._color = 'alert-warning'
-  } else {
-    updatedTask._color = 'alert-success'
-  }
-
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
+  dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
+    .then(task => {
+      if (task._taskID !== req.body.taskID) {
+        return new Promise((resolve, reject) => {
+          reject(task)
+        })
+      } else {
+        const taskToUpdate = { _id: ObjectID(req.params.id) }
+        const issuesToLinkWith = []
+        if (req.body.linkedUserStories !== '') {
+          const userStoriesToLink = req.body.linkedUserStories.split(',')
+          for (const us of userStoriesToLink) {
+            issuesToLinkWith.push(us)
+          }
+        }
+        const updatedTask = {
+          _taskID: req.body.taskID,
+          _projectID: req.params.projectID,
+          _description: req.body.description,
+          _estimatedTime: req.body.estimatedTime,
+          _dependencies: req.body.dependencies,
+          _linkedUserStories: issuesToLinkWith,
+          _advancementState: req.body.advancementState,
+          _assignedDeveloper: req.body.assignedDeveloper
+        }
 
-  dbconnect.updateElementInDB(taskToUpdate, updatedTask, collection, 'Task updated')
+        if (updatedTask._advancementState === 'toDo') {
+          updatedTask._color = 'alert-danger'
+        } else if (updatedTask._advancementState === 'onGoing') {
+          updatedTask._color = 'alert-warning'
+        } else {
+          updatedTask._color = 'alert-success'
+        }
+        dbconnect.updateElementInDB(taskToUpdate, updatedTask, collection, 'Task updated')
+      }
+    })
 }
 
 exports.deleteTask = function (req, res) {
@@ -119,7 +134,7 @@ exports.updateAllTask = function (tasks, projectID) {
       let allIssuesExist = true
       let wait = 0
       for (const issueId of task._linkedUserStories) {
-        const id = { _id: issueId }
+        const id = { _issueID: issueId }
         dbconnect.elementExists(id, collection1)
           .then(issueExist => {
             if (issueExist) {
