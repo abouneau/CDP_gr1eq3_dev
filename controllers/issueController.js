@@ -16,6 +16,24 @@ exports.getAllIssues = function (projectID) {
   })
 }
 
+/* exports.getAllIssuesEnd = function (projectID) {
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.getWholeCollection(collection, { _projectID: projectID }).then(issues => {
+    const issuesEnd= []
+
+    for (const issue of issues) {
+      if (issue._state === 'end') {
+        issuesEnd.push(issue)
+      }
+    }
+
+    return issuesEnd
+  }).catch(error => {
+    console.log(error)
+  })
+} */
+
 exports.updateAllIssue = function (issues, tasks, projectID) {
   if (issues == null) {
     issues = this.getAllIssues(projectID)
@@ -30,23 +48,50 @@ exports.updateAllIssue = function (issues, tasks, projectID) {
     let issueNewState = 'end'
     let issueNewColor = 'alert-success'
     let taskLinked = false
+    let oneToDo = false
+    let oneEnd = false
     for (const task of tasks) {
       if (task._linkedUserStories.toString().includes(issue._issueID.toString())) {
         taskLinked = true
-        if (task._advancementState === 'toDo') {
-          issueNewState = 'toDo'
-          issueNewColor = 'alert-danger'
-        }
-        if (task._advancementState === 'onGoing') {
+        if (task._advancementState === 'onGoing' || (oneEnd && task._advancementState === 'toDo') || (oneToDo && task._advancementState === 'end')) {
           issueNewState = 'onGoing'
           issueNewColor = 'alert-warning'
           break
         }
+        if (task._advancementState === 'toDo') {
+          issueNewState = 'toDo'
+          issueNewColor = 'alert-danger'
+          oneToDo = true
+        }
+        if (!oneEnd && task._advancementState === 'end') {
+          oneEnd = true
+        }
       }
     }
     if (taskLinked) {
-      issue._state = issueNewState
-      issue._color = issueNewColor
+      const collection = dbconnect.client.db(databaseName).collection(collectionName)
+      const updatedIssue = {
+        _issueID: issue._issueID,
+        _projectID: issue._projectID,
+        _description: issue._description,
+        _priority: issue._priority,
+        _difficulty: issue._difficulty,
+        _state: issueNewState,
+        _color: issueNewColor
+      }
+      dbconnect.updateElementInDB({ _id: ObjectID(issue._id) }, updatedIssue, collection, 'Issue updated')
+    } else {
+      const collection = dbconnect.client.db(databaseName).collection(collectionName)
+      const updatedIssue = {
+        _issueID: issue._issueID,
+        _projectID: issue._projectID,
+        _description: issue._description,
+        _priority: issue._priority,
+        _difficulty: issue._difficulty,
+        _state: 'toDo',
+        _color: 'alert-danger'
+      }
+      dbconnect.updateElementInDB({ _id: ObjectID(issue._id) }, updatedIssue, collection, 'Issue updated')
     }
   }
 }
