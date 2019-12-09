@@ -21,8 +21,52 @@
 
     <h1> Backlog </h1>
 
-    <a href="/projects/<%= project._id %>/issues/create" class="btn btn-success">Nouvelle issue</a>
-   
+    <!--<a href="/projects/<%= project._id %>/issues/create" class="btn btn-success">Nouvelle issue</a>-->
+    <div class="text-center">
+      <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalNewIssueForm">Nouvelle
+        issue</a>
+    </div>
+    <div class="modal fade" id="modalNewIssueForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Nouvelle Issue</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/projects/<%= project._id %>/issues/create" method="POST">
+            <div class="form-group">
+              <label for="issueID">ID</label>
+              <input type="text" placeholder="ID" class="form-control" name="issueID" id="idInput"
+                onkeypress="return banComma(event);" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <textarea name="description" class="form-control" id="description"
+                placeholder="Description de l'issue">En tant que ..., Je Peux ..., Afin de ...</textarea>
+            </div>
+            <div class="form-group">
+              <label for="priority">Priorité</label>
+              <select name="priority" id="priority" selected="low">
+                <option value="Basse"> Basse </option>
+                <option value="Moyenne"> Moyenne </option>
+                <option value="Haute"> Haute </option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="difficulty">Difficulté</label>
+              <input type="number" placeholder="Difficulté" class="form-control" name="difficulty" id="difficulty"
+                min="1" max="99" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <% for( let issue of issues ){ %>
       <div class="col-lg-4">
@@ -34,7 +78,7 @@
             style="display:none">
             <i class="fas fa-chevron-circle-down fa-2x"></i>
           </a>
-          <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class="btn btn-sq-xs btn-primary">
+          <a href="" class="btn btn-sq-xs btn-primary" data-toggle="modal" data-target="#modalUpdateIssueForm<%=issue._id%>">
             <i class="fas fa-pen"></i>
           </a>
           <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST"
@@ -44,33 +88,60 @@
 
           <h3><%=issue._issueID%></h3>
           <h5><%=issue._description%></h5>
-          
-
-
           <div id="<%= issue._id %>" style="display:none;">
             <p>Difficulté : <%=issue._difficulty%></p>
             <p>Priorité : <%=issue._priority%></p>
           </div>
         </div>
       </div>
-
-
-      <!-- <form action="/projects/<%= project._id %>/tasks/<%= issue._id %>/linkTask" method="POST">
-        <select name="taskList" id="taskList" size="1" selected="default">
-          <option value="default"> Tâche à lier </option>
-          <% for( let task of tasks ){ %>
-          <option value=<%=task._id%>> <%=task._id%> </option>
-          <% } %>
-        </select>
-        <button type="submit" class="btn btn-success">Lier la tâche</button>
-      </form>
-
-      <a href="/projects/<%= project._id %>/tasks/<%= issue._id %>/tiedTask" class="btn btn-success"> Créer une tâche
-        liée</a> -->
-
+      <div class="modal fade" id="modalUpdateIssueForm<%=issue._id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Modifier une issue</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/update" method="POST">
+              <div class="form-group">
+                <label for="issueID">ID</label>
+                <input type="text" placeholder="ID" class="form-control" name="issueID" id="idInput"
+                  value="<%=issue._issueID%>" required readonly>
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea name="description" class="form-control" id="description" placeholder="Description de l'issue"><%=issue._description%>
+                </textarea>
+              </div>
+              <div class="form-group">
+                <label for="priority">Priorité</label>
+                <select name="priority" id="priority" selected="low">
+                  <option value="Basse"> Basse </option>
+                  <option value="Moyenne"> Moyenne </option>
+                  <option value="Haute"> Haute </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="difficulty">Difficulté</label>
+                <input type="number" placeholder="Difficulté" class="form-control" name="difficulty" id="difficulty"
+                  value="<%=issue._difficulty%>" required>
+              </div>
+              <input type="text" class="form-control" name="state" id="state" value="<%=issue._state%>" hidden>
+              <button type="submit" class="btn btn-primary">Sauvegarder</button>
+              <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
+            </form>
+            <script>
+              document.getElementById('state').value = "<%=issue._state%>"
+            </script>
+          </div>
+        </div>
+      </div>
       <% } %>
     </div>
   </div>
+
 </body>
 
 </html>
