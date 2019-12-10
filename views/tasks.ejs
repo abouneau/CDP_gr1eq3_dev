@@ -70,7 +70,7 @@
                 id="assignedDeveloper">
             </div>
             <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
+            <a class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
           </form>
         </div>
       </div>
@@ -155,7 +155,7 @@
                 <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper" value="<%=task._assignedDeveloper%>">
               </div>
               <button type="submit" class="btn btn-primary">Sauvegarder</button>
-              <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
+              <a class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
             </form>
             <script>
               document.getElementById('advancementState').value = "<%=task._advancementState%>"
