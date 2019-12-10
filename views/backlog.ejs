@@ -61,7 +61,7 @@
                 min="1" max="99" required>
             </div>
             <button type="submit" class="btn btn-primary">Sauvegarder</button>
-            <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
+            <a class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
           </form>
         </div>
       </div>
@@ -130,7 +130,7 @@
               </div>
               <input type="text" class="form-control" name="state" id="state" value="<%=issue._state%>" hidden>
               <button type="submit" class="btn btn-primary">Sauvegarder</button>
-              <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
+              <a class="btn btn-secondary" href="/projects/<%= project._id %>/issues">Annuler</a>
             </form>
             <script>
               document.getElementById('state').value = "<%=issue._state%>"
