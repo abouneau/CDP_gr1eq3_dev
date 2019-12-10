@@ -131,7 +131,10 @@ exports.getTaskLinked = function (issueID) {
  * If the issueID is already in use for an issue, then an error is thrown,
  * and the issue will not be created.
  * @param {object} req - the request containing the issueID, projectID, description, priotity and difficulty of the issue we want to create
- * @param {object} res - the response where the new app state will be stored
+ * @param {object} res - the response where the new app state wi        }
+        for (const issue of rel._releasedUserStories) {
+          issueAlreadyReleased.push(issue)
+        }ll be stored
  * @return {promise} The promise that the issue will be created if possible, then the created issue
  */
 exports.createIssue = function (req, res) {
@@ -206,6 +209,12 @@ exports.updateIssue = function (req, res) {
     })
 }
 
+/**
+ * Return the mongoDB ID of an issue given an issueID
+ * @param {String} issueID The issueID of the issue we want the mongoDB ID
+ * @param {String} projectID The project ID of issueID
+ * @returns {ObjectID} The mongoDb ID of the issue with issueID
+ */
 exports.issueIDtoMongoID = function (issueID, projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _issueID: issueID, _projectID: projectID }, collection).then(issue => {
@@ -215,6 +224,12 @@ exports.issueIDtoMongoID = function (issueID, projectID) {
   })
 }
 
+/**
+ * Return the issueID of an issue given a mongoDB ID
+ * @param {String} id The mongoDB ID of the issue we want the issueID
+ * @param {String} projectID The project ID of issue with  mongoDB ID id
+ * @returns {ObjectID} The issueID of the issue with  mongoDB ID id
+ */
 exports.mongoIDtoIssueID = function (id) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _id: ObjectID(id) }, collection).then(issue => {
