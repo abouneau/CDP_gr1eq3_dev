@@ -8,9 +8,12 @@
 - ROULET  Florian
 
 ## Sections :
-###[Définitions](#définitions)
-###[Backlog](#backlog)
-###[Autres informations](#autres-informations)
+- [Définitions](#définitions)
+- [Backlog](#backlog)
+- [Installation](#installation-et-lancement-du-serveur)
+- [Fonctionnement et utilisation du site](#fonctionnement-et-utilisation-du-site)
+- [Sprints et tâches](#informations-sur-les-sprints-et-les-tâches)
+- [Releases](#releases)
 
 ## Définitions
 
@@ -71,8 +74,8 @@
 | US12 | **En tant que** Collaborateur, **je peux** assigner un Collaborateur à une tâche, et changer le statut de celle-ci, en cliquant droit sur la tâche depuis la liste des tâches, puis en cliquant sur *assigner un Collaborateur* ou *changer le statut* dans le menu apparaisant après le clic droit **afin de** choisir qui doit s'occuper de cette tâche, et quel est son statut. | 3 | Haute |
 | US13 | **En tant que** Collaborateur,  **je peux** accéder à la liste des sprints en cliquant sur le bouton *Sprints* présent dans le header, **afin d'** avoir une vue d'ensemble de tous les sprints. | 3  | Basse |
 | US14 | **En tant que** Collaborateur,  **je peux** créer un sprint en cliquant sur le bouton *Nouveau Sprint* depuis la page *Sprints*, **afin de** pouvoir compléter ses champs. | 3  | Basse |
-| US15 | **En tant que** Collaborateur, **je peux** accéder au backlog du sprint numéro i en cliquant sur le sprint numéro i de la page *Sprints*, **afin d'** avoir une vue d'ensemble des issues qui sont programmées pour le sprint numéro i. La page *Sprint i* se découpe en trois colonnes : à gauche, on voit le backlog complet ; au milieu on voit le backlog du sprint numéro i ; à droite, on voit l'ensemble des tâches associées aux issues du backlog du sprint numéro i. | 2 | Basse |
-| US16 | **En tant que** Collaborateur, **je peux** ajouter des issues dans le sprint numéro i et en retirer en faisant des glisser/déposer entre la partie issues (à gauche de la page *Sprint i*), et la partie sprint numéro i (au milieu de la page *Sprint i*) **afin de** programmer les issues devant être réalisées durant le sprint numéro i. | 3 | Basse |
+| US15 | **En tant que** Collaborateur, **je peux** accéder au backlog du sprint numéro i en cliquant sur le sprint numéro i de la page *Sprints*, **afin d'** avoir une vue d'ensemble des issues qui sont programmées pour le sprint numéro i. La page *Sprint i* se découpe en deux colonnes : à gauche, on voit le backlog du sprint numéro i ; à droite, on voit l'ensemble des tâches associées aux issues du backlog du sprint numéro i. | 2 | Basse |
+| US16 | **En tant que** Collaborateur, **je peux** ajouter des issues dans le sprint numéro i en cliquant sur le bouton *ajouter une issue au sprint* sur la page **Sprint**, qui permet de choisir quelle issue ajouter parmi la liste des issues non réalisées, **afin de** programmer les issues devant être réalisées durant le sprint numéro i. | 3 | Basse |
 | US17 | **En tant que** Collaborateur, **je peux** transférer toutes les issues (et les tâches correspondantes) non terminées du sprint numéro i au sprint numéro i+1 en cliquant sur le bouton *transférer les issues non terminées au sprint suivant*, **afin de** pouvoir continuer à travailler dessus. | 2 | Basse |
 | US18 |   **En tant que** Visiteur, **je peux** créer un compte en renseignant un *mail*, un *nom d'utilisateur*, un *mot de passe*, **afin de** gérer mes projets. |  5 |  Basse |
 | US19 | **En tant que** Visiteur, **je peux** me connecter à mon compte grâce à mon *mail* (ou mon *nom d'utilisateur*) et mon *mot de passe* et me déconnecter, **afin d'** accéder à mes projets ou de me déconnecter. | 2 | Basse |
@@ -86,15 +89,28 @@
 | US27 |  **En tant qu'** Collaborateur, **je peux** accéder à la liste des releases en cliquant sur la page *Releases*, **afin d'** avoir une vue d'ensemble de toutes les releases. | 1  | Basse  |
 | US28 | **En tant qu'** Administrateur, **je peux** modifier les champs d'une release en cliquant sur le bouton *Editer* présent à côté d'une release dans la liste des releases, **afin de** corriger une éventuelle erreur. | 3 | Basse |
 
-## Autres informations
+### Installation et lancement du serveur
 
-#### Installation & lancement du serveur
+Voir le fichier docAdmin.md
 
-- npm install
-- node app.js
+### Fonctionnement et utilisation du site
 
-#### Informations sur les sprints et les tâches
+Voir le fichier docUser.md
 
-Les issues du sprint 1 sont disponibles [ici](specs/Sprint1.md).
+### Informations sur les sprints et les tâches
 
-Les tâches du sprint 1 sont disponibles [ici](specs/Task1.md).
+Les issues du sprint 1 sont disponibles [ici](Sprint1.md).
+
+Les tâches du sprint 1 sont disponibles [ici](Task1.md).
+
+Les issues du sprint 2 sont disponibles [ici](Sprint2.md).
+
+Les tâches du sprint 2 sont disponibles [ici](Task2.md).
+
+Les issues du sprint 3 sont disponibles [ici](Sprint3.md).
+
+Les tâches du sprint 3 sont disponibles [ici](Task3.md).
+
+### Releases
+
+Les issues réalisées dans chaque release sont disponibles dans les fichers RELEASE-0.1.0.md, RELEASE-0.2.0.md et RELEASE-0.3.0.md
