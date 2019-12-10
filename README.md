@@ -13,6 +13,7 @@
 - [Burdown chart](#burndown-chart)
 - [Installation](#installation-et-lancement-du-serveur)
 - [Fonctionnement et utilisation du site](#fonctionnement-et-utilisation-du-site)
+- [Documentation du code](#documentation-du-code)
 - [Sprints et tâches](#informations-sur-les-sprints-et-les-tâches)
 - [Releases](#releases)
 
@@ -101,6 +102,10 @@ Voir le fichier [docAdmin.md](docAdmin.md)
 ### Fonctionnement et utilisation du site
 
 Voir le fichier [docUser.md](docUser.md)
+
+### Documentation du code
+
+Voir le dossier out
 
 ### Informations sur les sprints et les tâches
 
