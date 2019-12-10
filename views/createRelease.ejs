@@ -1,0 +1,28 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title> Nouvelle release </title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <%- include('./navbar.ejs', {project: project})%>
+</head>
+
+<body>
+  <form action="/projects/<%= project._id %>/releases/create" method="POST">
+    <div class="form-group">
+      <label for="name">Version</label>
+      <input name="version" class="form-control" id="version" placeholder="Version de la release">
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea name="description" class="form-control" id="description" placeholder="Description de la release" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Sauvegarder</button>
+    <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/releases">Annuler</a>
+  </form>
+
+
+</body>
+
+</html>

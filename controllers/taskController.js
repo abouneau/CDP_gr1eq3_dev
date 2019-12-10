@@ -106,6 +106,13 @@ exports.deleteTask = function (req, res) {
   dbconnect.deleteElementFromDB(taskToDelete, collection, 'task deleted')
 }
 
+exports.deleteTaskByID = function (taskID) {
+  const taskToDelete = { _id: ObjectID(taskID) }
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  dbconnect.deleteElementFromDB(taskToDelete, collection, 'task deleted')
+}
+
 exports.getAllTasks = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 

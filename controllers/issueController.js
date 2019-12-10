@@ -215,3 +215,14 @@ exports.deleteIssue = function (req, res) {
     throw err
   })
 }
+
+exports.deleteIssueByID = function (issueID) {
+  const issueToDelete = { _id: issueID }
+  const collection = dbconnect.client.db(databaseName).collection(collectionName)
+
+  return dbconnect.deleteElementFromDB(issueToDelete, collection, 'Issue deleted').then(result => {
+    return result
+  }).catch(err => {
+    throw err
+  })
+}
