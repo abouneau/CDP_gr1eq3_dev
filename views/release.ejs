@@ -4,46 +4,51 @@
 <head>
   <meta charset="UTF-8">
   <title> Release </title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
+
+  <script type="text/javascript" src="/js/scripts.js"></script>
   <%- include('./navbar.ejs', {project: project}) %>
-  <script>
-    function showDetail(id) {
-      document.getElementById(id).style.display = ''
-      document.getElementById("showButton" + id).style.display = 'none'
-      document.getElementById("hideButton" + id).style.display = ''
-    }
-    function hideDetail(id) {
-      document.getElementById(id).style.display = 'none'
-      document.getElementById("showButton" + id).style.display = ''
-      document.getElementById("hideButton" + id).style.display = 'none'
-    }
-  </script>
 </head>
 
 <body>
-  <div class="container">
+  <div class="inner-container rounded mb-0 col-lg-12">
 
-    <h2> Release </h2>
-    <a href="/projects/<%= project._id %>/releases" class="btn btn-success"> Retour à la liste des releases </a>
+    <h1> Release <%=release._version%></h1>
     <div>
-      <h5><%=release._version%></h5>
       Date de la release : <%=release._date%> </br>
       Description : <%=release._description%> </br>
       Difficulté réalisée : <%=release._difficultyAchieved%>
     </div>
-    <% for( let issue of issues ){ %>
-    <li class="media my-4">
-      <button id="showButton<%=issue._id%>" class="btn btn-info" onclick="showDetail('<%=issue._id%>')">Plus</button>
-      <button id="hideButton<%=issue._id%>" class="btn btn-info" onclick="hideDetail('<%=issue._id%>')"
-        style="display:none">Moins</button>
-      <div class="media-body <%=issue._color%>" role="alert">
-        <h5>ID : <%=issue._issueID%></h5>
-        Difficulté : <%=issue._difficulty%> Priorité : <%=issue._priority%>
+    <h2> Issues réalisées pendant la release : </h2>
+    <div class="row">
+      
+      <% for( let issue of issues ){ %>
+      <div class="col-lg-4">
+        <div class="my-card rounded mb-0 <%=issue._color%>"">
+            <a id="showButton<%=issue._id%>" onclick="showDetail('<%=issue._id%>')" class="btn btn-sq-xs btn-info">
+              <i class="fas fa-chevron-circle-right fa-2x"></i>
+            </a>
+            <a id="hideButton<%=issue._id%>" onclick="hideDetail('<%=issue._id%>')" class="btn btn-sq-xs btn-info"
+              style="display:none">
+              <i class="fas fa-chevron-circle-down fa-2x"></i>
+            </a>
+            <h3><%=issue._issueID%></h3>
+            <h5><%=issue._description%></h5>
+            <div id="<%= issue._id %>" style="display:none;">
+              <p>Difficulté : <%=issue._difficulty%></p>
+              <p>Priorité : <%=issue._priority%></p>
+            </div>
+        </div>
       </div>
-    </li>
-    <div id="<%= issue._id %>" style="display:none;">
-      <p>Description : <%=issue._description%></p>
+      <% } %>
     </div>
-    <% } %>
   </div>
 </body>
 

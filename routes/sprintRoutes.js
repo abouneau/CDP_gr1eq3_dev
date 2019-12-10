@@ -50,7 +50,7 @@ router.get(baseURL + '/sprints/:id', function (req, res) {
   issueController.getAllIssues(req.params.projectID)
     .then(allIssues => {
       taskController.getAllTasks(req.params.projectID)
-        .then(tasks => {
+        .then(allTasks => {
           sprintController.getIssueListOfSprint(req.params.id)
             .then(issues => {
               projectController.getProject(req.params.projectID)
@@ -63,7 +63,7 @@ router.get(baseURL + '/sprints/:id', function (req, res) {
                         res.render('../views/sprint', {
                           sprint: sprint,
                           issues: issues,
-                          tasks: tasks,
+                          tasks: allTasks,
                           allIssues: allIssues,
                           issuesTaskList: issuesTaskList,
                           project: project
@@ -81,7 +81,7 @@ router.get(baseURL + '/sprints/:id', function (req, res) {
                                 res.render('../views/sprint', {
                                   sprint: sprint,
                                   issues: issues,
-                                  tasks: tasks,
+                                  tasks: allTasks,
                                   allIssues: allIssues,
                                   issuesTaskList: issuesTaskList,
                                   project: project

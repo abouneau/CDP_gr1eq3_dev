@@ -58,6 +58,13 @@
   color: var(--fuschia);
 }
 
+.inner-container h2 {
+  text-shadow: 1px 1px 2px var(--black);
+  font-size: 30px;
+  font-weight: bolder;
+  color: var(--fuschia);
+}
+
 .btn-sq {
   width: 50px !important;
   height: 50px !important;
