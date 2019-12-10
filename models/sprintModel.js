@@ -5,7 +5,7 @@ class Sprint {
     this._beginDate = beginDate
     this._endDate = endDate
     this._linkedUserStories = []
-    this._totalDifficulty = null
+    this._totalDifficulty = 0
     this._state = null
     this._color = null
   }

@@ -48,7 +48,7 @@
       <select name="issueList" id="issueList" size="1" selected="default">
         <option value="default"> US à lier </option>
         <% for( let issue of issues ){ %>
-        <option value=<%=issue._id%>> <%=issue._id%> </option>
+        <option value=<%=issue._issueID%>> <%=issue._issueID%> </option>
         <% } %>
       </select>
       <button type="button" onclick="addIssue(document.getElementById('issueList').value);">Ajouter</button>

@@ -49,13 +49,10 @@ exports.getTask = function (req, res) {
 exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.params.id
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  const taskToLinkId = { _id: ObjectID(req.body.taskList) }
+  const taskToLinkId = { _taskID: req.body.taskToLink, _projectID: req.params.projectID }
   dbconnect.findElementInDB(taskToLinkId, collection)
     .then(taskToLink => {
-      console.log('test')
       if (!taskToLink._linkedUserStories.includes(issueToLinkWith)) {
-        console.log('TEST')
-        console.log(issueToLinkWith)
         taskToLink._linkedUserStories.push(issueToLinkWith)
         dbconnect.updateElementInDB(taskToLinkId, taskToLink, collection, 'TaskLinked')
       }

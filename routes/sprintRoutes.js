@@ -4,6 +4,7 @@ const router = express.Router()
 const sprintController = require('../controllers/sprintController')
 const projectController = require('../controllers/projectController')
 const issueController = require('../controllers/issueController')
+const taskController = require('../controllers/taskController')
 const errorRoutes = require('./errorRoutes')
 
 const baseURL = '/projects/:projectID'
@@ -30,47 +31,6 @@ router.get(baseURL + '/sprints', function (req, res) {
     .catch(err => errorRoutes.pageNotFound(res, err))
 })
 
-router.get(baseURL + '/sprints/show/:id', function (req, res) {
-  sprintController.getIssueListOfSprint(req.params.id)
-    .then(issues => {
-      projectController.getProject(req.params.projectID)
-        .then(project => {
-          const issuesTaskList = []
-          let wait = 0
-          if (issues.length === 0) {
-            sprintController.getSprint(req.params.id)
-              .then(sprint => {
-                res.render('../views/sprint', {
-                  sprint: sprint,
-                  issues: issues,
-                  issuesTaskList: issuesTaskList,
-                  project: project
-                })
-              })
-          } else {
-            for (const issue of issues) {
-              issueController.getTaskLinked(issue._id)
-                .then(tasks => {
-                  issuesTaskList[issue._id] = tasks
-                  ++wait
-                  if (wait >= issues.length) {
-                    sprintController.getSprint(req.params.id)
-                      .then(sprint => {
-                        res.render('../views/sprint', {
-                          sprint: sprint,
-                          issues: issues,
-                          issuesTaskList: issuesTaskList,
-                          project: project
-                        })
-                      })
-                  }
-                })
-            }
-          }
-        })
-    })
-})
-
 router.get(baseURL + '/sprints/create', function (req, res) {
   issueController.getAllIssues(req.params.projectID)
     .then(issues => {
@@ -84,6 +44,57 @@ router.get(baseURL + '/sprints/create', function (req, res) {
         .catch(err => errorRoutes.pageNotFound(res, err))
     })
     .catch(err => errorRoutes.pageNotFound(res, err))
+})
+
+router.get(baseURL + '/sprints/:id', function (req, res) {
+  issueController.getAllIssues(req.params.projectID)
+    .then(allIssues => {
+      taskController.getAllTasks(req.params.projectID)
+        .then(tasks => {
+          sprintController.getIssueListOfSprint(req.params.id)
+            .then(issues => {
+              projectController.getProject(req.params.projectID)
+                .then(project => {
+                  const issuesTaskList = []
+                  let wait = 0
+                  if (issues.length === 0) {
+                    sprintController.getSprint(req.params.id)
+                      .then(sprint => {
+                        res.render('../views/sprint', {
+                          sprint: sprint,
+                          issues: issues,
+                          tasks: tasks,
+                          allIssues: allIssues,
+                          issuesTaskList: issuesTaskList,
+                          project: project
+                        })
+                      })
+                  } else {
+                    for (const issue of issues) {
+                      issueController.getTaskLinked(issue._id)
+                        .then(tasks => {
+                          issuesTaskList[issue._id] = tasks
+                          ++wait
+                          if (wait >= issues.length) {
+                            sprintController.getSprint(req.params.id)
+                              .then(sprint => {
+                                res.render('../views/sprint', {
+                                  sprint: sprint,
+                                  issues: issues,
+                                  tasks: tasks,
+                                  allIssues: allIssues,
+                                  issuesTaskList: issuesTaskList,
+                                  project: project
+                                })
+                              })
+                          }
+                        })
+                    }
+                  }
+                })
+            })
+        })
+    })
 })
 
 router.get(baseURL + '/sprints/:id/update', function (req, res) {
@@ -118,7 +129,7 @@ router.post(baseURL + '/sprints/:id/linkIssue', function (req, res) {
 
 router.post(baseURL + '/sprints/:id/update', function (req, res) {
   sprintController.updateSprint(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/sprints')
+  res.redirect('back')
 })
 
 router.post(baseURL + '/sprints/:id/delete', function (req, res) {

@@ -4,69 +4,158 @@
 <head>
   <meta charset="UTF-8">
   <title> Sprint </title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Material Design Bootstrap -->
+  <link rel="stylesheet" href="/css/mdb.min.css">
+  <!-- Custom css -->
+  <link rel="stylesheet" href="/css/style.css">
+  <script type="text/javascript" src="/js/scripts.js"></script>
+  <script type="text/javascript" src="/js/jquery.js"></script>
+  <script type="text/javascript" src="/js/my_jquery.js"></script>
   <%- include('./navbar.ejs', {project: project}) %>
-  <script>
-    function showDetail(id) {
-      document.getElementById(id).style.display = ''
-      document.getElementById("showButton" + id).style.display = 'none'
-      document.getElementById("hideButton" + id).style.display = ''
-    }
-    function hideDetail(id) {
-      document.getElementById(id).style.display = 'none'
-      document.getElementById("showButton" + id).style.display = ''
-      document.getElementById("hideButton" + id).style.display = 'none'
-    }
-  </script>
 </head>
 
 <body>
-  <div class="container">
-
-    <h2> Sprint </h2>
-    <a href="/projects/<%= project._id %>/sprints" class="btn btn-success"> Retour à la liste des sprints </a>
-    <div>
-      <h5><%=sprint._name%></h5>
-      Date de début : <%=sprint._beginDate%> </br>
-      Date de fin : <%=sprint._endDate%> </br>
-      Difficulté total : <%=sprint._totalDifficulty%>
-    </div>
-    <% for( let issue of issues ){ %>
-    <li class="media my-4">
-      <button id="showButton<%=issue._id%>" class="btn btn-info" onclick="showDetail('<%=issue._id%>')">Plus</button>
-      <button id="hideButton<%=issue._id%>" class="btn btn-info" onclick="hideDetail('<%=issue._id%>')"
-        style="display:none">Moins</button>
-      <div class="media-body <%=issue._color%>" role="alert">
-        <h5>ID : <%=issue._id%></h5>
-        Nom : <%=issue._name%> Priorité : <%=issue._priority%>
-      </div>
-
-      <!--             <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST">
-                <button type="submit" class="btn btn-danger">Supprimer</button>
-            </form> -->
-    </li>
-    <div id="<%= issue._id %>" style="display:none;">
-      <p>Description : <%=issue._description%></p>
-      <p>Difficulté : <%=issue._difficulty%></p>
-      <% for( let task of issuesTaskList[issue._id] ){ %>
-      <li class="media my-4">
-        <button id="showButtontask-<%=task._id%>" class="btn btn-secondary"
-          onclick="showDetail('task-<%=task._id%>')">Plus</button>
-        <button id="hideButtontask-<%=task._id%>" class="btn btn-secondary" onclick="hideDetail('task-<%=task._id%>')"
-          style="display:none">Moins</button>
-        <div class="media-body <%=task._color%>" role="alert">
-          <h5>ID : <%= task._id%></h5>
-          Dépendances : <%= task._dependencies %> User Stories liées : <%= task._linkedUserStories %>
-        </div>
-      </li>
-      <div id="task-<%= task._id %>" style="display:none;">
-        <p>Description : <%= task._description %></p>
-        <p>Temps estimé : <%= task._estimatedTime %></p>
-        <p>Développeur(s) : <%= task._assignedDeveloper %></p>
-      </div>
-      <% } %>
-    </div>
+  <div class="inner-container rounded mb-0 col-lg-12">
+    <% for (task of tasks) { %>
+    <% console.log(task) %>
     <% } %>
+
+    <h1 style="display: inline"> <%=sprint._name%> </h1>
+    <p style="display: inline">
+      Du <%=sprint._beginDate%> au <%=sprint._endDate%>.
+      Difficulté totale : <%=sprint._totalDifficulty%>
+    </p><br />
+    <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#addIssueModal">Ajouter une
+      issue au sprint</a>
+    <div class="row">
+      <div class="col-lg-6">
+        <% for( let issue of issues ){ %>
+        <div class="my-card option rounded mb-0 <%=issue._color%>" role="alert" id="<%= issue._issueID %>">
+          <a id="showButton<%=issue._id%>" onclick="showDetail('<%=issue._id%>')" class="btn btn-sq-xs btn-info">
+            <i class="fas fa-chevron-circle-right fa-2x"></i>
+          </a>
+          <a id="hideButton<%=issue._id%>" onclick="hideDetail('<%=issue._id%>')" class="btn btn-sq-xs btn-info"
+            style="display:none">
+            <i class="fas fa-chevron-circle-down fa-2x"></i>
+          </a>
+          <a href="/projects/<%= project._id %>/issues/<%= issue._id %>/update" class="btn btn-sq-xs btn-primary">
+            <i class="fas fa-pen"></i>
+          </a>
+          <a href="" class="btn btn-sq-xs btn-default" data-toggle="modal"
+            data-target="#linkTaskToIssueModal<%=issue._issueID%>"><i class="fas fa-plus"></i></a>
+          <form action="/projects/<%= project._id %>/issues/<%= issue._id %>/delete" method="POST"
+            style="display: inline">
+            <button type="submit" class="btn btn-sq-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
+          </form>
+
+          <h3><%=issue._issueID%></h3>
+          <h5><%=issue._description%></h5>
+
+
+
+          <div id="<%= issue._id %>" style="display:none;">
+            <p>Difficulté : <%=issue._difficulty%></p>
+            <p>Priorité : <%=issue._priority%></p>
+          </div>
+        </div>
+
+        <div class="modal fade" id="linkTaskToIssueModal<%=issue._issueID%>" tabindex="-1" role="dialog"
+          aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header text-center">
+                <h4 class="modal-title w-100 font-weight-bold">Lier une tâche à <%= issue._issueID %></h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form role="form" action="/projects/<%= project._id %>/tasks/<%= issue._issueID %>/linkTask" method="POST">
+                <div class="modal-body mx-3">
+                  <div class="md-form mb-5">
+                    <select class="form-control" name="taskToLink" id="taskToLink" size="1">
+                      <% for( let task of tasks ){ %>
+                      <option value="<%=task._taskID%>"> <%=task._taskID%> </option>
+                      <% } %>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                  <button type="submit" class="btn btn-default">Lier la tâche</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <% } %>
+      </div>
+      <div class="tasks col-lg-6">
+        <% for(let issue of issues) { %>
+        <% for(let task of issuesTaskList[issue._id]) { %>
+        <div class="task my-card rounded mb-0 <%=task._color%>" id="<%= issue._issueID %>" role="alert">
+          <a id="showButton<%=task._id%>" onclick="showDetail('<%=task._id%>')" class="btn btn-sq-xs btn-info">
+            <i class="fas fa-chevron-circle-right fa-2x"></i>
+          </a>
+          <a id="hideButton<%=task._id%>" onclick="hideDetail('<%=task._id%>')" class="btn btn-sq-xs btn-info"
+            style="display:none">
+            <i class="fas fa-chevron-circle-down fa-2x"></i>
+          </a>
+          <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class="btn btn-sq-xs btn-primary">
+            <i class="fas fa-pen"></i>
+          </a>
+          <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST"
+            style="display: inline">
+            <button type="submit" class="btn btn-sq-xs btn-danger"><i class="fas fa-trash-alt"></i></button>
+          </form>
+          <h5>ID : <%= task._taskID%></h5>
+          Dépendances : <%= task._dependencies %>
+          User Stories liées : <%= task._linkedUserStories %>
+
+
+          <div id="<%= task._id %>" style="display:none;">
+            <p>Description : <%= task._description %></p>
+            <p>Temps estimé : <%= task._estimatedTime %></p>
+            <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+
   </div>
+  <div class="modal fade" id="addIssueModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h4 class="modal-title w-100 font-weight-bold">Ajouter une issue</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form role="form" action="/projects/<%= project._id %>/sprints/<%= sprint._id%>/update" method="POST">
+          <div class="modal-body mx-3">
+            <div class="md-form mb-5">
+              <select class="form-control" name="issueList" id="issueList" size="1">
+                <% for( let issue of allIssues ){ %>
+                <option value="<%=issue._issueID%>"> <%=issue._issueID%> </option>
+                <% } %>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer d-flex justify-content-center">
+            <button type="submit" class="btn btn-default">Ajouter l'issue</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
 
 </html>

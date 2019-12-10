@@ -10,8 +10,8 @@ const issueCollectionName = 'Issues'
 const dateBeforeOrIsToday = function (dateToCompare) {
   const date = new Date()
   if ((dateToCompare[0] < date.getFullYear()) ||
-      (dateToCompare[0] === date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) ||
-      (dateToCompare[0] === date.getFullYear() && dateToCompare[1] === (date.getMonth() + 1) && dateToCompare[2] <= date.getDate())) {
+    (dateToCompare[0] === date.getFullYear() && dateToCompare[1] < (date.getMonth() + 1)) ||
+    (dateToCompare[0] === date.getFullYear() && dateToCompare[1] === (date.getMonth() + 1) && dateToCompare[2] <= date.getDate())) {
     return true
   }
   return false
@@ -43,8 +43,7 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
       let allIssuesExist = true
       let wait = 0
       for (const issueId of sprint._linkedUserStories) {
-        const id = { _id: issueId }
-        dbconnect.elementExists(id, collection1)
+        dbconnect.elementExists({ _issueID: issueId }, collection1)
           .then(issueExist => {
             if (issueExist) {
               newLinkedUserStories.push(issueId)
@@ -137,8 +136,7 @@ exports.getIssueListOfSprint = function (sprintID) {
     return issueController.getAllIssues(sprint._projectID).then(issues => {
       const issuesList = []
       for (const issue of issues) {
-        // if(sprint._linkedUserStories.startsWith(issue._id) || sprint._linkedUserStories.includes(","+issue._id+",") || sprint._linkedUserStories.includes(','+issue._id+""))
-        if (sprint._linkedUserStories.includes(issue._id)) {
+        if (sprint._linkedUserStories.includes(issue._issueID)) {
           issuesList.push(issue)
         }
       }
@@ -159,11 +157,15 @@ exports.createSprint = function (req, res) {
 
   if (req.body.linkedUserStories !== '') {
     const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (const us of userStoriesToLink) {
-      sprint.addLinkedUserStory(us)
-      issueController.getIssue(us).then(issue => {
-        sprint._totalDifficulty += issue._difficulty
-      })
+    for (const issueID of userStoriesToLink) {
+      sprint.addLinkedUserStory(issueID)
+      issueController.issueIDtoMongoID(issueID, req.params.projectID)
+        .then(id => {
+          issueController.getIssue(id)
+            .then(issue => {
+              sprint._totalDifficulty += issue._difficulty
+            })
+        })
     }
   }
 
@@ -201,63 +203,35 @@ exports.linkToIssue = function (req, res) {
 }
 
 exports.updateSprint = function (req, res) {
-  const sprintToUpdate = { _id: ObjectID(req.params.id) }
+  const issueCollection = dbconnect.client.db(databaseName).collection(issueCollectionName)
+  const sprintCollection = dbconnect.client.db(databaseName).collection(collectionName)
+  return dbconnect.findElementInDB({ _issueID: req.body.issueList, _projectID: req.params.projectID }, issueCollection)
+    .then(issue => {
+      const sprintToUpdate = { _id: ObjectID(req.params.id) }
+      return dbconnect.findElementInDB(sprintToUpdate, sprintCollection)
+        .then(sprint => {
+          if (!sprint._linkedUserStories.includes(issue._issueID)) {
+            const newTotalDifficulty = (parseInt(sprint._totalDifficulty) + parseInt(issue._difficulty))
+            const newLinkedUserStories = sprint._linkedUserStories
+            newLinkedUserStories.push(req.body.issueList)
+            const updatedSprint = {
+              _projectID: sprint._projectID,
+              _name: sprint._name,
+              _beginDate: sprint._beginDate,
+              _endDate: sprint._endDate,
+              _linkedUserStories: newLinkedUserStories,
+              _totalDifficulty: newTotalDifficulty
+            }
 
-  const issuesToLinkWith = []
-  let totalDifficulty = 0
-  if (req.body.linkedUserStories !== '') {
-    const userStoriesToLink = req.body.linkedUserStories.split(',')
-    for (const us of userStoriesToLink) {
-      issuesToLinkWith.push(us)
-      issueController.getIssue(us)
-        .then(issue => {
-          totalDifficulty += issue._difficulty
+            return dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, sprintCollection, 'Sprint updated')
+              .then(result => {
+                return result
+              }).catch(err => {
+                throw err
+              })
+          }
         })
-    }
-  }
-
-  const updatedSprint = {
-    _projectID: req.params.projectID,
-    _name: req.body.name,
-    _beginDate: req.body.beginDate,
-    _endDate: req.body.endDate,
-    _linkedUserStories: issuesToLinkWith,
-    _totalDifficulty: totalDifficulty
-  }
-
-  let valueString = req.body.beginDate.split('-')
-  const valueBegin = []
-  let count = 0
-  for (const s of valueString) {
-    valueBegin[count] = parseInt(s, 10)
-    ++count
-  }
-
-  valueString = req.body.endDate.split('-')
-  const valueEnd = []
-  count = 0
-  for (const s of valueString) {
-    valueEnd[count] = parseInt(s, 10)
-    ++count
-  }
-
-  if (dateBeforeOrIsToday(valueEnd)) {
-    updatedSprint._state = 'end'
-    updatedSprint._color = 'alert-success'
-  } else if (dateBeforeOrIsToday(valueBegin)) {
-    updatedSprint._state = 'onGoing'
-    updatedSprint._color = 'alert-warning'
-  } else {
-    updatedSprint._state = 'toDo'
-    updatedSprint._color = 'alert-danger'
-  }
-
-  const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  return dbconnect.updateElementInDB(sprintToUpdate, updatedSprint, collection, 'Issue updated').then(result => {
-    return result
-  }).catch(err => {
-    throw err
-  })
+    })
 }
 
 exports.deleteSprint = function (req, res) {

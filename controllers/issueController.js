@@ -69,7 +69,7 @@ exports.getTaskLinked = function (issueID) {
           const tasksList = []
           for (const task of tasks) {
             // if(task._linkedUserStories.startsWith(issue._id) || task._linkedUserStories.includes(","+issue._id+",") || task._linkedUserStories.includes(','+issue._id+""))
-            if (task._linkedUserStories.includes(issue._id)) {
+            if (task._linkedUserStories.includes(issue._issueID)) {
               tasksList.push(task)
             }
           }

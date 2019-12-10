@@ -27,16 +27,16 @@
 
         <div class="row my-card rounded mb-0 <%=sprint._color%>" role="alert">
           <div class="col-lg-2">
-            <a href="/projects/<%= project._id %>/sprints/show/<%=sprint._id%>">
+            <a href="/projects/<%= project._id %>/sprints/<%=sprint._id%>">
               <h3><%=sprint._name%> </h3>
             </a>
           </div>
           <div class="col-lg-3">Du <%= sprint._beginDate %> au <%= sprint._endDate %></div>
           <div class="col-lg-2">Difficulté totale : <%=sprint._totalDifficulty%></div>
           <div class="col-lg-5 text-right">
-            <a href="/projects/<%= project._id %>/sprints/<%= sprint._id %>/update" class="btn btn-sq-xs btn-primary">
+            <!-- <a href="/projects/<%= project._id %>/sprints/<%= sprint._id %>/update" class="btn btn-sq-xs btn-primary">
               <i class="fas fa-pen"></i>
-            </a>
+            </a> -->
             <form action="/projects/<%= project._id %>/sprints/<%= sprint._id %>/delete" method="POST"
               style="display: inline">
               <button type="submit" class="btn btn-sq-xs btn-danger"><i class="fas fa-trash-alt"></i></button>

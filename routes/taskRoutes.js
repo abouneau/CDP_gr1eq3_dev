@@ -99,7 +99,7 @@ router.get(baseURL + '/tasks/:id/tiedTask', function (req, res) {
 
 router.post(baseURL + '/tasks/:id/linkTask', function (req, res) {
   taskController.linkToIssue(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/issues')
+  res.redirect('back')
 })
 
 router.post(baseURL + '/tasks/tiedTask', function (req, res) {
