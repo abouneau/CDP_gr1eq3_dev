@@ -1,7 +1,5 @@
 [![Build Status](https://travis-ci.com/abouneau/CDP_gr1eq3_dev.svg?branch=master)](https://travis-ci.com/abouneau/CDP_gr1eq3_dev)
 
-[<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRcuUNXiAr1-M5QOFj5ubV4c4GDsldV0FoHFl7N8oojtEsbX-xUu3ZCFDY_VXGTMFBNCdF-pU7Gwrlg/pubchart?oid=2092740216&amp;format=image"></iframe>]()
-
 # Conduite de projet - Groupe 1 équipe 3
 
 ## Membres de l'équipe
@@ -12,6 +10,7 @@
 ## Sections :
 - [Définitions](#définitions)
 - [Backlog](#backlog)
+- [Burdown chart](#burndown-chart)
 - [Installation](#installation-et-lancement-du-serveur)
 - [Fonctionnement et utilisation du site](#fonctionnement-et-utilisation-du-site)
 - [Sprints et tâches](#informations-sur-les-sprints-et-les-tâches)
@@ -90,6 +89,10 @@
 | US26 |  **En tant qu'** Administrateur, **je peux** créer une release en cliquant sur le bouton *Nouvelle Release* sur la page *Releases*, **afin de** pouvoir completer ses champs. | 3 | Basse |
 | US27 |  **En tant qu'** Collaborateur, **je peux** accéder à la liste des releases en cliquant sur la page *Releases*, **afin d'** avoir une vue d'ensemble de toutes les releases. | 1  | Basse  |
 | US28 | **En tant qu'** Administrateur, **je peux** modifier les champs d'une release en cliquant sur le bouton *Editer* présent à côté d'une release dans la liste des releases, **afin de** corriger une éventuelle erreur. | 3 | Basse |
+
+### Burndown chart
+
+[<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRcuUNXiAr1-M5QOFj5ubV4c4GDsldV0FoHFl7N8oojtEsbX-xUu3ZCFDY_VXGTMFBNCdF-pU7Gwrlg/pubchart?oid=2092740216&amp;format=image"></iframe>]()
 
 ### Installation et lancement du serveur
 
