@@ -124,12 +124,16 @@ router.post(baseURL + '/sprints/create', function (req, res) {
 
 router.post(baseURL + '/sprints/:id/linkIssue', function (req, res) {
   sprintController.linkToIssue(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/sprints')
+    .then(result => {
+      res.redirect('/projects/' + req.params.projectID + '/sprints')
+    })
 })
 
 router.post(baseURL + '/sprints/:id/update', function (req, res) {
   sprintController.updateSprint(req, res)
-  res.redirect('back')
+    .then(result => {
+      res.redirect('back')
+    })
 })
 
 router.post(baseURL + '/sprints/:id/delete', function (req, res) {

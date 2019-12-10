@@ -193,11 +193,11 @@ exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.body.issueList
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   const sprintToLinkId = { _id: ObjectID(req.params.id) }
-  dbconnect.findElementInDB(sprintToLinkId, collection)
+  return dbconnect.findElementInDB(sprintToLinkId, collection)
     .then(sprintToLink => {
       if (!sprintToLink._linkedUserStories.includes(issueToLinkWith)) {
         sprintToLink._linkedUserStories.push(issueToLinkWith)
-        dbconnect.updateElementInDB(sprintToLinkId, sprintToLink, collection, 'Sprint Linked')
+        return dbconnect.updateElementInDB(sprintToLinkId, sprintToLink, collection, 'Sprint Linked')
       }
     })
 }

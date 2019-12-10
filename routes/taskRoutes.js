@@ -54,7 +54,7 @@ router.get(baseURL + '/tasks/create', function (req, res) {
 
 router.post(baseURL + '/tasks/create', function (req, res) {
   taskController.createTask(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/tasks')
+    .then(result => { res.redirect('/projects/' + req.params.projectID + '/tasks') })
 })
 
 // router.get(baseURL + '/tasks/:id', taskController.getTask)
@@ -103,7 +103,9 @@ router.post(baseURL + '/tasks/tiedTask', function (req, res) {
 
 router.post(baseURL + '/tasks/:id/update', function (req, res) {
   taskController.updateTask(req, res)
-  res.redirect('/projects/' + req.params.projectID + '/tasks')
+    .then(result => {
+      res.redirect('/projects/' + req.params.projectID + '/tasks')
+    })
 })
 
 router.post(baseURL + '/tasks/:id/delete', function (req, res) {

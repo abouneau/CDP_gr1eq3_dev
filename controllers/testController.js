@@ -53,7 +53,7 @@ exports.createTest = function (req, res) {
     req.body.description
   )
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.addElementToDB(test, collection, 'Test added successfully.')
+  return dbconnect.addElementToDB(test, collection, 'Test added successfully.')
 }
 
 exports.updateTest = function (req, res) {
@@ -64,7 +64,7 @@ exports.updateTest = function (req, res) {
     _description: req.body.description
   }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.updateElementInDB(testToUpdate, updatedTest, collection, 'Test updated')
+  return dbconnect.updateElementInDB(testToUpdate, updatedTest, collection, 'Test updated')
 }
 
 exports.deleteTest = function (req, res) {

@@ -8,7 +8,7 @@ const issueCollectionName = 'Issues'
 
 exports.createTask = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.findElementInDB({ _taskID: req.body.taskID, _projectID: req.params.projectID }, collection)
+  return dbconnect.findElementInDB({ _taskID: req.body.taskID, _projectID: req.params.projectID }, collection)
     .then(task => {
       if (task !== null) {
         return new Promise((resolve, reject) => {
@@ -61,7 +61,7 @@ exports.linkToIssue = function (req, res) {
 
 exports.updateTask = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
-  dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
+  return dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
     .then(task => {
       if (task._taskID !== req.body.taskID) {
         return new Promise((resolve, reject) => {
