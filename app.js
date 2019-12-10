@@ -2,7 +2,7 @@ const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 
-const issue = require('./routes/issueRoute')
+const issue = require('./routes/issueRoutes')
 const log = require('./routes/logRoutes')
 const task = require('./routes/taskRoutes')
 const test = require('./routes/testRoutes')
