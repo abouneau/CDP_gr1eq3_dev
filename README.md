@@ -91,11 +91,11 @@
 
 ### Installation et lancement du serveur
 
-Voir le fichier docAdmin.md
+Voir le fichier [docAdmin.md](docAdmin.md)
 
 ### Fonctionnement et utilisation du site
 
-Voir le fichier docUser.md
+Voir le fichier [docUser.md](docUser.md)
 
 ### Informations sur les sprints et les tâches
 
@@ -113,4 +113,4 @@ Les tâches du sprint 3 sont disponibles [ici](Task3.md).
 
 ### Releases
 
-Les issues réalisées dans chaque release sont disponibles dans les fichers RELEASE-0.1.0.md, RELEASE-0.2.0.md et RELEASE-0.3.0.md
+Les issues réalisées dans chaque release sont disponibles dans les fichers [RELEASE-0.1.0](RELEASE-0.1.0.md), [RELEASE-0.2.0](RELEASE-0.2.0.md) et [RELEASE-0.3.0](RELEASE-0.3.0.md)
