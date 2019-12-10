@@ -19,7 +19,63 @@
 
     <h1> Tâches </h1>
 
-    <a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>
+    <!--<a href="/projects/<%= project._id %>/tasks/create" class="btn btn-success"> Nouvelle tâche </a>-->
+    <div class="text-center">
+      <a href="" class="btn btn-success btn-rounded mb-4" data-toggle="modal" data-target="#modalNewTaskForm">Nouvelle
+        Tâche</a>
+    </div>
+    <div class="modal fade" id="modalNewTaskForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header text-center">
+            <h4 class="modal-title w-100 font-weight-bold">Nouvelle Tâche</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form action="/projects/<%= project._id %>/tasks/create" method="POST">
+            <div class="form-group">
+              <label for="taskID">ID</label>
+              <input type="text" placeholder="ID" class="form-control" name="taskID" id="idInput" required>
+            </div>
+            <div class="form-group">
+              <label for="description">Description</label>
+              <input type="text" placeholder="Description" class="form-control" name="description" id="description"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="estimatedTime">Temps estimé</label>
+              <input type="text" placeholder="Temps estimé" class="form-control" name="estimatedTime" id="estimatedTime"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="dependencies">Dépendances</label>
+              <input type="text" placeholder="Dépendances" class="form-control" name="dependencies" id="dependencies"
+                required>
+            </div>
+            <div class="form-group">
+              <label for="linkedUserStories">User Stories liées</label>
+              <select name="issueList" id="issueList" size="1" selected="default">
+                <% for( let issue of issues ){ %>
+                  <option value=<%=issue._issueID%>> <%=issue._issueID%> </option>
+                <% } %>
+              </select>
+              <button type="button" onclick="addIssue(document.getElementById('issueList').value,'linkedUserStories');">Ajouter</button>
+              <input type="text" class="form-control" name="linkedUserStories" id="linkedUserStories" readonly>
+            </div>
+            <div class="form-group">
+              <label for="developer">Développeur</label>
+              <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper"
+                id="assignedDeveloper">
+            </div>
+            <button type="submit" class="btn btn-primary">Sauvegarder</button>
+            <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <div class="row">
       <% for( let task of tasks ){ %>
       <div class="col-lg-4">
@@ -31,8 +87,9 @@
             style="display:none">
             <i class="fas fa-chevron-circle-down fa-2x"></i>
           </a>
-          <a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class="btn btn-sq-xs btn-primary">
-            <i><i class="fas fa-pen"></i></i>
+          <a href="" class="btn btn-sq-xs btn-primary" data-toggle="modal" data-target="#modalUpdateTaskForm<%=task._id%>">
+          <!--<a href="/projects/<%= project._id %>/tasks/<%= task._id %>/update" class="btn btn-sq-xs btn-primary">-->
+            <i class="fas fa-pen"></i>
           </a>
           <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/delete" method="POST"
             style="display: inline">
@@ -41,12 +98,68 @@
           <h5>ID : <%= task._taskID%></h5>
           Dépendances : <%= task._dependencies %>
           User Stories liées : <%= task._linkedUserStories %>
-
-
           <div id="<%= task._id %>" style="display:none;">
             <p>Description : <%= task._description %></p>
             <p>Temps estimé : <%= task._estimatedTime %></p>
             <p>Développeur(s) : <%= task._assignedDeveloper %></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="modalUpdateTaskForm<%=task._id%>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header text-center">
+              <h4 class="modal-title w-100 font-weight-bold">Modifier une Tâche</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form action="/projects/<%= project._id %>/tasks/<%= task._id %>/update" method="POST">
+              <div class="form-group">
+                <label for="taskID">ID</label>
+                <input type="text" placeholder="ID" class="form-control" name="taskID" id="idInput" value="<%=task._taskID%>" required readonly>
+              </div>
+              <div class="form-group">
+                <label for="description">Description</label>
+                <input type="text" placeholder="Descrption" class="form-control" name="description" id="description" value="<%=task._description%>" required>
+              </div>
+              <div class="form-group">
+                <label for="estimatedTime">Temps estimé</label>
+                <input type="text" placeholder="Temps estimé" class="form-control" name="estimatedTime" id="estimatedTime" value="<%=task._estimatedTime%>" required>
+              </div>
+              <div class="form-group">
+                <label for="dependencies">Dépendances</label>
+                <input type="text" placeholder="Dépendances" class="form-control" name="dependencies" id="dependencies" value="<%=task._dependencies%>" required>
+              </div>
+              <div class="form-group">
+                <label for="linkedUserStories<%=task._id%>">User Stories liées</label>
+                <select name="updateIssueList<%=task._id%>" id="updateIssueList<%=task._id%>" size="1" selected="default">
+                  <% for( let issue of issues ){ %>
+                    <option value=<%=issue._issueID%>> <%=issue._issueID%> </option>
+                  <% } %>
+                </select>
+                <button type="button" onclick="addIssue(document.getElementById('updateIssueList<%=task._id%>').value, 'linkedUserStories<%=task._id%>');">Ajouter</button>
+                <input type="text" class="form-control" name="linkedUserStories" id="linkedUserStories<%=task._id%>" value="<%=task._linkedUserStories%>" readonly>
+              </div>
+              <div class="form-group">
+                  <label for="advancementState">Etat d'avancement</label>
+                  <select name="advancementState" id="advancementState" size="1">
+                    <option value="toDo">A faire</option>
+                    <option value="onGoing">En cours</option>
+                    <option value="end">Terminée</option>
+                  </select>
+              </div>
+              <div class="form-group">
+                <label for="developer">Développeur</label>
+                <input type="text" placeholder="Développeur" class="form-control" name="assignedDeveloper" id="assignedDeveloper" value="<%=task._assignedDeveloper%>">
+              </div>
+              <button type="submit" class="btn btn-primary">Sauvegarder</button>
+              <a type="button" class="btn btn-secondary" href="/projects/<%= project._id %>/tasks">Annuler</a>
+            </form>
+            <script>
+              document.getElementById('advancementState').value = "<%=task._advancementState%>"
+            </script>
           </div>
         </div>
       </div>
