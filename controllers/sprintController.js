@@ -84,31 +84,33 @@ exports.updateAllSprintState = function (sprints, projectID) {
   }
 
   for (const sprint of sprints) {
-    let valueString = sprint._beginDate.split('-')
-    const valueBegin = []
-    let count = 0
-    for (const s of valueString) {
-      valueBegin[count] = parseInt(s, 10)
-      ++count
-    }
+    if (sprint._beginDate !== null && sprint._endDate !== null) {
+      let valueString = sprint._beginDate.split('-')
+      const valueBegin = []
+      let count = 0
+      for (const s of valueString) {
+        valueBegin[count] = parseInt(s, 10)
+        ++count
+      }
 
-    valueString = sprint._endDate.split('-')
-    const valueEnd = []
-    count = 0
-    for (const s of valueString) {
-      valueEnd[count] = parseInt(s, 10)
-      ++count
-    }
+      valueString = sprint._endDate.split('-')
+      const valueEnd = []
+      count = 0
+      for (const s of valueString) {
+        valueEnd[count] = parseInt(s, 10)
+        ++count
+      }
 
-    if (dateBeforeOrIsToday(valueEnd)) {
-      sprint._state = 'end'
-      sprint._color = 'alert-success'
-    } else if (dateBeforeOrIsToday(valueBegin)) {
-      sprint._state = 'onGoing'
-      sprint._color = 'alert-warning'
-    } else {
-      sprint._state = 'toDo'
-      sprint._color = 'alert-danger'
+      if (dateBeforeOrIsToday(valueEnd)) {
+        sprint._state = 'end'
+        sprint._color = 'alert-success'
+      } else if (dateBeforeOrIsToday(valueBegin)) {
+        sprint._state = 'onGoing'
+        sprint._color = 'alert-warning'
+      } else {
+        sprint._state = 'toDo'
+        sprint._color = 'alert-danger'
+      }
     }
   }
 }
