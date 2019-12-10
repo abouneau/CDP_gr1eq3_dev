@@ -63,26 +63,21 @@ exports.addToReleasedIssue = function (issue) {
   })
 }
 
-exports.updateTask = function (issues, projectID) {
-  taskController.getAllTasks(projectID)
-    .then(tasks => {
-      for (const task of tasks) {
-        if (task._linkedUserStories.length > issues.length) {
-          break
-        }
-        let issueLinkedCount = 0
-        for (const issue of issues) {
-          if (task._linkedUserStories.includes(issue._issueID)) {
-            ++issueLinkedCount
-          }
-        }
-        if (issueLinkedCount === task._linkedUserStories.length) {
-          taskController.deleteTaskByID(task._id)
+exports.updateTask = function (issues, tasks) {
+  for (const task of tasks) {
+    if (!(task._linkedUserStories.length > issues.length || task._linkedUserStories.length === 0)) {
+      let issueLinkedCount = 0
+      for (const issue of issues) {
+        if (task._linkedUserStories.includes(issue._issueID)) {
+          console.log('TEST')
+          ++issueLinkedCount
         }
       }
-    }).catch(err => {
-      throw err
-    })
+      if (issueLinkedCount === task._linkedUserStories.length) {
+        taskController.deleteTaskByID(task._id)
+      }
+    }
+  }
 }
 
 exports.createRelease = function (req, res) {
@@ -115,18 +110,25 @@ exports.createRelease = function (req, res) {
       } else {
         issueController.getAllIssues(req.params.projectID)
           .then(issues => {
+            const issueReleased = []
             for (const issue of issues) {
               if (issue._state === 'end' && !issueAlreadyReleased.includes(issue._id.toString())) {
                 release.addReleasedUserStory(issue._id.toString())
                 this.addToReleasedIssue(issue)
-                this.updateTask(issues, req.params.projectID)
+                issueReleased.push(issue)
                 difficultyAchieved += parseInt(issue._difficulty, 10)
                 issueController.deleteIssueByID(issue._id)
               }
             }
-            release._difficultyAchieved = difficultyAchieved
-            const collection = dbconnect.client.db(databaseName).collection(collectionName)
-            dbconnect.addElementToDB(release, collection, 'Release added successfully.')
+            taskController.getAllTasks(req.params.projectID)
+              .then(tasks => {
+                this.updateTask(issueReleased, tasks)
+                release._difficultyAchieved = difficultyAchieved
+                const collection = dbconnect.client.db(databaseName).collection(collectionName)
+                dbconnect.addElementToDB(release, collection, 'Release added successfully.')
+              }).catch(error => {
+                console.log(error)
+              })
           }).catch(error => {
             console.log(error)
           })
