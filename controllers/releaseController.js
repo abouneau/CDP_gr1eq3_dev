@@ -69,7 +69,6 @@ exports.updateTask = function (issues, tasks) {
       let issueLinkedCount = 0
       for (const issue of issues) {
         if (task._linkedUserStories.includes(issue._issueID)) {
-          console.log('TEST')
           ++issueLinkedCount
         }
       }
