@@ -8,6 +8,11 @@ const databaseName = 'Projets'
 const collectionName = 'Releases'
 const releasedIssueCollectionName = 'ReleasedIssues'
 
+/**
+ * Return an array containing all the releases of a project
+ * @param {String} projectID The project ID of releases returned
+ * @returns {Array[Object]} Array containing all the releases of the project
+ */
 exports.getAllReleases = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -18,6 +23,11 @@ exports.getAllReleases = function (projectID) {
   })
 }
 
+/**
+ * Return an release
+ * @param {String} releaseID The ID of the release to return
+ * @returns {Object} release of the project with releaseID asked
+ */
 exports.getRelease = function (releaseID) {
   try {
     ObjectID(releaseID)
@@ -36,6 +46,11 @@ exports.getRelease = function (releaseID) {
   })
 }
 
+/**
+ * Return an array of the issues contain in this release
+ * @param {String} releaseID the ID of the release to return an array of issues contain in
+ * @returns {Array[Object]} Array of the issues contain in this release
+ */
 exports.getIssueListOfRelease = function (releaseID) {
   return this.getRelease(releaseID).then(release => {
     const collection = dbconnect.client.db(databaseName).collection(releasedIssueCollectionName)
@@ -53,6 +68,10 @@ exports.getIssueListOfRelease = function (releaseID) {
   })
 }
 
+/**
+ * Add an issue to the released issues
+ * @param {Object} issue the issue to add to the released issues
+ */
 exports.addToReleasedIssue = function (issue) {
   const collection = dbconnect.client.db(databaseName).collection(releasedIssueCollectionName)
 
@@ -63,6 +82,11 @@ exports.addToReleasedIssue = function (issue) {
   })
 }
 
+/**
+ * Erase all the task linked only to issues contained in this released or precedent released
+ * @param {Array[Object]} issues the issues released
+ * @param {Array{Object}} tasks all the tasks of the project
+ */
 exports.updateTask = function (issues, tasks) {
   for (const task of tasks) {
     if (!(task._linkedUserStories.length > issues.length || task._linkedUserStories.length === 0)) {
@@ -79,6 +103,14 @@ exports.updateTask = function (issues, tasks) {
   }
 }
 
+/**
+ * Create a new release given an projectID, version and description
+ * If the version is already in use for a release, then an error is display on the console,
+ * and the release will not be created.
+ * @param {object} req - the request containing the projectID, version and description of the release we want to create
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the release will be created if possible, then the created release
+ */
 exports.createRelease = function (req, res) {
   const date = new Date()
   let versionDuplicated = false

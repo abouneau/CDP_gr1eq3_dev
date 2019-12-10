@@ -7,6 +7,11 @@ const databaseName = 'Projets'
 const collectionName = 'Sprints'
 const issueCollectionName = 'Issues'
 
+/**
+ * Return a boolean that are at true if the date given in parameter is previous to today
+ * @param {Array[Int]} dateToCompare The date we want to know if it's previous to today
+ * @returns {Boolean} A boolean indicating if dateToCompare is previous to today
+ */
 const dateBeforeOrIsToday = function (dateToCompare) {
   const date = new Date()
   if ((dateToCompare[0] < date.getFullYear()) ||
@@ -17,6 +22,11 @@ const dateBeforeOrIsToday = function (dateToCompare) {
   return false
 }
 
+/**
+ * Return an array containing all the sprints of a project
+ * @param {String} projectID The project ID of sprints returned
+ * @returns {Array[Object]} Array containing all the sprints of the project
+ */
 exports.getAllSprints = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -27,6 +37,11 @@ exports.getAllSprints = function (projectID) {
   })
 }
 
+/**
+ * Update all sprint linkedUserStories of a project based on the existing issues
+ * @param {Array[Object]} sprints The sprints to update
+ * @param {ObjectID} projectID In case there are no parameter sprints given, it allows to recover sprints
+ */
 exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   const collection1 = dbconnect.client.db(databaseName).collection(issueCollectionName)
@@ -75,6 +90,11 @@ exports.updateAllSprintLinkedIssue = function (sprints, projectID) {
   }
 }
 
+/**
+ * Update all sprints state of a project based on beginDate and endDate of the sprints (today before beginDate: toDo) (today between beginDate and endDate or equal to one of them: onGoing) (today after endDate: end)
+ * @param {Array[Object]} issues The sprints to update
+ * @param {ObjectID} projectID In case there are no parameter sprints given, it allows to recover sprints
+ */
 exports.updateAllSprintState = function (sprints, projectID) {
   if (sprints == null) {
     sprints = this.getAllSprints(projectID)
@@ -115,6 +135,11 @@ exports.updateAllSprintState = function (sprints, projectID) {
   }
 }
 
+/**
+ * Return an sprint
+ * @param {String} sprintID The ID of the sprint to return
+ * @returns {Object} sprint of the project with sprintID asked
+ */
 exports.getSprint = function (sprintID) {
   try {
     ObjectID(sprintID)
@@ -133,6 +158,11 @@ exports.getSprint = function (sprintID) {
   })
 }
 
+/**
+ * Return an array of the issues linked to this sprint
+ * @param {String} sprintID the ID of the sprint to return an array of issues linked to
+ * @returns {Array[Object]} Array of the issues linked to the sprint
+ */
 exports.getIssueListOfSprint = function (sprintID) {
   return this.getSprint(sprintID).then(sprint => {
     return issueController.getAllIssues(sprint._projectID).then(issues => {
@@ -147,6 +177,12 @@ exports.getIssueListOfSprint = function (sprintID) {
   })
 }
 
+/**
+ * Create a new sprint given an projectID, name, begiinDate and endDate
+ * @param {object} req - the request containing the projectID, name, begiinDate and endDate of the sprint we want to create
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the sprint will be created if possible, then the created sprint
+ */
 exports.createSprint = function (req, res) {
   const sprint = new Sprint(
     req.params.projectID,
@@ -191,6 +227,11 @@ exports.createSprint = function (req, res) {
   dbconnect.addElementToDB(sprint, collection, 'Sprint added successfully.')
 }
 
+/**
+ * Link a sprint to an issue by add the issueID of the issue to the linkedUserStories of the sprint
+ * @param {object} req - the request containing the sprintID, projectID of the sprint we want to link and the issueID of the issue we want to link the sprint to
+ * @param {object} res - the response where the new app state will be stored
+ */
 exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.body.issueList
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -204,6 +245,12 @@ exports.linkToIssue = function (req, res) {
     })
 }
 
+/**
+ * Update an existing sprint given an projectID, name, begiinDate and endDate
+ * @param {object} req - the request containing the projectID, name, begiinDate and endDate of the sprint we want to update
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the sprint will be updated if possible, then the updated sprint
+ */
 exports.updateSprint = function (req, res) {
   const issueCollection = dbconnect.client.db(databaseName).collection(issueCollectionName)
   const sprintCollection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -236,6 +283,12 @@ exports.updateSprint = function (req, res) {
     })
 }
 
+/**
+ * Delete an existing sprint given an taskID
+ * @param {object} req - the request containing the ID of the sprint we want to delete
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the sprint will be delete if possible, then the confirmation for the deletion of the sprint
+ */
 exports.deleteSprint = function (req, res) {
   const sprintToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)

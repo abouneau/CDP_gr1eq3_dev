@@ -6,6 +6,11 @@ const ObjectID = require('mongodb').ObjectID
 const databaseName = 'Projets'
 const collectionName = 'Issues'
 
+/**
+ * Return an array containing all the issues of a project
+ * @param {String} projectID The project ID of issues returned
+ * @returns {Array[Object]} Array containing all the issues of the project
+ */
 exports.getAllIssues = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -16,24 +21,12 @@ exports.getAllIssues = function (projectID) {
   })
 }
 
-/* exports.getAllIssuesEnd = function (projectID) {
-  const collection = dbconnect.client.db(databaseName).collection(collectionName)
-
-  return dbconnect.getWholeCollection(collection, { _projectID: projectID }).then(issues => {
-    const issuesEnd= []
-
-    for (const issue of issues) {
-      if (issue._state === 'end') {
-        issuesEnd.push(issue)
-      }
-    }
-
-    return issuesEnd
-  }).catch(error => {
-    console.log(error)
-  })
-} */
-
+/**
+ * Update all issues state of a project based on the state of the task linked
+ * @param {Array[Object]} issues The issues to update
+ * @param {Array[Object]} tasks The tasks linked
+ * @param {ObjectID} projectID In case there are no parameter issues or tasks gived, it allows to recover issues and tasks
+ */
 exports.updateAllIssue = function (issues, tasks, projectID) {
   if (issues == null) {
     issues = this.getAllIssues(projectID)
@@ -96,6 +89,11 @@ exports.updateAllIssue = function (issues, tasks, projectID) {
   }
 }
 
+/**
+ * Return an issue
+ * @param {String} issueID The ID of the issue to return
+ * @returns {Object} issue of the project with issueID asked
+ */
 exports.getIssue = function (issueID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -106,6 +104,11 @@ exports.getIssue = function (issueID) {
   })
 }
 
+/**
+ * Return an array of the tasks linked to this issue
+ * @param {String} issueID the ID of the issue to return an array of tasks linked to
+ * @returns {Array[Object]} Array of the tasks linked to the issue
+ */
 exports.getTaskLinked = function (issueID) {
   return this.getIssue(issueID)
     .then(issue => {
@@ -123,6 +126,14 @@ exports.getTaskLinked = function (issueID) {
     })
 }
 
+/**
+ * Create a new issue given an issueID, projectID, description, priotity and difficulty
+ * If the issueID is already in use for an issue, then an error is thrown,
+ * and the issue will not be created.
+ * @param {object} req - the request containing the issueID, projectID, description, priotity and difficulty of the issue we want to create
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the issue will be created if possible, then the created issue
+ */
 exports.createIssue = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _issueID: req.body.issueID, _projectID: req.params.projectID }, collection)
@@ -151,6 +162,14 @@ exports.createIssue = function (req, res) {
     })
 }
 
+/**
+ * Update an existing issue given an issueID, projectID, description, priotity, difficulty an state
+ * If the issueID is already in use for an issue, then an error is thrown,
+ * and the issue will not be updated.
+ * @param {object} req - the request containing the issueID, projectID, description, priotity, difficulty and state of the issue we want to update
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the issue will be updated if possible, then the updated issue
+ */
 exports.updateIssue = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
@@ -205,6 +224,14 @@ exports.mongoIDtoIssueID = function (id) {
   })
 }
 
+/**
+ * Delete an existing issue given an issueID
+ * If the issueID is not in use for an issue, then an error is thrown
+ * @param {object} req - the request containing the ID of the issue we want to delete
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the issue will be delete if possible, then the comfirmation for the deletion of the issue
+ */
+
 exports.deleteIssue = function (req, res) {
   const issueToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -216,6 +243,12 @@ exports.deleteIssue = function (req, res) {
   })
 }
 
+/**
+ * Delete an existing issue given an issueID
+ * If the issueID is not in use for an issue, then an error is thrown
+ * @param {String} issueID - the ID of the issue we want to delete
+ * @return {promise} The promise that the issue will be delete if possible, then the comfirmation for the deletion of the issue
+ */
 exports.deleteIssueByID = function (issueID) {
   const issueToDelete = { _id: issueID }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)

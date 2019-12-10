@@ -6,6 +6,14 @@ const databaseName = 'Projets'
 const collectionName = 'Tasks'
 const issueCollectionName = 'Issues'
 
+/**
+ * Create a new tasks given an taskID, projectID, description, estimatedTime, dependencies and assignedDevelopper
+ * If the taskID is already in use for a task, then an error is thrown,
+ * and the task will not be created.
+ * @param {object} req - the request containing the taskID, projectID, description, estimatedTime, dependencies and assignedDevelopper of the task we want to create
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the task will be created if possible, then the created task
+ */
 exports.createTask = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _taskID: req.body.taskID, _projectID: req.params.projectID }, collection)
@@ -36,6 +44,12 @@ exports.createTask = function (req, res) {
     })
 }
 
+/**
+ * Return a task
+ * @param {object} req - the request containing the taskID of the task we want to get
+ * @param {object} res - the response where the new app state will be stored
+ * @returns {Object} task of the project with taskID asked
+ */
 exports.getTask = function (req, res) {
   const taskToFind = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -46,6 +60,11 @@ exports.getTask = function (req, res) {
     })
 }
 
+/**
+ * Link a task to an issue by add the issueID of the issue to the linkedUserStories of the task
+ * @param {object} req - the request containing the taskID, projectID of the task we want to link and the issueID of the issue we want to link the task to
+ * @param {object} res - the response where the new app state will be stored
+ */
 exports.linkToIssue = function (req, res) {
   const issueToLinkWith = req.params.id
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -59,6 +78,14 @@ exports.linkToIssue = function (req, res) {
     })
 }
 
+/**
+ * Update an existing task given an taskID, projectID, description, estimatedTime, dependencies, advancementState and assignedDevelopper
+ * If the taskID is already in use for a task, then an error is thrown,
+ * and the task will not be updated.
+ * @param {object} req - the request containing the taskID, projectID, description, estimatedTime, dependencies, advancementState and assignedDevelopper of the task we want to update
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the task will be updated if possible, then the updated task
+ */
 exports.updateTask = function (req, res) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   return dbconnect.findElementInDB({ _id: ObjectID(req.params.id) }, collection)
@@ -99,6 +126,12 @@ exports.updateTask = function (req, res) {
     })
 }
 
+/**
+ * Delete an existing task given an taskID
+ * @param {object} req - the request containing the ID of the task we want to delete
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the task will be delete if possible, then the comfirmation for the deletion of the task
+ */
 exports.deleteTask = function (req, res) {
   const taskToDelete = { _id: ObjectID(req.params.id) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -106,6 +139,11 @@ exports.deleteTask = function (req, res) {
   dbconnect.deleteElementFromDB(taskToDelete, collection, 'task deleted')
 }
 
+/**
+ * Delete an existing task given an taskID
+ * @param {String} taskID - the ID of the task we want to delete
+ * @return {promise} The promise that the task will be delete if possible, then the comfirmation for the deletion of the task
+ */
 exports.deleteTaskByID = function (taskID) {
   const taskToDelete = { _id: ObjectID(taskID) }
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
@@ -113,6 +151,11 @@ exports.deleteTaskByID = function (taskID) {
   dbconnect.deleteElementFromDB(taskToDelete, collection, 'task deleted')
 }
 
+/**
+ * Return an array containing all the tasks of a project
+ * @param {String} projectID The project ID of tasks returned
+ * @returns {Array[Object]} Array containing all the tasks of the project
+ */
 exports.getAllTasks = function (projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
 
@@ -122,6 +165,11 @@ exports.getAllTasks = function (projectID) {
     })
 }
 
+/**
+ * Update all task linkedUserStories of a project based on the existing issues
+ * @param {Array[Object]} tasks The tasks to update
+ * @param {ObjectID} projectID In case there are no parameter tasks gived, it allows to recover tasks
+ */
 exports.updateAllTask = function (tasks, projectID) {
   const collection = dbconnect.client.db(databaseName).collection(collectionName)
   const collection1 = dbconnect.client.db(databaseName).collection(issueCollectionName)
@@ -172,6 +220,12 @@ exports.updateAllTask = function (tasks, projectID) {
   }
 }
 
+/**
+ * Return a promise for the search of a task with a given taskID
+ * @param {object} req - the request containing the ID of the task we know if it exists
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the task will be searched if possible, then the confirmation or not that the task exists
+ */
 exports.taskExists = function (req, res) {
   dbconnect.elementExists(req, res) ? console.log('id exists') : console.log('id ok')
 }
