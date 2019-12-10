@@ -92,7 +92,7 @@
 
 ### Burndown chart
 
-<iframe width="600" height="371" seamless frameborder="0" scrolling="no" src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRcuUNXiAr1-M5QOFj5ubV4c4GDsldV0FoHFl7N8oojtEsbX-xUu3ZCFDY_VXGTMFBNCdF-pU7Gwrlg/pubchart?oid=2092740216&amp;format=image"></iframe>
+<img src="https://docs.google.com/spreadsheets/d/e/2PACX-1vRcuUNXiAr1-M5QOFj5ubV4c4GDsldV0FoHFl7N8oojtEsbX-xUu3ZCFDY_VXGTMFBNCdF-pU7Gwrlg/pubchart?oid=2092740216&amp;format=image"/>
 
 ### Installation et lancement du serveur
 
