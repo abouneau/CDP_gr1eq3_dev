@@ -64,20 +64,15 @@ exports.addToReleasedIssue = function (issue) {
 }
 
 exports.updateTask = function (issues, projectID) {
-  console.log('TEST1')
   taskController.getAllTasks(projectID)
     .then(tasks => {
-      console.log(tasks)
       for (const task of tasks) {
-        console.log((task._linkedUserStories).length)
         if (task._linkedUserStories.length > issues.length) {
           break
         }
         let issueLinkedCount = 0
         for (const issue of issues) {
-          console.log(issue._issueID)
           if (task._linkedUserStories.includes(issue._issueID)) {
-            console.log('TEST')
             ++issueLinkedCount
           }
         }
