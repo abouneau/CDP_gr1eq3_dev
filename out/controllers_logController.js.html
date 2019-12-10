@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/logController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/logController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Module containing all methods necessary to log a user
+ * @module logController
+ */
+
+const dbconnect = require('../database/dbconnect')
+const User = require('../models/logModel')
+const bcrypt = require('bcrypt')
+
+/**
+ * Create a new account given an email, a username and (twice) a password.
+ * If the email is already in use for an account, then an error is thrown,
+ * and the account will not be created.
+ * @param {object} req - the request containing the email, the username and the password (twice) in its body
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the account will be created if possible, then the created account
+ */
+exports.createAccount = function (req, res) {
+  const email = req.body.email
+  const username = req.body.username
+  const password = req.body.password
+  const passwordConf = req.body.passwordConf
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  if (password !== passwordConf) {
+    const err = new Error('Passwords do not match.')
+    err.status = 400
+    res.send('Passwords do not match.')
+    console.log(err)
+  }
+  return bcrypt.hash(password, 10).then(encryptedPassword => {
+    const user = new User(email, encryptedPassword, username)
+    return dbconnect.addElementToDB(user, collection, 'User successfully added').then(user => {
+      return user
+    }).catch(err => {
+      throw err
+    })
+  })
+}
+
+/**
+ * Authenticate a user based on its email and password. If the user does not exist,
+ * it cannot be authenticated, so nothing happens
+ * @param {object} req - the request containing the email and the password in its body
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the user will be authenticated if possible, then the authenticated account
+ */
+exports.authenticate = function (req, res) {
+  const email = req.body.email
+  const password = req.body.password
+  const user = new User(email)
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  return dbconnect.findElementInDB(user, collection).then(resultUser => {
+    if (!resultUser) {
+      const error = new Error('User not found.')
+      error.status = 401
+      console.log(error)
+      return null
+    } else {
+      return bcrypt.compare(password, resultUser._password).then(result => {
+        if (result === true) {
+          return resultUser
+        } else {
+          console.log('Invalid password')
+          return null
+        }
+      })
+    }
+  }).catch(err => {
+    throw err
+  })
+}
+
+/**
+ * Update an account given a new username, an old password and (twice) a new password.
+ * The email is taken from the session, so it cannot be changed.
+ * @param {object} req - the request containing the email in its session user, as well as the username, the old and the new password (twice) in its body
+ * @param {object} res - the response where the new app state will be stored
+ * @return {promise} The promise that the account will be updated if possible, then the updated account
+ */
+exports.changeUsernameOrPassword = function (req, res) {
+  const mail = req.session.user._id
+  const newUsername = req.body.username
+  const oldPassword = req.body.oldPassword
+  const newPassword = req.body.password
+  const newPasswordConf = req.body.passwordConf
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  const user = new User(mail)
+  return dbconnect.findElementInDB(user, collection).then(resultUser => {
+    if (!resultUser) {
+      const error = new Error('User not found.')
+      error.status = 401
+      console.log(error)
+      return null
+    } else {
+      return bcrypt.compare(oldPassword, resultUser._password).then(result => {
+        if (result === true) {
+          if (newPassword !== newPasswordConf) {
+            const err = new Error('Passwords do not match.')
+            err.status = 400
+            res.send('Les mots de passe ne correspondent pas')
+            console.log(err)
+            return null
+          } else {
+            return bcrypt.hash(newPassword, 10).then(encryptedPassword => {
+              const newUser = new User(mail, encryptedPassword, newUsername)
+              return dbconnect.updateElementInDB(user, newUser, collection, 'User tied to "' + mail + '" has been succesfully updated.').then(result => {
+                return newUser
+              }).catch(err => {
+                throw err
+              })
+            })
+          }
+        } else {
+          const err = new Error('Invalid password.')
+          err.status = 400
+          res.send('Le mot de passe est invalide')
+          console.log(err)
+          console.log('Invalid password')
+          return null
+        }
+      })
+    }
+  })
+}
+
+/**
+ * Delete an account. The email is taken from the session, so only the connected user's account can be deleted.
+ * @param {object} req - the request containing the email in its session user
+ * @param {object} res - the response where the new app state will be stored
+ */
+exports.deleteAccount = function (req, res) {
+  const mail = req.session.user._id
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  const user = { _id: mail }
+  dbconnect.deleteElementFromDB(user, collection, 'User tied to "' + mail + '" has been succesfully deleted.').catch(err => {
+    throw err
+  })
+}
+
+/**
+ * See all accounts.
+ * @return {promise} The promise that all users will be found if possible, then the user list
+ */
+exports.getAllUsers = function () {
+  const collection = dbconnect.client.db('accounts').collection('logins')
+  return dbconnect.getWholeCollection(collection)
+    .then(users => {
+      return users
+    }).catch(err => {
+      throw err
+    })
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Modules</h3><ul><li><a href="module-issueController.html">issueController</a></li><li><a href="module-logController.html">logController</a></li><li><a href="module-releaseController.html">releaseController</a></li><li><a href="module-sprintController.html">sprintController</a></li><li><a href="module-taskController.html">taskController</a></li><li><a href="module-testController.html">testController</a></li></ul><h3>Classes</h3><ul><li><a href="Issue.html">Issue</a></li><li><a href="Release.html">Release</a></li><li><a href="Sprint.html">Sprint</a></li><li><a href="Task.html">Task</a></li><li><a href="Test.html">Test</a></li><li><a href="User.html">User</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Dec 10 2019 16:22:49 GMT+0100 (heure normale d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
