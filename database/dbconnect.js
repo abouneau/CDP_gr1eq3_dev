@@ -145,9 +145,9 @@ function disconnectFromDB () {
 }
 
 const MongoClient = require('mongodb').MongoClient
-const uri = 'mongodb+srv://collabcdp2019:cdp2019@cdp2019-iaivu.gcp.mongodb.net/test?retryWrites=true&w=majority'
-// const url = 'mongodb://mongo:27017'
-const client = new MongoClient(uri, { useUnifiedTopology: true, useNewUrlParser: true })
+// const uri = 'mongodb+srv://collabcdp2019:cdp2019@cdp2019-iaivu.gcp.mongodb.net/test?retryWrites=true&w=majority'
+const url = 'mongodb://mongo:27017'
+const client = new MongoClient(url, { useUnifiedTopology: true, useNewUrlParser: true })
 connectToDB()
 
 module.exports = {
